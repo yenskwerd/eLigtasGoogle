@@ -1,0 +1,39 @@
+<!--
+  Generated template for the UserMapPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>User</ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+<ion-content fullscreen="true" no-bounce>
+    <ion-fab top>
+      <img *ngIf="looking==true" top src="assets/imgs/user/wfr.gif" class="loading">
+    </ion-fab>
+    <ion-fab left top>
+      <button color="trans" ion-fab menuToggle><ion-icon color="primary" name="menu"></ion-icon></button>
+      <button color="trans" (click)="showEmergency($event)" ion-fab><img src={{emergencycolor}} class="togglesht"></button>
+      <button color="trans" (click)="showHCF($event)" ion-fab><img src={{HCFcolor}} class="togglesht"></button>
+    </ion-fab>
+    
+    <!-- <ion-fab right top>
+      <button color="light" class="fab-trans" (click)="recenter()" ion-fab><ion-icon name="locate"></ion-icon></button>
+    </ion-fab> -->
+
+    <ion-fab right bottom>
+      <button *ngIf="passPage==null" color="secondary" (click)="showModal()" ion-fab><ion-icon name="apps"></ion-icon></button>
+    </ion-fab>
+  <div #map [class]="mapClass">
+  </div>
+  <img src="assets/imgs/eligtasMarker.png" class="map-marker-centered" text-center>
+</ion-content>
+
+<ion-footer text-center>
+  <div *ngIf="passPage!=null">
+    <button ion-button (click)="PushPage()" block>Make Report</button> 
+  </div>
+</ion-footer>

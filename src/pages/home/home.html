@@ -1,18 +1,37 @@
-<ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
-</ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
-
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+<ion-content  class="bg" padding text-center no-bounce>
+  <button ion-button secondary (click)="openMap()">Open Map</button>
+  <ion-row justify-content-center align-items-center style="height: 100%">
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+    <br>
+    <ion-title text-center>
+      <img src="assets/imgs/eligtas.png" class="logo-login">
+      <br>A Disaster Management App
+    </ion-title>
+    <ion-grid>
+      <p>
+        Brought to you by:
+        <br><h4>IHPDS
+        <br>PAGASA
+        <br>PHIVOLCS
+        <br>UP Manila</h4>
+        
+        <br>Funded by:
+        <br><h4>DOST</h4>
+      </p>
+    </ion-grid>
+    <button ion-button (click)="PushLoginPage()"><ion-icon name="log-in"> </ion-icon>&nbsp; Login</button>
+    <button ion-button (click)="PushSignupPage()"><ion-icon name="person-add"></ion-icon>&nbsp; Signup</button>
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+    <ion-grid></ion-grid>
+  </ion-row>
 </ion-content>

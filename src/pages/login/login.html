@@ -1,0 +1,39 @@
+<!--
+  Generated template for the LoginPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title text-center>Login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="bg" padding>
+  
+  <ion-grid style="height: 100%">
+    <ion-row justify-content-center align-items-center style="height: 70%">
+      <!-- <h1 text-center>Login</h1> -->
+      <form text-center>
+      <img src="assets/imgs/asd.png" class="logo-login">
+          <ion-item>
+            <ion-label stacked>Username</ion-label>
+            <ion-input type="text" name="username" #username></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Password</ion-label>
+            <ion-input type="password" name="password" #password></ion-input>
+          </ion-item>
+          <button ion-button type="submit" (click)="logIn()" block><ion-icon name="log-in"> </ion-icon>&nbsp; Login</button>
+        <div text-center>
+          <a (click)="changePassword()">Forgot Password?</a><br>
+          <!-- <a (click)="SignUp()">Register?</a> -->
+        </div>
+      </form>
+    </ion-row>
+  </ion-grid>
+</ion-content>

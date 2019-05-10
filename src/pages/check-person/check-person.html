@@ -1,0 +1,81 @@
+<!--
+  Generated template for the HelpRequestPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title text-center>Check Request</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <!-- <button ion-button type="submit" (click)="pushChangePin()" block><ion-icon name="pin"></ion-icon>&nbsp; Change Location</button> -->
+  <ion-label>Please check on this person:</ion-label>
+  <form>
+    <ion-item>
+      <ion-label stacked>Persons Name</ion-label>
+      <ion-input type="text" name="name" #person_to_check></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Event</ion-label>
+      <ion-select #C interface="popover" (ionChange)="eventfilter(event);" [(ngModel)]="event" name="event">
+        <ion-option value="Fire">Fire</ion-option>
+        <ion-option value="Earthquake">Earthquake</ion-option>
+        <ion-option value="Crime">Crime</ion-option>
+        <ion-option value="Typhoon">Typhoon</ion-option>
+        <ion-option value="Landslide">Landslide</ion-option>
+        <ion-option value="Accident">Accident</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Persons Injured</ion-label>
+      <ion-input type="number" name="injured" #persons_injured></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Persons Trapped</ion-label>
+      <ion-input type="number" name="trapped" #persons_trapped></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Other info</ion-label>
+      <ion-textarea name="other" #other_info></ion-textarea>
+    </ion-item>
+    <ion-list>
+
+      <ion-label stacked>Are there rescuees with special needs?</ion-label>
+      <ion-item>
+        <ion-label stacked>visually impaired</ion-label>
+        <ion-checkbox (ionChange)="visualchanged($event, 'visually impaired')"></ion-checkbox>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label stacked>cannot hear well</ion-label>
+        <ion-checkbox (ionChange)="hearchanged($event, 'cannot hear well')"></ion-checkbox>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label stacked>unable to walk</ion-label>
+        <ion-checkbox (ionChange)="walkchanged($event, 'unable to walk')"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>with mental health issues</ion-label>
+        <ion-checkbox (ionChange)="mentalchanged($event, 'with mental health issues')"></ion-checkbox>
+      </ion-item>
+    
+    </ion-list>
+    <!-- <button ion-button type="submit" (click)="report()" block>Submit Request</button> -->
+  </form>
+  <div text-center>
+    <button ion-button type="submit" (click)="report()">Submit Request</button>
+    <button ion-button (click)="pushBackToMap()">Back to Map</button>
+  </div>
+</ion-content>
+<!-- <ion-footer text-center>
+  <h1>//AD//</h1>
+</ion-footer> -->
