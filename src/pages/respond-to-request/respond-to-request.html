@@ -1,0 +1,75 @@
+<!--
+  Generated template for the HelpRequestPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title text-center>Respond to Request</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <form >
+    <ion-label stacked>Event</ion-label>
+    <ion-item>
+      <ion-input [readonly]="isReadonly" value="{{event}}"></ion-input>
+    </ion-item>
+    <ion-label stacked>Persons Injured</ion-label>
+    <ion-item>
+      <ion-input type="number" name="injured" [readonly]="isReadonly" value="{{injured}}"></ion-input>
+    </ion-item>
+    <ion-label stacked>Persons Trapped</ion-label>
+    <ion-item>
+      <ion-input type="number" name="trapped" [readonly]="isReadonly" value="{{trapped}}"></ion-input>
+    </ion-item>
+    <ion-label stacked>Other info</ion-label>
+    <ion-item>
+      <ion-textarea name="other" [readonly]="isReadonly" value="{{other}}"></ion-textarea>
+    </ion-item>
+    <ion-label stacked>Rescuees special needs</ion-label>
+    <ion-item>
+      <ion-input name="special" [readonly]="isReadonly" value="{{special}}"></ion-input>
+    </ion-item>
+    <!-- <ion-list>
+
+      <ion-label stacked>Are there rescuees with special needs?</ion-label>
+      <ion-item>
+        <ion-label stacked>visually impaired</ion-label>
+        <ion-checkbox [(ngModel)]="pepperoni" name="special"></ion-checkbox>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label stacked>cannot hear well</ion-label>
+        <ion-checkbox [(ngModel)]="sausage" name="special"></ion-checkbox>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label stacked>unable to walk</ion-label>
+        <ion-checkbox [(ngModel)]="mushrooms" name="special"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>with mental health issues</ion-label>
+        <ion-checkbox [(ngModel)]="mushrooms" name="special"></ion-checkbox>
+      </ion-item>
+    
+    </ion-list> -->
+    <!-- <button ion-button type="submit" block>Submit Request</button> -->
+  </form>
+  <div text-center>
+    <button ion-button class="reportBtn" (click)="pushRespondNowPage()">Respond Now</button>
+    <button ion-button class="reportBtn" (click)="pushBackToMap()">Back to Map</button>
+    <!-- <button ion-button class="reportBtn" (click)="pushRequestVisualizationPage()">Back to Map</button> -->
+  </div>
+  
+</ion-content>
+
+<!-- <ion-footer text-center>
+    <h1>//ADS//</h1>
+</ion-footer> -->

@@ -116,6 +116,7 @@ export class UserMapPage {
           console.log(data);
           this.request = data;
           if(this.HCFshow == true){
+            this.map.setZoom(14);
             this.HCFcolor = "assets/imgs/user/hcfa.png";
             this.HCFshow = false;
             for(let i=0; i<data.length; i++){
@@ -141,10 +142,7 @@ export class UserMapPage {
             // this.route(this.distanceArr[this.index]);
             console.log("true");
           }else{
-            // this.map.locate({
-            //   setView: true,
-            //   maxZoom: 18
-            // });
+            this.map.setZoom(15);
             this.HCFcolor = "assets/imgs/user/hcfi.png";
             this.HCFshow = true;
             for(let i=0; i<this.hcfMarkers.length; i++){
@@ -174,25 +172,28 @@ export class UserMapPage {
           console.log(data);
           this.request = data;
           if(this.emergencyshow == true){
+            this.map.setZoom(14);
             
             this.emergencycolor = "assets/imgs/user/emergency2.png";
             this.emergencyshow = false;
             for(let i=0; i<data.length; i++){
               if(data[i].status==1) {
-                this.hcfMarkers[i] = new google.maps.Marker({
-                  map: this.map,
-                  animation: google.maps.Animation.DROP,
-                  position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
-                  icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
-                });
+                this.createMarker(data[i], i);
               }
             }
+            // for(let i=0; i<data.length; i++){
+            //   if(data[i].status==1) {
+            //     this.hcfMarkers[i] = new google.maps.Marker({
+            //       map: this.map,
+            //       animation: google.maps.Animation.DROP,
+            //       position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+            //       icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+            //     });
+            //   }
+            // }
             console.log("true");
           }else{
-            // this.map.locate({
-            //   setView: true,
-            //   maxZoom: 18
-            // });
+            this.map.setZoom(15);
             this.emergencycolor = "assets/imgs/user/emergency.png";
             this.emergencyshow = true;
             for(let i=0; i<this.hcfMarkers.length; i++){
@@ -278,6 +279,12 @@ export class UserMapPage {
       lat: this.map.getCenter().lat().toString(),
       long: this.map.getCenter().lng().toString()
     });
+  }
+
+  
+  /********** RECENTER ************/
+  recenter() {
+    this.map.setCenter(this.latLng1);
   }
   
 }
