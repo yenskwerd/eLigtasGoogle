@@ -13,6 +13,7 @@ export class LoginServiceProvider {
   public logged_in_user_id:any;
   public logged_in_user_request_id:any;
   public logged_in_user_name:any;
+  public logged_in_stat_id:any;
   constructor(public http: HttpClient) {
     console.log('Hello LoginServiceProvider Provider');
   }

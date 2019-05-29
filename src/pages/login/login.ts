@@ -115,22 +115,13 @@ export class LoginPage {
             this.loginService.logged_in_user_id = res.user_id;
             this.loginService.logged_in_user_request_id = res.request_id;
             this.loginService.logged_in_user_name = res.user_name;
+            this.loginService.logged_in_stat_id = res.stat_id;
             this.events.publish('user:sidebar');
             // this.events.publish('user:sidebar');
             let alert = this.alertCtrl.create({
-            subTitle: "You successfully logged in!",
-            buttons: ['OK']
+              subTitle: "You successfully logged in!",
+              buttons: ['OK']
             });
-            // this.storage.set('username', this.username.value).then((val) =>{
-            //   this.storage.get('username').then((val) => {
-            //     console.log(val);
-            //   });
-            // });
-            // this.storage.set('password', this.password.value).then((val) =>{
-            //   this.storage.get('password').then((val) => {
-            //     console.log(val);
-            //   });
-            // });
             console.log(res.user_id);
             
             alert.present();

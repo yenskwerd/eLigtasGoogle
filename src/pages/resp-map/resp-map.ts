@@ -2,8 +2,9 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClient } from '@angular/common/http';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import {Http, Headers, RequestOptions}  from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
+import 'rxjs/add/operator/map';
 
 /**
  * Generated class for the RespMapPage page.
@@ -28,7 +29,10 @@ export class RespMapPage {
   purpleMarker: any;
   yellowMarker: any;
   grayMarker: any;
-  blackMarker: any;
+  blackMarker: any; 
+
+  eventForReport: any;
+  request_id: any;
 
   constructor(public navCtrl: NavController, public geolocation: Geolocation, public http2 : Http, public http : HttpClient, public navParams: NavParams,
     public loginService: LoginServiceProvider, public alertCtrl : AlertController) {
@@ -61,41 +65,53 @@ export class RespMapPage {
   stat_id: any;
 
   loadmap(){
+    var headers = new Headers();
+      
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Access-Control-Allow-Origin' , '*');
+    headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+    headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+    
+    let options = new RequestOptions({ headers: headers });
+    let data = {
+      user_id: this.loginService.logged_in_user_id
+    }
 
-    this.http.get('http://usc-dcis.com/eligtas.app/retrieve-user-request.php')
-      .subscribe((res : any) =>
-      {
-        console.log(res.request_id);
-        this.user_request_id = res.request_id;
-        console.log(res.stat_id);
-        this.stat_id = res.stat_id;
-        
-        this.geolocation.getCurrentPosition().then((position) => {
-            this.latitude = position.coords.latitude;
-            this.longitude = position.coords.longitude;
-            this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      
-            let mapOptions = {
-              center: this.latLng1,
-              zoom: 15,
-              mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-      
-            this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions), {
-              // disableDefaultUI: true,
-              fullscreenControl: true,
-              zoomControl: false,
-              scaleControl: true
-            };
-            this.addMarker(this.redMarker);
-          }, (err) => {
-            console.log(err);
+    this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-user-request.php',data,options)
+      .map(res=> res.json())
+        .subscribe(
+          res => {
+            console.log(res)
+            this.user_request_id = res.request_id;
+            console.log(res.stat_id);
+            this.stat_id = res.stat_id;
+            
+            this.geolocation.getCurrentPosition().then((position) => {
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+                this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           
-        });
-  
-        this.requestMarker();
-        
-    }); 
+                let mapOptions = {
+                  center: this.latLng1,
+                  zoom: 15,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+          
+                this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions), {
+                  // disableDefaultUI: true,
+                  fullscreenControl: true,
+                  zoomControl: false,
+                  scaleControl: true
+                };
+                this.addMarker(this.redMarker);
+              }, (err) => {
+                console.log(err);
+              
+            });
+      
+      this.requestMarker();
+    });
   }
 
   addMarker(data){
@@ -164,10 +180,7 @@ export class RespMapPage {
     });
   }
 
-  testfunction(data){
-      console.log(data);
-  }
-   
+
   createMarker2(data:any){
     // console.log("createmarker2");
 
@@ -177,57 +190,58 @@ export class RespMapPage {
 
       const marker = new google.maps.Marker({
         position: { lat: parseFloat(lat), lng: parseFloat(long) },
+        animation: google.maps.Animation.DROP,
         map: this.map,
         icon: this.purpleMarker   
-        })
+      })
   
       // i show the alert on mark click yeeeeees <3
       let self = this
         marker.addListener('click', function() {
-          console.log("test");
-          self.presentConfirm(data);
+          // self.presentConfirm(data);
+          if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
+            self.presentConfirm(data);
+          } else {
+            self.cantAlert();
+          }
         });
-      
 
     } else if(data.request_status_id==1 && data.request_id == this.user_request_id){
-      // this.trylat = data.request_lat;
-      // this.trylong = data.request_long;
-      // console.log(this.trylat, this.trylong);
-      // this.rout(data);
-      // this.eventForReport = data.event;
-      // this.request_id = data.request_id;
+      this.rout(data);
+      this.eventForReport = data.event;
+      this.request_id = data.request_id;
       this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
 
     } else if( data.request_status_id==2 ){
-      // this.eventForReport = data.event;
+      this.eventForReport = data.event;
       this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
     } else if (data.request_status_id == 0) {
-      // var headers = new Headers();
+      var headers = new Headers();
       
-      // headers.append("Accept", 'application/json');
-      // headers.append('Content-Type', 'application/x-www-form-urlencoded');
-      // headers.append('Access-Control-Allow-Origin' , '*');
-      // headers.append('Access-Control-Allow-Headers' , 'Content-Type');
-      // headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      headers.append('Access-Control-Allow-Origin' , '*');
+      headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+      headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
       
-      // let options = new RequestOptions({ headers: headers });
+      let options = new RequestOptions({ headers: headers });
 
-      // let data1 = {
-      //   request_id: data.request_id
-      // }
+      let data1 = {
+        request_id: data.request_id
+      }
 
-      //  this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-cfb-num.php',data1,options)
-      //  .map(res=> res.json())
-      //    .subscribe(
-      //      res => {
-      //       this.callForBackUpMarker(res, data);
-      //       if (this.stat_id == 0 && this.loginService.logged_in_user_request_id == data.request_id) {
-      //         this.rout(data);
-      //       } else if(this.stat_id == 1) {
-      //         this.rout(data);
-      //         this.trytry = this.LatLng1.distanceTo(leaflet.latLng(data.request_lat,data.request_long));
-      //       } 
-      //  }); 
+       this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-cfb-num.php',data1,options)
+       .map(res=> res.json())
+         .subscribe(
+           res => {
+            this.callForBackUpMarker(res, data);
+            if (this.stat_id == 0 && this.loginService.logged_in_user_request_id == data.request_id) {
+              this.rout(data);
+            } else if(this.stat_id == 1) {
+              this.rout(data);
+              // this.trytry = this.LatLng1.distanceTo(leaflet.latLng(data.request_lat,data.request_long));
+            } 
+       }); 
     }
 
     // var circle = leaflet.circle([data.request_lat, data.request_long], {
@@ -241,6 +255,90 @@ export class RespMapPage {
     // this.map.addLayer(this.markerGroup);
   }
 
+  callForBackUpMarker(data:any, data1:any){
+
+    var numberOfResponders = data.count;
+    var iconnum = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue" + numberOfResponders + ".png"
+
+    const marker = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: {lat: parseFloat(data.request_lat), lng: parseFloat(data.request_long)},
+      icon: iconnum
+    });
+    
+    let self = this
+        marker.addListener('click', function() {
+          self.cfbRespond(data1)
+        });     
+  }
+
+  cfbRespond(data) {
+    let alert = this.alertCtrl.create({
+      title: 'Response',
+      message: 'Do you want to backup?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            // this.change1();
+          }
+        },
+        {
+          text: 'See',
+          handler: () => {
+            console.log('Buy clicked');
+            // clearInterval(this.dataRefresher);
+            console.log('asdfasdf');
+            this.navCtrl.setRoot('RespondToRequestPage', {
+              request_id : data.request_id,
+              request_status_id : data.request_status_id, 
+              person_to_check: data.person_to_check,
+              event: data.event,
+              persons_injured: data.persons_injured,
+              persons_trapped: data.persons_trapped,
+              other_info: data.other_info,
+              special_needs: data.special_needs,
+              request_lat: data.request_lat,
+              request_long: data.request_long,
+
+              option: "CFB"
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  rout(data){
+    
+    // clearInterval(this.dataRefresher);
+    // this.markerGroup2.clearLayers();
+
+    // let directionsService = new google.maps.DirectionsService;
+    // let directionsDisplay = new google.maps.DirectionsRenderer;
+
+    //     directionsDisplay.setMap(this.map);
+    //     directionsDisplay.setPanel(this.directionsPanel.nativeElement);
+
+    //     directionsService.route({
+    //         origin: {lat: data.request_lat, lng: data.request_long},
+    //         destination: {lat: this.latitude, lng: this.longitude},
+    //         travelMode: google.maps.TravelMode['DRIVING']
+    //     }, (res, status) => {
+
+    //         if(status == google.maps.DirectionsStatus.OK){
+    //             directionsDisplay.setDirections(res);
+    //         } else {
+    //             console.warn(status);
+    //         }
+
+    //     });
+    
+  }
   
   presentConfirm(data) {
     let alert = this.alertCtrl.create({
@@ -286,6 +384,15 @@ export class RespMapPage {
       ]
     });
     alert.present();
+  }
+
+  cantAlert() {
+    let alert = this.alertCtrl.create({
+      message: "You cannot respond to this report.",
+      buttons: ['OK']
+      });
+      // this.navCtrl.setRoot('HcfMappingPage');
+      alert.present();
   }
 
   /********* Emergency and HCF buttons *********/

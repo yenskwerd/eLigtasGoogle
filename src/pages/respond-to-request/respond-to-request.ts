@@ -73,7 +73,7 @@ export class RespondToRequestPage {
   isReadonly() {return true;}
   
   pushRequestVisualizationPage(){
-    this.navCtrl.setRoot('RequestVisualizationPage');
+    this.navCtrl.setRoot('RespMapPage');
   }
 
   pushRespondNowPage(){
@@ -109,7 +109,7 @@ export class RespondToRequestPage {
           }
           console.log(data);
 
-    this.navCtrl.setRoot('RequestVisualizationPage');
+    this.navCtrl.setRoot('RespMapPage');
     //  location.reload();
         });
 
@@ -159,7 +159,7 @@ export class RespondToRequestPage {
 
   pushBackToMap(){
  
-    this.navCtrl.setRoot('RequestVisualizationPage');
+    this.navCtrl.setRoot('RespMapPage');
   }
  
 
