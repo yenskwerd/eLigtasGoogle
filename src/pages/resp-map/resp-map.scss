@@ -19,5 +19,14 @@ page-resp-map {
       top:43%;
       z-index: 1000;
     }
+    .scroll {
+      height: 100%
+    }
+    ion-card {
+        max-height: 200px;
+        overflow: scroll;
+        position: absolute;
+        z-index: 1;
+    }
 
 }

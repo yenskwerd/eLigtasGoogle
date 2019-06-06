@@ -19,14 +19,23 @@
     <button color="trans" (click)="showEmergency($event)" ion-fab><img src={{emergencycolor}} class="togglesht"></button>
     <button color="trans" (click)="showHCF($event)" ion-fab><img src={{HCFcolor}} class="togglesht"></button>
   </ion-fab>
+
+  <ion-fab *ngIf="stat_id==2" right top>
+    <button color="secondary" (click)="pushDone()" ion-fab><ion-icon name="checkmark"></ion-icon></button>
+  </ion-fab>
+
+  <ion-fab *ngIf="stat_id==0 && user_request_id!=NULL || stat_id==1" right top>
+    <button color="danger" (click)="pushCancel()" ion-fab><ion-icon name="close"></ion-icon></button>
+  </ion-fab>
   
-  <ion-fab right top>
+  <ion-fab *ngIf="stat_id==0 && user_request_id==NULL" right top>
     <button color="light" class="fab-trans" (click)="recenter()" ion-fab><ion-icon name="locate"></ion-icon></button>
   </ion-fab>
+
   <div #map [class]="mapClass">
+      <!-- <div #map id="map"> -->
   </div>
   
-</ion-content>
 
 <!-- <ion-footer text-center>
   <div *ngIf="passPage!=null">
@@ -38,12 +47,18 @@
   <div *ngIf="stat_id==0 && user_request_id!=NULL">
     <button ion-button (click)="start()" class="reportBtn" block>Start Navigation</button> 
   </div>
-  <div *ngIf="stat_id==1 && trytry>100">
+  <!-- <div *ngIf="stat_id==1 && trytry>100">
     <button ion-button (click)="pushArrive()" class="reportBtn" disabled block>Arrive</button> 
   </div>
   <div *ngIf="stat_id==1 && trytry<=100">
     <button ion-button (click)="pushArrive()" class="reportBtn" block>Arrive</button> 
+  </div> -->
+  <div *ngIf="stat_id==1">
+    <button ion-button (click)="pushArrive()" class="reportBtn" block>Arrive</button> 
   </div>
+  <!-- <div *ngIf="stat_id==1 && trytry<=100">
+    <button ion-button (click)="pushArrive()" class="reportBtn" block>Arrive</button> 
+  </div> -->
   <div *ngIf="stat_id==2">
     <button *ngIf="cfb==true" disabled ion-button class="reportBtn" (click)="requestCallForBackUp()">Call for Backup</button>
     <button *ngIf="cfb==false" ion-button class="reportBtn" (click)="requestCallForBackUp()">Call for Backup</button>
@@ -51,3 +66,9 @@
     <!-- <button ion-button (click)="pushDone()" class="reportBtn" >Done</button> -->
   </div>
 </ion-footer>
+<ion-card>
+  <ion-card-content>
+      <div #directionsPanel></div>
+  </ion-card-content>
+</ion-card>
+</ion-content>

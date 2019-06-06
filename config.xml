@@ -88,4 +88,5 @@
     </plugin>
     <plugin name="cordova-plugin-request-location-accuracy" spec="~2.2.3" />
     <plugin name="cordova-plugin-advanced-http" spec="~2.0.7" />
+    <engine name="android" spec="7.1.4" />
 </widget>
