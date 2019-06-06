@@ -46,9 +46,13 @@ export class UserMapPage {
     this.blueMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue.png";
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad UserMapPage');
-    console.log(new Date());
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad UserMapPage');
+  //   console.log(new Date());
+  //   this.loadmap();
+  // }
+  
+  ionViewWillEnter() {
     this.loadmap();
   }
 
@@ -72,6 +76,7 @@ export class UserMapPage {
           let mapOptions = {
             center: this.latLng1,
             zoom: 15,
+            disableDefaultUI: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP
           }
      
