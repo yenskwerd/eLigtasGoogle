@@ -92,16 +92,16 @@ export class RespMapPage {
             this.stat_id = res.stat_id;
             
             this.geolocation.getCurrentPosition().then((position) => {
-                this.latitude = position.coords.latitude;
-                this.longitude = position.coords.longitude;
-                this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          
+                this.latitude = 10.3813503;
+                this.longitude = 123.9815693;
+                // this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                this.latLng1 = new google.maps.LatLng(10.3813503, 123.9815693);
                 let mapOptions = {
                   center: this.latLng1,
                   zoom: 15,
                   mapTypeId: google.maps.MapTypeId.ROADMAP
                 }
-          
+                // 10.3813503, 123.9815693
                 this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions), {
                   // disableDefaultUI: true,
                   fullscreenControl: true,
@@ -149,6 +149,7 @@ export class RespMapPage {
   public status : any=false;
 
   requestMarker(){
+    
     // this.dataRefresher = setInterval(() =>{
       if(this.loginService.logged_in_user_request_id!= null){
         this.status = true;
@@ -160,6 +161,9 @@ export class RespMapPage {
           this.request = data;
           // this.markerGroup.clearLayers();
           for(let i=0; i<data.length; i++){
+            // this.marker.setMap(null);
+      this.directionsDisplay.setMap(null);
+      this.directionsDisplay.setPanel(null);
             this.createMarker2(data[i]);
           }
       },
@@ -975,6 +979,12 @@ watch.subscribe((data2) => {
       //   buttons: ['OK']
       //   });
       //   alert.present();
+      // this.marker.setMap(null);
+      // this.directionsDisplay.setMap(null);
+      // this.directionsDisplay.setPanel(null);
+  // this.directionsDisplay.set('directions', null);
+  //  this.directionsDisplay.set({ suppressMarkers:true });
+  //  this.addMarker();
     },
     (error : any) =>
     {
@@ -1004,6 +1014,9 @@ watch.subscribe((data2) => {
       //   buttons: ['OK']
       //   });
       //   alert.present();
+      // this.marker.setMap(null);
+      // this.directionsDisplay.setMap(null);
+      // this.directionsDisplay.setPanel(null);
     },
     (error : any) =>
     {
@@ -1032,6 +1045,9 @@ watch.subscribe((data2) => {
       //   buttons: ['OK']
       //   });
       //   alert.present();
+      // this.marker.setMap(null);
+      // this.directionsDisplay.setMap(null);
+      // this.directionsDisplay.setPanel(null);
     },
     (error : any) =>
     {
@@ -1047,6 +1063,9 @@ watch.subscribe((data2) => {
     
     // this.map.removeControl(this.control);
     this.requestMarker();
+    this.marker.setMap(null);
+      this.directionsDisplay.setMap(null);
+      this.directionsDisplay.setPanel(null);
   }
 
   /***** REPORT MODAL ******/
