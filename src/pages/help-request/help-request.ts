@@ -186,7 +186,7 @@ export class HelpRequestPage {
             message: "Request sent successfully!",
             buttons: ['OK']
             }); 
-            this.navCtrl.setRoot('HcfMappingPage', {
+            this.navCtrl.setRoot('UserMapPage', {
               lat: this.lat,
               long: this.long             
             });
@@ -210,7 +210,7 @@ export class HelpRequestPage {
   }
 
   pushBackToMap(){
-    this.navCtrl.setRoot('HcfMappingPage');
+    this.navCtrl.setRoot('UserMapPage');
   }
   
 }

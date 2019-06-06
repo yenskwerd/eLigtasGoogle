@@ -98,7 +98,7 @@ export class RespMapPage {
                 this.latLng1 = new google.maps.LatLng(10.3813503, 123.9815693);
                 let mapOptions = {
                   center: this.latLng1,
-                  zoom: 15,
+                  zoom: 14,
                   mapTypeId: google.maps.MapTypeId.ROADMAP
                 }
                 // 10.3813503, 123.9815693
@@ -321,6 +321,32 @@ export class RespMapPage {
     alert.present();
   }
 
+  cancelConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Response',
+      message: 'Do you want really want to cancel request? Are you sure? Last najud?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            // this.change1();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Buy clicked');
+            // clearInterval(this.dataRefresher);
+            this.pushCancel();
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   rout(data){
     
     // clearInterval(this.dataRefresher);
@@ -328,8 +354,8 @@ export class RespMapPage {
 
     this.mapClass = "mapDirClass";
     this.marker.setMap(null);
-  let watch = this.geolocation.watchPosition();
-watch.subscribe((data2) => {  
+    let watch = this.geolocation.watchPosition();
+    watch.subscribe((data2) => {
         // this.marker.setMap(null);
       this.directionsDisplay.setMap(this.map);
       this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
@@ -339,7 +365,7 @@ watch.subscribe((data2) => {
         destination: {lat: data.request_lat, lng: data.request_long},
         origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
         travelMode: google.maps.TravelMode['DRIVING']
-    }, (res, status) => {
+      }, (res, status) => {
 
         if(status == google.maps.DirectionsStatus.OK){
             this.directionsDisplay.setDirections(res);
@@ -349,30 +375,6 @@ watch.subscribe((data2) => {
         }
       });
     });
-    
-//     let watch = this.geolocation.watchPosition();
-// watch.subscribe((data2) => {  
-//       this.directionsDisplay.setMap(this.map);
-//       this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
-      
-//       this.directionsService.route({
-//         origin: {lat: data.request_lat, lng: data.request_long},
-//         destination: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
-//     //     origin: {lat: 37.77, lng: -122.447},
-//     // destination: {lat: 37.768, lng: -122.511},
-//         // origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
-//         // destination: {lat: data.request_lat, lng: data.request_long},
-//         travelMode: google.maps.TravelMode['DRIVING']
-//     }, (res, status) => {
-
-//         if(status == google.maps.DirectionsStatus.OK){
-//             this.directionsDisplay.setDirections(res);
-                          
-//         } else {
-//             console.warn(status);
-//         }
-//       });
-//     });
     
   }
   
@@ -434,8 +436,10 @@ watch.subscribe((data2) => {
   /********* Emergency and HCF buttons *********/
   HCFshow: any = true;
   emergencyshow: any = true;
+  evacshow: any = true;
   HCFcolor: any = "assets/imgs/user/hcfi.png";
   emergencycolor: any = "assets/imgs/user/emergency.png";
+  evaccolor: any = "assets/imgs/user/evac1.png";
 
   request: any;
   distanceArr: any;
@@ -453,7 +457,7 @@ watch.subscribe((data2) => {
           console.log(data);
           this.request = data;
           if(this.HCFshow == true){
-            this.map.setZoom(14);
+            this.map.setZoom(12);
             this.HCFcolor = "assets/imgs/user/hcfa.png";
             this.HCFshow = false;
             for(let i=0; i<data.length; i++){
@@ -509,7 +513,7 @@ watch.subscribe((data2) => {
           console.log(data);
           this.request = data;
           if(this.emergencyshow == true){
-            this.map.setZoom(14);
+            this.map.setZoom(12);
             
             this.emergencycolor = "assets/imgs/user/emergency2.png";
             this.emergencyshow = false;
@@ -546,6 +550,55 @@ watch.subscribe((data2) => {
        });  
   }
 
+  showevac(){
+    // this.map.locate({
+    //   setView: true,
+    //   maxZoom: 13
+    // });
+    
+    this.http
+       .get('http://usc-dcis.com/eligtas.app/retrieve-emergencies.php')
+       .subscribe((data : any) =>
+       {
+          console.log(data);
+          this.request = data;
+          if(this.evacshow == true){
+            this.map.setZoom(12);
+            
+            this.evaccolor = "assets/imgs/user/evac.png";
+            this.evacshow = false;
+            for(let i=0; i<data.length; i++){
+              if(data[i].status==1) {
+                this.createMarker(data[i], i);
+              }
+            }
+            // for(let i=0; i<data.length; i++){
+            //   if(data[i].status==1) {
+            //     this.hcfMarkers[i] = new google.maps.Marker({
+            //       map: this.map,
+            //       animation: google.maps.Animation.DROP,
+            //       position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+            //       icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+            //     });
+            //   }
+            // }
+            console.log("true");
+          }else{
+            this.map.setZoom(15);
+            this.evaccolor = "assets/imgs/user/evac1.png";
+            this.evacshow = true;
+            for(let i=0; i<this.hcfMarkers.length; i++){
+              this.deleteMarker(i);
+            }
+            console.log("false");
+          }
+          
+       },
+       (error : any) =>
+       {
+          console.dir(error);
+       });  
+  }
   
   /********** RECENTER ************/
   recenter() {
@@ -1064,8 +1117,8 @@ watch.subscribe((data2) => {
     // this.map.removeControl(this.control);
     this.requestMarker();
     this.marker.setMap(null);
-      this.directionsDisplay.setMap(null);
-      this.directionsDisplay.setPanel(null);
+    this.directionsDisplay.setMap(null);
+    this.directionsDisplay.setPanel(null);
   }
 
   /***** REPORT MODAL ******/

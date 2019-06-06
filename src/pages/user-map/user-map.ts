@@ -1,9 +1,11 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClient } from '@angular/common/http'; 
 import { UserHomePage } from '../user-home/user-home'; 
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { LoginServiceProvider } from '../../providers/login-service/login-service';
+
 
 /**
  * Generated class for the UserMapPage page.
@@ -22,13 +24,31 @@ export class UserMapPage {
   @ViewChild('map') mapRef: ElementRef;
   @ViewChild('directionsPanel') directionsPanel: ElementRef;
   
-  constructor(public http2: Http,public navCtrl: NavController, public navParams: NavParams, public geolocation: Geolocation, 
-    public http : HttpClient, public modalCtrl: ModalController) {
+  requestMarkers: any;
+  redMarker: any;
+  purpleMarker: any;
+  yellowMarker: any;
+  grayMarker: any;
+  blackMarker: any; 
+  blueMarker: any;
+
+  looking: any=false;
+  
+  constructor(public http2: Http,public navCtrl: NavController, public alertCtrl : AlertController, public navParams: NavParams, public geolocation: Geolocation, 
+    public loginService: LoginServiceProvider, public http : HttpClient, public modalCtrl: ModalController) {
     this.hcfMarkers = [];
+
+    this.redMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
+    this.purpleMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png";
+    this.yellowMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png";
+    this.grayMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png";
+    this.blackMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png";
+    this.blueMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue.png";
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad UserMapPage');
+    console.log(new Date());
     this.loadmap();
   }
 
@@ -94,11 +114,134 @@ export class UserMapPage {
     });
   }
 
+  /********* Response Check Alert ********/
+  
+  dataRefresher:any;
+  check:any =0;
+ 
+  responseAlert(){
+    this.dataRefresher = setInterval(() =>{
+      let alert = this.alertCtrl.create({
+        title: 'Alert',
+        message: 'Did anyone respond to your request?',
+        buttons: [
+          {
+            text: 'Yes',
+            role: 'cancel',
+            handler: () => {
+            this.check=1;
+            console.log(this.check);
+            this.looking = false;
+            }
+          },
+          {
+            text: 'No',
+            handler: () => {
+              console.log('Cancel clicked');
+              // this.navCtrl.push('RespondToRequestPage'); 
+            this.check=0;
+            console.log(this.check);
+            this.responseAlert();
+            }
+          }
+        ]
+      });
+      if(this.check==0){
+          clearInterval(this.dataRefresher);
+          alert.present();
+      } else {
+          clearInterval(this.dataRefresher);
+      } 
+      
+        },600000);
+  }
+
+  /********* Existing Report Markers ********/
+
+  addMarker2(data, content){
+    this.directionsDisplay.setMap(null);
+    this.directionsDisplay.setPanel(null);
+     this.marker = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
+      icon: data
+    });
+   
+   
+    // let content = "<h6>You are here!</h6>";
+    this.addInfoWindow(this.marker, content);
+  }
+
+  getUserRequest1(){
+    //gets user data
+    var headers = new Headers();
+      
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Access-Control-Allow-Origin' , '*');
+    headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+    headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+    
+    let options = new RequestOptions({ headers: headers });
+    let data = {
+      request_id: this.loginService.logged_in_user_request_id
+    }
+    console.log(data);
+
+   this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-user-request1.php',data,options)
+   .map(res=> res.json())
+     .subscribe(
+       res => {
+      // leaflet.marker([res.request_lat,res.request_long], {icon: this.grayIcon}).bindTooltip(res.event, {direction: 'bottom'}).addTo(this.map);
+      this.addMarker2(this.grayMarker, res.event);
+      
+      if (res.request_status_id == null) {
+        this.looking = true;
+        this.responseAlert();
+      } else {
+        this.looking = false;
+      }
+   }); 
+
+   let data2 = {
+      user_id: this.loginService.logged_in_user_id
+    }
+
+     this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-history.php',data2,options) 
+    .map(res=> res.json())
+    .subscribe((data: any) =>
+    {
+      console.log(data);
+      for(let i=0; i<data.length; i++){
+        if(data[i].request_status_id==null) {
+          if (data[i].event == "Fire") {
+            this.addMarker2(this.redMarker, data[i].event);
+            // leaflet.marker([data[i].request_lat,data[i].request_long], {icon: this.redIcon}).bindTooltip(data[i].event, {direction: 'bottom'}).addTo(this.map);
+          } else if (data[i].event == "Earthquake") {
+            this.addMarker2(this.yellowMarker, data[i].event);
+            // leaflet.marker([data[i].request_lat,data[i].request_long], {icon: this.orangeIcon}).bindTooltip(data[i].event, {direction: 'bottom'}).addTo(this.map);
+          } else if (data[i].event == "Flood") {
+            this.addMarker2(this.blueMarker, data[i].event);
+            // leaflet.marker([data[i].request_lat,data[i].request_long], {icon: this.blackIcon}).bindTooltip(data[i].event, {direction: 'bottom'}).addTo(this.map);
+          } 
+        }        
+      }
+    },
+    (error : any) =>
+    {
+      console.dir(error);
+    }); 
+   
+  }
+
   /********* Emergency and HCF buttons *********/
   HCFshow: any = true;
   emergencyshow: any = true;
+  evacshow: any = true;
   HCFcolor: any = "assets/imgs/user/hcfi.png";
   emergencycolor: any = "assets/imgs/user/emergency.png";
+  evaccolor: any = "assets/imgs/user/evac1.png";
 
   request: any;
   distanceArr: any;
@@ -207,6 +350,59 @@ export class UserMapPage {
        {
           console.dir(error);
        });  
+  }
+
+  showevac(){
+    // this.dataRefresher = setInterval(() =>{
+
+    this.http
+       .get('http://usc-dcis.com/eligtas.app/retrieve-hcf.php')
+       .subscribe((data : any) =>
+       {
+          console.log(data);
+          this.request = data;
+          if(this.evacshow == true){
+            this.map.setZoom(14);
+            this.evaccolor = "assets/imgs/user/evac.png";
+            this.evacshow = false;
+            for(let i=0; i<data.length; i++){
+              if(data[i].status==1) {
+                this.createMarker(data[i], i);
+                // this.distanceArr.push({
+                //   distance: this.latLng1.distanceTo(leaflet.latLng(data[i].xloc,data[i].yloc)),
+                //   xloc: data[i].xloc,
+                //   yloc: data[i].yloc
+                // });
+              }
+            }
+
+            // this.minimum = this.distanceArr[0].distance;
+            // this.index = 0;
+            
+            // for(let i=1; i<this.distanceArr.length; i++){
+            //   if(this.distanceArr[i].distance<this.minimum){
+            //     this.minimum = this.distanceArr[i].distance;
+            //     this.index = i;
+            //   }
+            // }
+            // this.route(this.distanceArr[this.index]);
+            console.log("true");
+          }else{
+            this.map.setZoom(15);
+            this.evaccolor = "assets/imgs/user/evac1.png";
+            this.evacshow = true;
+            for(let i=0; i<this.hcfMarkers.length; i++){
+              this.deleteMarker(i);
+            }
+            console.log("false");
+          }
+          
+       },
+       (error : any) =>
+       {
+          console.dir(error);
+       });  
+      // },1000);
   }
 
 

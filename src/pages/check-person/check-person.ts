@@ -29,6 +29,7 @@ export class CheckPersonPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController,private http: Http, public loginService: LoginServiceProvider) {
     this.lat = navParams.data.lat;
     this.long = navParams.data.long;
+    // console.log(new Date());
 
     this.http
       .get('http://usc-dcis.com/eligtas.app/retrieve-max-request.php')
@@ -189,7 +190,7 @@ export class CheckPersonPage {
             buttons: ['OK']
             }); 
             // this.navCtrl.pop();
-            this.navCtrl.setRoot('HcfMappingPage', {
+            this.navCtrl.setRoot('UserMapPage', {
               lat: this.lat,
               long: this.long             
             });
@@ -212,7 +213,7 @@ export class CheckPersonPage {
   }
 
   pushBackToMap(){
-    this.navCtrl.setRoot('HcfMappingPage');
+    this.navCtrl.setRoot('UserMapPage');
   }
 
 }

@@ -216,7 +216,7 @@ export class EventReportPage {
             // this.navCtrl.pop();
             // this.navCtrl.setRoot('HcfMappingPage');
             alert.present();
-            this.navCtrl.setRoot('HcfMappingPage', {
+            this.navCtrl.setRoot('UserMapPage', {
               lat: this.lat,
               long: this.long             
             });
@@ -243,7 +243,7 @@ export class EventReportPage {
   }
 
   pushBackToMap(){
-    this.navCtrl.setRoot('HcfMappingPage');
+    this.navCtrl.setRoot('UserMapPage');
   }
 
 }
