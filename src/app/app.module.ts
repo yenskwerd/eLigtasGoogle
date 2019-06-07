@@ -14,12 +14,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginServiceProvider } from '../providers/login-service/login-service';
 import { HttpModule } from '@angular/http';
 import { HTTP, HTTPOriginal } from '@ionic-native/http';
+import { HistoryPage } from '../pages/history/history';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     ListPage,
+    HistoryPage,
     UserHomePage
   ],
   imports: [
@@ -33,6 +35,7 @@ import { HTTP, HTTPOriginal } from '@ionic-native/http';
     MyApp,
     HomePage,
     ListPage,
+    HistoryPage,
     UserHomePage
   ],
   providers: [

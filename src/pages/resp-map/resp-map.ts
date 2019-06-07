@@ -50,8 +50,12 @@ export class RespMapPage {
     this.blackMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png";
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RespMapPage');
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad RespMapPage');
+  //   this.loadmap();
+  // }
+
+  ionViewWillEnter() {
     this.loadmap();
   }
 
@@ -99,11 +103,12 @@ export class RespMapPage {
                 let mapOptions = {
                   center: this.latLng1,
                   zoom: 14,
+                  disableDefaultUI: true,
                   mapTypeId: google.maps.MapTypeId.ROADMAP
                 }
                 // 10.3813503, 123.9815693
                 this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions), {
-                  // disableDefaultUI: true,
+                  disableDefaultUI: true,
                   fullscreenControl: true,
                   zoomControl: false,
                   scaleControl: true
