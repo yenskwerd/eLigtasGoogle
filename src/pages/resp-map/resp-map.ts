@@ -92,10 +92,10 @@ export class RespMapPage {
             this.stat_id = res.stat_id;
             
             this.geolocation.getCurrentPosition().then((position) => {
-                this.latitude = 10.3813503;
-                this.longitude = 123.9815693;
+                this.latitude = 10.355158;
+                this.longitude = 123.9184494;
                 // this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                this.latLng1 = new google.maps.LatLng(10.3813503, 123.9815693);
+                this.latLng1 = new google.maps.LatLng(10.355158, 123.9184494);
                 let mapOptions = {
                   center: this.latLng1,
                   zoom: 14,
@@ -641,6 +641,9 @@ export class RespMapPage {
         icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png'
       });
     }
+
+    let content = data.name;
+    this.addInfoWindow(this.hcfMarkers[i], content);
   }
   /******** END SHOW MARKERS **********/
 
