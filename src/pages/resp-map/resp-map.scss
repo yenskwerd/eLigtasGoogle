@@ -23,10 +23,17 @@ page-resp-map {
       height: 100%
     }
     ion-card {
-        max-height: 200px;
-        overflow: scroll;
-        position: absolute;
-        z-index: 1;
+      position: absolute;
+      max-height: 200px;
+      // top: 10px;
+      right: 5px;
+      z-index: 1;
+      background-color: #fff;
+      border: 1px solid #999;
+      text-align: center;
+      font-family: 'Roboto','sans-serif';
+      line-height: 30px;
+      padding-left: 10px;
+      overflow: scroll;
     }
-
 }

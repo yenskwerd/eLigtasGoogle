@@ -124,8 +124,10 @@ export class RespMapPage {
   }
 
   addMarker(data){
-    this.directionsDisplay.setMap(null);
-    this.directionsDisplay.setPanel(null);
+    // this.directionsDisplay.setMap(null);
+    // this.directionsDisplay.setPanel(null);
+    // this.directionsDisplay.set('directions', null);
+    // this.directionsDisplay.set({ suppressMarkers:true });
      this.marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
@@ -166,9 +168,6 @@ export class RespMapPage {
           this.request = data;
           // this.markerGroup.clearLayers();
           for(let i=0; i<data.length; i++){
-            // this.marker.setMap(null);
-      this.directionsDisplay.setMap(null);
-      this.directionsDisplay.setPanel(null);
             this.createMarker2(data[i]);
           }
       },
@@ -183,8 +182,10 @@ export class RespMapPage {
   marker2: any;
   
   addMarker2(data, lat, long){
-    this.directionsDisplay.setMap(null);
-    this.directionsDisplay.setPanel(null);
+    // this.directionsDisplay.setMap(null);
+    // this.directionsDisplay.setPanel(null);
+    // this.directionsDisplay.set('directions', null);
+    // this.directionsDisplay.set({ suppressMarkers:true });
      this.marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
@@ -248,12 +249,12 @@ export class RespMapPage {
          .subscribe(
            res => {
             this.callForBackUpMarker(res, data);
-            if (this.stat_id == 0 && this.loginService.logged_in_user_request_id == data.request_id) {
-              this.rout(data);
-            } else if(this.stat_id == 1) {
-              this.rout(data);
-              // this.trytry = this.LatLng1.distanceTo(leaflet.latLng(data.request_lat,data.request_long));
-            } 
+            // if (this.stat_id == 0 && this.loginService.logged_in_user_request_id == data.request_id) {
+            //   this.rout(data);
+            // } else if(this.stat_id == 1) {
+            //   this.rout(data);
+            //   // this.trytry = this.LatLng1.distanceTo(leaflet.latLng(data.request_lat,data.request_long));
+            // } 
        }); 
     }
 
@@ -358,7 +359,7 @@ export class RespMapPage {
     // this.markerGroup2.clearLayers();
 
     this.mapClass = "mapDirClass";
-    this.marker.setMap(null);
+    // this.marker.setMap(null);
     let watch = this.geolocation.watchPosition();
     watch.subscribe((data2) => {
         // this.marker.setMap(null);
@@ -1124,9 +1125,11 @@ export class RespMapPage {
     
     // this.map.removeControl(this.control);
     this.requestMarker();
-    this.marker.setMap(null);
+    // this.marker.setMap(null);
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
+    // this.directionsDisplay.set('directions', null);
+    // this.directionsDisplay.set({ suppressMarkers:true });
   }
 
   /***** REPORT MODAL ******/
