@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, App, MenuController, Events } from 'ionic-angular';
+import { Nav, AlertController, Platform, App, MenuController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import {Push, PushObject, PushOptions} from '@ionic-native/push';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { HistoryPage } from '../pages/history/history';
@@ -25,12 +25,13 @@ export class MyApp {
   home: Array<{icon:string, title: string, component: any}>;
   shownGroup = null;
  
-  constructor(public platform: Platform, public app: App, public menuCtrl: MenuController, public statusBar: StatusBar, public events: Events, public splashScreen: SplashScreen, public loginService: LoginServiceProvider) {
+  constructor(public platform: Platform, public app: App, public alertCtrl: AlertController, private push: Push, public menuCtrl: MenuController, public statusBar: StatusBar, public events: Events, public splashScreen: SplashScreen, public loginService: LoginServiceProvider) {
     this.initializeApp();
 
     events.subscribe('user:sidebar', () => {
       this.username = this.loginService.logged_in_user_name;
       this.createSidebar();
+      this.pushSetup();
     });
 
     
@@ -54,6 +55,55 @@ export class MyApp {
     //   { icon: '', title: 'Logout', component: HomePage}
     // ]; 
     
+  }
+  pushSetup(){
+    const options: PushOptions = {
+      android: {
+        senderID: this.loginService.logged_in_user_id
+         
+      },
+      ios: {
+          alert: 'true',
+          badge: true,
+          sound: 'false'
+      },
+     
+   };
+   
+   const pushObject: PushObject = this.push.init(options);
+   
+   
+   pushObject.on('notification').subscribe((data:any) => {
+    console.log('Received a notification', data);
+      if (data.additionalData.foreground) {
+        // if application open, show popup
+        let confirmAlert = this.alertCtrl.create({
+          title: 'New Notification',
+          message: 'HELLO',
+          buttons: [{
+            text: 'Ignore',
+            role: 'cancel'
+          }, {
+            text: 'View',
+            handler: () => {
+              //TODO: Your logic here
+              this.nav.push(HomePage, { message: 'Hello' });
+            }
+          }]
+        });
+        
+        confirmAlert.present();
+      } else {
+        //if user NOT using app and push notification comes
+        //TODO: Your logic on click of push notification directly
+        this.nav.push(HomePage, { message: data.message });
+        console.log('Push notification clicked');
+      }
+    });
+   
+   pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+   
+   pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
 
   toggleGroup(group) {

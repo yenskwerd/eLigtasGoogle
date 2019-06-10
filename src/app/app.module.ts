@@ -15,7 +15,7 @@ import { LoginServiceProvider } from '../providers/login-service/login-service';
 import { HttpModule } from '@angular/http';
 import { HTTP, HTTPOriginal } from '@ionic-native/http';
 import { HistoryPage } from '../pages/history/history';
-
+import { Push } from '@ionic-native/push'
 @NgModule({
   declarations: [
     MyApp,
@@ -42,6 +42,7 @@ import { HistoryPage } from '../pages/history/history';
     StatusBar,
     Geolocation,
     SplashScreen,
+    Push,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginServiceProvider
   ]
