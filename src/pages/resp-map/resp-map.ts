@@ -90,7 +90,7 @@ export class RespMapPage {
       .map(res=> res.json())
         .subscribe(
           res => {
-            console.log(res)
+            console.log(res)      
             this.user_request_id = res.request_id;
             console.log(res.stat_id);
             this.stat_id = res.stat_id;
@@ -168,7 +168,8 @@ export class RespMapPage {
           this.request = data;
           // this.markerGroup.clearLayers();
           for(let i=0; i<data.length; i++){
-            this.createMarker2(data[i]);
+            // this.createMarker2(data[i]);
+            this.createMarker2(data[i],i);
           }
       },
       (error : any) =>
@@ -179,14 +180,14 @@ export class RespMapPage {
   }
   
   
+  marker22: any[];
   marker2: any;
-  
-  addMarker2(data, lat, long){
+  addMarker2(data, lat, long,i){
+    // addMarker2(data, lat, long){
     // this.directionsDisplay.setMap(null);
     // this.directionsDisplay.setPanel(null);
-    // this.directionsDisplay.set('directions', null);
-    // this.directionsDisplay.set({ suppressMarkers:true });
-     this.marker = new google.maps.Marker({
+    //  this.marker[i] = new google.maps.Marker({
+      this.marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
       position: {lat: parseFloat(lat), lng: parseFloat(long)},
@@ -194,69 +195,75 @@ export class RespMapPage {
     });
   }
 
+  deleteMarker2(i:any){
+    this.marker22[i].setMap(null);
+  }
 
-  createMarker2(data:any){
-    // console.log("createmarker2");
-
-    if(data.request_status_id==null){
-      var lat = data.request_lat;
-      var long = data.request_long;
-
-      const marker = new google.maps.Marker({
-        position: { lat: parseFloat(lat), lng: parseFloat(long) },
-        animation: google.maps.Animation.DROP,
-        map: this.map,
-        icon: this.purpleMarker   
-      })
+  createMarker2(data:any, i:any){
+    // createMarker2(data:any){
+      // console.log("createmarker2");
   
-      // i show the alert on mark click yeeeeees <3
-      let self = this
-        marker.addListener('click', function() {
-          // self.presentConfirm(data);
-          if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
-            self.presentConfirm(data);
-          } else {
-            self.cantAlert();
-          }
-        });
-
-    } else if(data.request_status_id==1 && data.request_id == this.user_request_id){
-      this.rout(data);
-      this.eventForReport = data.event;
-      this.request_id = data.request_id;
-      this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
-
-    } else if( data.request_status_id==2 ){
-      this.eventForReport = data.event;
-      this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
-    } else if (data.request_status_id == 0) {
-      var headers = new Headers();
-      
-      headers.append("Accept", 'application/json');
-      headers.append('Content-Type', 'application/x-www-form-urlencoded');
-      headers.append('Access-Control-Allow-Origin' , '*');
-      headers.append('Access-Control-Allow-Headers' , 'Content-Type');
-      headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
-      
-      let options = new RequestOptions({ headers: headers });
-
-      let data1 = {
-        request_id: data.request_id
+      if(data.request_status_id==null){
+        var lat = data.request_lat;
+        var long = data.request_long;
+  
+        const marker = new google.maps.Marker({
+          position: { lat: parseFloat(lat), lng: parseFloat(long) },
+          animation: google.maps.Animation.DROP,
+          map: this.map,
+          icon: this.purpleMarker   
+        })
+    
+        // i show the alert on mark click yeeeeees <3
+        let self = this
+          marker.addListener('click', function() {
+            // self.presentConfirm(data);
+            if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
+              self.presentConfirm(data);
+            } else {
+              self.cantAlert();
+            }
+          });
+  
+      } else if(data.request_status_id==1 && data.request_id == this.user_request_id){
+        this.rout(data);
+        this.eventForReport = data.event;
+        this.request_id = data.request_id;
+        this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long,i);
+        // this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
+        
+      } else if( data.request_status_id==2 ){
+        this.eventForReport = data.event;
+        this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
+        // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
+      } else if (data.request_status_id == 0) {
+        var headers = new Headers();
+        
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Access-Control-Allow-Origin' , '*');
+        headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+        headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+        
+        let options = new RequestOptions({ headers: headers });
+  
+        let data1 = {
+          request_id: data.request_id
+        }
+  
+         this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-cfb-num.php',data1,options)
+         .map(res=> res.json())
+           .subscribe(
+             res => {
+              this.callForBackUpMarker(res, data);
+              if (this.stat_id == 0 && this.loginService.logged_in_user_request_id == data.request_id) {
+                this.rout(data);
+              } else if(this.stat_id == 1) {
+                this.rout(data);
+                // this.trytry = this.LatLng1.distanceTo(leaflet.latLng(data.request_lat,data.request_long));
+              } 
+         }); 
       }
-
-       this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-cfb-num.php',data1,options)
-       .map(res=> res.json())
-         .subscribe(
-           res => {
-            this.callForBackUpMarker(res, data);
-            // if (this.stat_id == 0 && this.loginService.logged_in_user_request_id == data.request_id) {
-            //   this.rout(data);
-            // } else if(this.stat_id == 1) {
-            //   this.rout(data);
-            //   // this.trytry = this.LatLng1.distanceTo(leaflet.latLng(data.request_lat,data.request_long));
-            // } 
-       }); 
-    }
 
     // var circle = leaflet.circle([data.request_lat, data.request_long], {
     //   color: "rgba(255,255,255,0)",
@@ -1123,13 +1130,36 @@ export class RespMapPage {
       alert2.present();
     });
     
+    /////try og delete sa requested markers
+if(this.loginService.logged_in_user_request_id!= null){
+  this.status = true;
+}
+this.http.get('http://usc-dcis.com/eligtas.app/retrieve-request.php')
+.subscribe((data : any) =>
+{
+  console.log(data);
+    this.request = data;
+    // this.markerGroup.clearLayers();
+    for(let i=0; i<data.length; i++){
+      this.deleteMarker2(i);
+    }
+},
+(error : any) =>
+{
+    console.dir(error);
+});
+
+    this.marker.setMap(null);
+// this.marker2.setMap(null);
+    // this.requestMarker();
     // this.map.removeControl(this.control);
-    this.requestMarker();
+    this.addMarker(this.redMarker);
     // this.marker.setMap(null);
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
-    // this.directionsDisplay.set('directions', null);
-    // this.directionsDisplay.set({ suppressMarkers:true });
+    this.requestMarker();
+    this.directionsDisplay.setMap(null);
+    this.directionsDisplay.setPanel(null);
   }
 
   /***** REPORT MODAL ******/
@@ -1142,4 +1172,53 @@ export class RespMapPage {
     modalPage.present(); 
   }
 
+  //remove requested markes
+  // createMarker3(data:any){
+  //   // console.log("createmarker2");
+
+  //   if(data.request_status_id==null){
+  //     var lat = data.request_lat;
+  //     var long = data.request_long;
+
+  //     const marker = new google.maps.Marker({
+  //       position: { lat: parseFloat(lat), lng: parseFloat(long) },
+  //       animation: google.maps.Animation.DROP,
+  //       map: this.map,
+  //       icon: this.purpleMarker   
+  //     })
+  
+  //     // i show the alert on mark click yeeeeees <3
+  //     let self = this
+  //       marker.addListener('click', function() {
+  //         // self.presentConfirm(data);
+  //         if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
+  //           self.presentConfirm(data);
+  //         } else {
+  //           self.cantAlert();
+  //         }
+  //       });
+
+  //   } else if(data.request_status_id==1 && data.request_id == this.user_request_id){
+  //     this.rout(data);
+  //     this.eventForReport = data.event;
+  //     this.request_id = data.request_id;
+  //     this.marker2 = this.addMarker3(this.yellowMarker, data.request_lat, data.request_long);
+
+  //   } else if( data.request_status_id==2 ){
+  //     this.eventForReport = data.event;
+  //     this.marker2 = this.addMarker3(this.grayMarker, data.request_lat, data.request_long);
+  //   } 
+  //     this.marker.setMap(null);
+  //     // this.marker2.setMap(null);
+  // }
+  // addMarker3(data, lat, long){
+  //   // this.directionsDisplay.setMap(null);
+  //   // this.directionsDisplay.setPanel(null);
+  //    this.marker = new google.maps.Marker({
+  //     map: this.map,
+  //     animation: google.maps.Animation.DROP,
+  //     position: {lat: parseFloat(lat), lng: parseFloat(long)},
+  //     icon: data
+  //   });
+  // }
 }

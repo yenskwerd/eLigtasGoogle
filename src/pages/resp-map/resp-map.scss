@@ -20,20 +20,30 @@ page-resp-map {
       z-index: 1000;
     }
     .scroll {
-      height: 100%
+      height: 50%
     }
+    
     ion-card {
-      position: absolute;
-      max-height: 200px;
-      // top: 10px;
-      right: 5px;
-      z-index: 1;
-      background-color: #fff;
-      border: 1px solid #999;
-      text-align: center;
-      font-family: 'Roboto','sans-serif';
-      line-height: 30px;
-      padding-left: 10px;
-      overflow: scroll;
+        height:  150px;
+        overflow: scroll;
+        // position: absolute;
+        z-index: 1;
     }
+    ion-card-content{
+      max-height: 150px;
+    }
+    // ion-card {
+    //   position: absolute;
+    //   max-height: 200px;
+    //   // top: 10px;
+    //   right: 5px;
+    //   z-index: 1;
+    //   background-color: #fff;
+    //   border: 1px solid #999;
+    //   text-align: center;
+    //   font-family: 'Roboto','sans-serif';
+    //   line-height: 30px;
+    //   padding-left: 10px;
+    //   overflow: scroll;
+    // }
 }

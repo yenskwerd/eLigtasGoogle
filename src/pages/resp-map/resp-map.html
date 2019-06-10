@@ -43,7 +43,11 @@
     <button ion-button (click)="PushPage()" block>Make Report</button> 
   </div>
 </ion-footer> -->
-
+<ion-card>
+  <ion-card-content>
+      <div #directionsPanel></div>
+  </ion-card-content>
+</ion-card>
 <ion-footer text-center>
   <div *ngIf="stat_id==0 && user_request_id!=NULL">
     <button ion-button (click)="start()" class="reportBtn" block>Start Navigation</button> 
@@ -66,10 +70,10 @@
     <button ion-button (click)="openReport()" class="reportBtn" >Report</button>
     <!-- <button ion-button (click)="pushDone()" class="reportBtn" >Done</button> -->
   </div>
+  <!-- <ion-card>
+    <ion-card-content>
+        <div #directionsPanel></div>
+    </ion-card-content>
+  </ion-card> -->
 </ion-footer>
-<ion-card>
-  <ion-card-content>
-      <div #directionsPanel></div>
-  </ion-card-content>
-</ion-card>
 </ion-content>
