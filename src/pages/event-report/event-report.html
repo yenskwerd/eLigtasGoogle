@@ -22,14 +22,17 @@
   <ion-icon name="add-circle" (click)="increment()"></ion-icon>
    -->
   <form>
-    <ion-item>
+    <!-- <ion-item> -->
       <ion-label stacked>Event</ion-label>
-      <ion-select #C interface="popover" (ionChange)="eventfilter(event);" [(ngModel)]="event" name="event">
-        <ion-option value="Fire">Fire</ion-option>
+      <!-- <ion-select #C interface="popover" (ionChange)="eventfilter(event);" [(ngModel)]="event" name="event"> -->
+        <!-- <ion-option value="Fire">Fire</ion-option>
         <ion-option value="Earthquake">Earthquake</ion-option>
-        <ion-option value="Flood">Flood</ion-option>
-      </ion-select>
-    </ion-item>
+        <ion-option value="Flood">Flood</ion-option> -->
+      <button color="trans" value="Fire" (click)="eventfilter($event, 'Fire');" ion-fab><img src={{emergencycolor}} class="togglesht"></button>
+      <button color="trans" value="Earthquake" (click)="eventfilter($event, 'Earthquake');"  ion-fab><img src={{HCFcolor}} class="togglesht"></button>
+      <button color="trans" value="Flood" (click)="eventfilter($event, 'Flood');"  ion-fab><img src={{evaccolor}} class="togglesht"></button>
+      <!-- </ion-select> -->
+    <!-- </ion-item> -->
     <ion-item>
       <ion-label stacked>Persons Injured</ion-label>
       <ion-input type="number" name="injured" #persons_injured></ion-input>

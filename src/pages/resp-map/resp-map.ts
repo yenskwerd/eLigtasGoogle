@@ -25,8 +25,9 @@ declare var google;
 export class RespMapPage {
   @ViewChild('map') mapRef: ElementRef;
   @ViewChild('directionsPanel') directionsPanel: ElementRef;
-  
+  dataRefresher: any;
   requestMarkers: any;
+  requestmarkers:any;
   redMarker: any;
   purpleMarker: any;
   yellowMarker: any;
@@ -37,6 +38,17 @@ export class RespMapPage {
   request_id: any;
 
   cfb: any = false;
+
+  map: any;
+  // rootPage: any = RespMapPage;
+  myDate = new Date();
+  m = this.myDate.getMonth() + 1;
+  y = this.myDate.getFullYear();
+  da = this.myDate.getDate();
+  h=this.myDate.getHours();
+  mi=this.myDate.getMinutes();
+  s=this.myDate.getSeconds();
+  datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
 
   constructor(public modalCtrl: ModalController, public navCtrl: NavController, public geolocation: Geolocation, public http2 : Http, public http : HttpClient, public navParams: NavParams,
     public loginService: LoginServiceProvider, public alertCtrl : AlertController) {
@@ -53,26 +65,49 @@ export class RespMapPage {
   // ionViewDidLoad() {
   //   console.log('ionViewDidLoad RespMapPage');
   //   this.loadmap();
+  //   // window.location.reload();
+  // //   google.maps.event.trigger(window, 'resize', function() {
+  // //     // var lastCenter = this.map.getCenter();
+  // //     google.maps.event.trigger(this.map, 'resize');
+  // //     // this.map.setCenter(lastCenter);
+  // // });
+  //   // google.maps.event.trigger(this.map, 'resize');
   // }
 
-  ionViewWillEnter() {
+  // ionViewWillEnter() {
+  //   this.loadmap();
+    
+  //   // google.maps.event.trigger(this.map, 'resize');
+  // }
+
+  ionViewDidEnter(){
     this.loadmap();
+    console.log(this.datetoday);
+      console.log(this.myDate);
+      console.log(this.h)
+    // window.location.reload();
+    // google.maps.event.trigger(this.map, 'resize');
   }
+  
 
   /********** Google Maps **********/
-  map: any;
+  // map: any;
   latLng1: any;
   marker:any;
+  marker2: any;
+  marker4: any;
   longitude: any;
   latitude: any;
   mapClass: string = "mapClass";
-  directionsService = new google.maps.DirectionsService;
-  directionsDisplay = new google.maps.DirectionsRenderer({ preserveViewport: true });
+  directionsService = new google.maps.DirectionsService();
+  directionsDisplay = new google.maps.DirectionsRenderer();
   
   user_request_id: any;
   stat_id: any;
 
   loadmap(){
+    // this.map=null;
+    // console.log(this.map)
     var headers = new Headers();
       
     headers.append("Accept", 'application/json');
@@ -113,6 +148,7 @@ export class RespMapPage {
                   zoomControl: false,
                   scaleControl: true
                 };
+                // google.maps.event.trigger(this.map,'resize');
                 this.addMarker(this.redMarker);
               }, (err) => {
                 console.log(err);
@@ -130,7 +166,7 @@ export class RespMapPage {
     // this.directionsDisplay.set({ suppressMarkers:true });
      this.marker = new google.maps.Marker({
       map: this.map,
-      animation: google.maps.Animation.DROP,
+      // animation: google.maps.Animation.DROP,
       position: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
       icon: data
     });
@@ -157,7 +193,7 @@ export class RespMapPage {
 
   requestMarker(){
     
-    // this.dataRefresher = setInterval(() =>{
+    this.dataRefresher = setInterval(() =>{
       if(this.loginService.logged_in_user_request_id!= null){
         this.status = true;
       }
@@ -169,44 +205,48 @@ export class RespMapPage {
           // this.markerGroup.clearLayers();
           for(let i=0; i<data.length; i++){
             // this.createMarker2(data[i]);
-            this.createMarker2(data[i],i);
+            this.createMarker2(data[i]);
           }
       },
       (error : any) =>
       {
           console.dir(error);
       });
-    // },1000);
+      console.log(this.marker2);
+    },5000);
   }
   
   
-  marker22: any[];
-  marker2: any;
-  addMarker2(data, lat, long,i){
-    // addMarker2(data, lat, long){
+  // marker22: any[];
+
+  // addMarker2(data, lat, long,i){
+    addMarker2(data, lat, long){
     // this.directionsDisplay.setMap(null);
     // this.directionsDisplay.setPanel(null);
-    //  this.marker[i] = new google.maps.Marker({
-      this.marker = new google.maps.Marker({
+    //  this.marker22[i] = new google.maps.Marker({
+      this.marker4 = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
       position: {lat: parseFloat(lat), lng: parseFloat(long)},
       icon: data
     });
+    // this.marker4.push(this.marker4);
+    // return this.marker;
   }
 
-  deleteMarker2(i:any){
-    this.marker22[i].setMap(null);
-  }
-
-  createMarker2(data:any, i:any){
+  // deleteMarker2(){
+  //   this.marker3.setMap(null);
+  // }
+// marker3: any[];
+yellow:any = 0;
+  createMarker2(data:any){
     // createMarker2(data:any){
       // console.log("createmarker2");
   
       if(data.request_status_id==null){
         var lat = data.request_lat;
         var long = data.request_long;
-  
+        //  this.marker4 = new google.maps.Marker({
         const marker = new google.maps.Marker({
           position: { lat: parseFloat(lat), lng: parseFloat(long) },
           animation: google.maps.Animation.DROP,
@@ -216,6 +256,7 @@ export class RespMapPage {
     
         // i show the alert on mark click yeeeeees <3
         let self = this
+        // marker3[i].addListener('click', function() {
           marker.addListener('click', function() {
             // self.presentConfirm(data);
             if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
@@ -229,13 +270,17 @@ export class RespMapPage {
         this.rout(data);
         this.eventForReport = data.event;
         this.request_id = data.request_id;
-        this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long,i);
+        // this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long,i);
+        if(this.yellow==0){
         // this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
-        
+        this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
+        this.yellow++;
+        // console.log(this.marker4);
+        }
       } else if( data.request_status_id==2 ){
         this.eventForReport = data.event;
-        this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
-        // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
+        // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
+        this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
       } else if (data.request_status_id == 0) {
         var headers = new Headers();
         
@@ -313,7 +358,7 @@ export class RespMapPage {
             console.log('Buy clicked');
             // clearInterval(this.dataRefresher);
             console.log('asdfasdf');
-            this.navCtrl.setRoot('RespondToRequestPage', {
+            this.navCtrl.push('RespondToRequestPage', {
               request_id : data.request_id,
               request_status_id : data.request_status_id, 
               person_to_check: data.person_to_check,
@@ -370,13 +415,15 @@ export class RespMapPage {
     let watch = this.geolocation.watchPosition();
     watch.subscribe((data2) => {
         // this.marker.setMap(null);
-      this.directionsDisplay.setMap(this.map);
+      this.directionsDisplay.setMap(this.map);  
+      // this.directionsDisplay.setOptions({suppressMarkers:true});
       this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
-
+      
       this.directionsService.route({
           // origin: {lat: position.coords.latitude, lng: position.coords.longitude},
         destination: {lat: data.request_lat, lng: data.request_long},
         origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
+        // origin: {lat: data2.coords.latitude, lng: data2.coords.longitude},
         travelMode: google.maps.TravelMode['DRIVING']
       }, (res, status) => {
 
@@ -686,7 +733,7 @@ export class RespMapPage {
       /********** LOG **********/
       user_id: this.loginService.logged_in_user_id,
       action: "Started Navigating",
-      action_datetime: new Date()
+      action_datetime: this.datetoday
     }
     
     console.log(data1);
@@ -768,7 +815,7 @@ export class RespMapPage {
       /********** LOG **********/
       user_id: this.loginService.logged_in_user_id,
       action: "Arrived",
-      action_datetime: new Date(),
+      action_datetime: this.datetoday,
       request_id: this.request_id
     }
     
@@ -895,7 +942,7 @@ export class RespMapPage {
     let data3 = {
       user_id: this.loginService.logged_in_user_id,
       action: "Callback",
-      action_datetime: new Date(),
+      action_datetime: this.datetoday,
       request_id: this.request_id
     }
     
@@ -966,7 +1013,7 @@ export class RespMapPage {
     let data3 = {
       user_id: this.loginService.logged_in_user_id,
       action: "Rescued",
-      action_datetime: new Date(),
+      action_datetime: this.datetoday,
       request_id: this.request_id
     }
     
@@ -1131,36 +1178,58 @@ export class RespMapPage {
     });
     
     /////try og delete sa requested markers
-if(this.loginService.logged_in_user_request_id!= null){
-  this.status = true;
-}
-this.http.get('http://usc-dcis.com/eligtas.app/retrieve-request.php')
-.subscribe((data : any) =>
-{
-  console.log(data);
-    this.request = data;
-    // this.markerGroup.clearLayers();
-    for(let i=0; i<data.length; i++){
-      this.deleteMarker2(i);
-    }
-},
-(error : any) =>
-{
-    console.dir(error);
-});
-
-    this.marker.setMap(null);
-// this.marker2.setMap(null);
-    // this.requestMarker();
-    // this.map.removeControl(this.control);
-    this.addMarker(this.redMarker);
+// if(this.loginService.logged_in_user_request_id!= null){
+//   this.status = true;
+// }
+// this.http.get('http://usc-dcis.com/eligtas.app/retrieve-request.php')
+// .subscribe((data : any) =>
+// {
+//   console.log(data);
+//     this.request = data;
+    
+//     for(let i=0; i<data.length; i++){
+//       this.marker4.setMap(null);
+//     }
+// },
+// (error : any) =>
+// {
+//     console.dir(error);
+// });
+    // this.marker4.setMap(null);
     // this.marker.setMap(null);
+    // this.marker2.setMap(null)
+    // this.deleteyellow();
+    // this.requestMarkers.remove();
+    // if (this.requestmarkers && this.requestmarkers.setMap) {
+    //   this.requestmarkers.setMap(null);
+    // }
+    // this.marker4.setMap(null);
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
-    this.requestMarker();
-    this.directionsDisplay.setMap(null);
-    this.directionsDisplay.setPanel(null);
+    this.directionsDisplay.setOptions({suppressMarkers:true});
+    this.directionsDisplay.setOptions({suppressPolylines:true});
+    // this.directionsDisplay.setDirections(null);
+    this.directionsDisplay.set('directionsPanel', null);
+    // this.directionsDisplay.setMap(null);
+    // this.directionsDisplay.setPanel(null);
+    // this.requestMarker();
+    // this.directionsDisplay.setMap(null);  
+    // this.directionsDisplay.setPanel(null);
+    // this.map.removeControl(this.control);
+    // this.addMarker(this.redMarker);
+    // this.marker.setMap(null);
+    // this.directionsDisplay.setMap(null);
+    // this.directionsDisplay.setPanel(null);
+    // this.marker2.setMap(null);
+    // this.requestMarker();
+    // this.directionsDisplay.setMap(null);
+    // this.directionsDisplay.setPanel(null);
   }
+
+  // deleteyellow(){
+  //   this.marker2.setMap(null);
+  //   this.yellow--;
+  // }
 
   /***** REPORT MODAL ******/
   public openReport(){ 
@@ -1171,6 +1240,25 @@ this.http.get('http://usc-dcis.com/eligtas.app/retrieve-request.php')
     });
     modalPage.present(); 
   }
+
+  // deletemarker3(data:any, i:any){
+  //   // createMarker2(data:any){
+  //     // console.log("createmarker2");
+  
+  //     if(data.request_status_id==null){
+  //       var lat = data.request_lat;
+  //       var long = data.request_long;
+  //       //  this.marker3 = new google.maps.Marker({
+  //       const marker4 = new google.maps.Marker({
+  //         position: { lat: parseFloat(lat), lng: parseFloat(long) },
+  //         animation: google.maps.Animation.DROP,
+  //         map: this.map,
+  //         icon: this.purpleMarker   
+  //       })
+  //         this
+  //           marker4.setMap(null);
+  //       }
+  //     }
 
   //remove requested markes
   // createMarker3(data:any){

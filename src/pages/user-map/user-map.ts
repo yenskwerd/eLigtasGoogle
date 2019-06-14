@@ -54,6 +54,7 @@ export class UserMapPage {
   
   ionViewWillEnter() {
     this.loadmap();
+    this.getUserRequest1();
   }
 
   /********** Google Maps **********/
@@ -69,10 +70,11 @@ export class UserMapPage {
 
   loadmap(){
         this.geolocation.getCurrentPosition().then((position) => {
-          this.latitude = position.coords.latitude;
-          this.longitude = position.coords.longitude;
-          this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-     
+          this.latitude = 10.355158;
+          this.longitude = 123.9184494;
+          // this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          this.latLng1 = new google.maps.LatLng(10.355158, 123.9184494);
+          // 10.355158, 123.9184494
           let mapOptions = {
             center: this.latLng1,
             zoom: 15,
@@ -126,6 +128,7 @@ export class UserMapPage {
  
   responseAlert(){
     this.dataRefresher = setInterval(() =>{
+      console.log("nj gwapo");
       let alert = this.alertCtrl.create({
         title: 'Alert',
         message: 'Did anyone respond to your request?',
@@ -159,17 +162,18 @@ export class UserMapPage {
       } 
       
         },600000);
+      // },5000);
   }
 
   /********* Existing Report Markers ********/
 
-  addMarker2(data, content){
+  addMarker2(data,content,latuser,longuser){
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
      this.marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
-      position: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
+      position: {lat: parseFloat(latuser), lng: parseFloat(longuser)},
       icon: data
     });
    
@@ -199,7 +203,7 @@ export class UserMapPage {
      .subscribe(
        res => {
       // leaflet.marker([res.request_lat,res.request_long], {icon: this.grayIcon}).bindTooltip(res.event, {direction: 'bottom'}).addTo(this.map);
-      this.addMarker2(this.grayMarker, res.event);
+      // this.addMarker2(this.grayMarker, res.event);
       
       if (res.request_status_id == null) {
         this.looking = true;
@@ -221,13 +225,16 @@ export class UserMapPage {
       for(let i=0; i<data.length; i++){
         if(data[i].request_status_id==null) {
           if (data[i].event == "Fire") {
-            this.addMarker2(this.redMarker, data[i].event);
+            // this.addMarker2(this.redMarker, data[i].event);
+            this.addMarker2(this.redMarker,data[i].event, data[i].request_lat,data[i].request_long);
             // leaflet.marker([data[i].request_lat,data[i].request_long], {icon: this.redIcon}).bindTooltip(data[i].event, {direction: 'bottom'}).addTo(this.map);
           } else if (data[i].event == "Earthquake") {
-            this.addMarker2(this.yellowMarker, data[i].event);
+            // this.addMarker2(this.yellowMarker, data[i].event);
+            this.addMarker2(this.redMarker, data[i].event,data[i].request_lat,data[i].request_long);
             // leaflet.marker([data[i].request_lat,data[i].request_long], {icon: this.orangeIcon}).bindTooltip(data[i].event, {direction: 'bottom'}).addTo(this.map);
           } else if (data[i].event == "Flood") {
-            this.addMarker2(this.blueMarker, data[i].event);
+            // this.addMarker2(this.blueMarker, data[i].event);
+            this.addMarker2(this.redMarker, data[i].event,data[i].request_lat,data[i].request_long);
             // leaflet.marker([data[i].request_lat,data[i].request_long], {icon: this.blackIcon}).bindTooltip(data[i].event, {direction: 'bottom'}).addTo(this.map);
           } 
         }        
@@ -480,6 +487,7 @@ export class UserMapPage {
       lat: this.map.getCenter().lat().toString(),
       long: this.map.getCenter().lng().toString()
     });
+    // this.getUserRequest1();
   }
 
   

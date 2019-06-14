@@ -27,6 +27,15 @@ export class RespondToRequestPage {
   request_id;
 
   option: any;
+  z=0;
+  myDate = new Date();
+  m = this.myDate.getMonth() + 1;
+  y = this.myDate.getFullYear();
+  da = this.myDate.getDate();
+  h=this.myDate.getHours();
+  mi=this.myDate.getMinutes();
+  s=this.myDate.getSeconds();
+  datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public http   : Http, public loading:LoadingController, public loginService: LoginServiceProvider) {
     this.event = navParams.data.event;
@@ -110,6 +119,7 @@ export class RespondToRequestPage {
           console.log(data);
 
     this.navCtrl.setRoot('RespMapPage');
+  // this.navCtrl.pop();
     //  location.reload();
         });
 
@@ -138,7 +148,7 @@ export class RespondToRequestPage {
     let data2 = {
       user_id: this.loginService.logged_in_user_id,
       action: "Respond",
-      action_datetime: new Date(),
+      action_datetime: this.datetoday,
       request_id: this.request_id
     }
     
@@ -158,8 +168,9 @@ export class RespondToRequestPage {
   }
 
   pushBackToMap(){
- 
     this.navCtrl.setRoot('RespMapPage');
+    // this.navCtrl.popToRoot();
+    // this.navCtrl.push('RespMapPage');
   }
  
 

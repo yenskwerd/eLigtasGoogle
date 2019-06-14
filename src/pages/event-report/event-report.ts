@@ -117,8 +117,10 @@ export class EventReportPage {
     this.persons_trapped.value = 0;
   }
   
-  eventfilter(){
-    console.log(this.event)
+  eventfilter(e:any, value){
+    // console.log(this.event)
+    this.event=value;
+    console.log(this.event);
   }
 
   report(){
