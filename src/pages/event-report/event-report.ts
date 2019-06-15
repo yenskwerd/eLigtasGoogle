@@ -34,6 +34,14 @@ export class EventReportPage {
   walk: any;
   mental: any;
   others: any;
+  myDate = new Date();
+  m = this.myDate.getMonth() + 1;
+  y = this.myDate.getFullYear();
+  da = this.myDate.getDate();
+  h=this.myDate.getHours();
+  mi=this.myDate.getMinutes();
+  s=this.myDate.getSeconds();
+  datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
   private currentNumber = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController,private http: Http, public loginService: LoginServiceProvider) {
     this.lat = navParams.data.lat;
@@ -243,7 +251,7 @@ export class EventReportPage {
           user_id: this.loginService.logged_in_user_id,
           action: "Request",
           action_done: this.event,
-          action_datetime: new Date()
+          action_datetime: this.datetoday
         }
         // let data2 = {
         //   user_id: this.loginService.logged_in_user_id,

@@ -6,7 +6,7 @@ import {Http, Headers, RequestOptions}  from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import 'rxjs/add/operator/map';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
-
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 /**
  * Generated class for the RespMapPage page.
@@ -51,7 +51,7 @@ export class RespMapPage {
   datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
 
   constructor(public modalCtrl: ModalController, public navCtrl: NavController, public geolocation: Geolocation, public http2 : Http, public http : HttpClient, public navParams: NavParams,
-    public loginService: LoginServiceProvider, public alertCtrl : AlertController) {
+    public loginService: LoginServiceProvider, public alertCtrl : AlertController, public localNotifications: LocalNotifications) {
     this.hcfMarkers = [];
     this.requestMarkers = [];
 
@@ -84,7 +84,16 @@ export class RespMapPage {
     this.loadmap();
     console.log(this.datetoday);
       console.log(this.myDate);
-      console.log(this.h)
+      console.log(this.h);
+      // this.localNotifications.schedule({
+      //   title: 'Notifs testing',
+      //   text: 'There is a new request'
+      // });
+    //   cordova.plugins.localNotifications.local.schedule({
+    //     title: 'My first notification',
+    //     text: 'Thats pretty easy...',
+    //     foreground: true
+    // });
     // window.location.reload();
     // google.maps.event.trigger(this.map, 'resize');
   }
