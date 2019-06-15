@@ -123,6 +123,55 @@ export class EventReportPage {
     console.log(this.event);
   }
 
+  HCFshow: any = true;
+  emergencyshow: any = true;
+  evacshow: any = true;
+  HCFcolor: any = "assets/imgs/user/hcfi.png";
+  emergencycolor: any = "assets/imgs/user/emergency.png";
+  evaccolor: any = "assets/imgs/user/evac1.png";
+
+  request: any;
+  distanceArr: any;
+  
+  minimum:any;
+  index: any;
+
+  showHCF(e:any, value){
+          if(this.HCFshow == true){
+            this.HCFcolor = "assets/imgs/user/hcfa.png";
+            this.HCFshow = false;
+            this.event=value;
+          }else{
+            this.HCFcolor = "assets/imgs/user/hcfi.png";
+            this.HCFshow = true;
+            console.log("false");
+          }
+  }
+  
+  showEmergency(e:any, value){
+          if(this.emergencyshow == true){
+            this.emergencycolor = "assets/imgs/user/emergency2.png";
+            this.emergencyshow = false;
+            this.event=value;
+          }else{
+            this.emergencycolor = "assets/imgs/user/emergency.png";
+            this.emergencyshow = true;
+            console.log("false");
+          }
+  }
+
+  showevac(e:any, value){
+          if(this.evacshow == true){
+            this.evaccolor = "assets/imgs/user/evac.png";
+            this.evacshow = false;
+            this.event=value;
+          }else{
+            this.evaccolor = "assets/imgs/user/evac1.png";
+            this.evacshow = true;
+            console.log("false");
+          }
+  }
+
   report(){
 
     if(this.visual!=null) {
