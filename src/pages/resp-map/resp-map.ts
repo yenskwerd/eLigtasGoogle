@@ -85,10 +85,10 @@ export class RespMapPage {
     console.log(this.datetoday);
       console.log(this.myDate);
       console.log(this.h);
-      // this.localNotifications.schedule({
-      //   title: 'Notifs testing',
-      //   text: 'There is a new request'
-      // });
+      this.localNotifications.schedule({
+        title: 'Notifs testing',
+        text: 'There is a new request'
+      });
     //   cordova.plugins.localNotifications.local.schedule({
     //     title: 'My first notification',
     //     text: 'Thats pretty easy...',
