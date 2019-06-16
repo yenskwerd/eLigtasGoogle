@@ -131,12 +131,12 @@ export class EventReportPage {
     console.log(this.event);
   }
 
-  HCFshow: any = true;
-  emergencyshow: any = true;
-  evacshow: any = true;
-  HCFcolor: any = "assets/imgs/user/hcfi.png";
-  emergencycolor: any = "assets/imgs/user/emergency.png";
-  evaccolor: any = "assets/imgs/user/evac1.png";
+  eqshow: any = true;
+  fireshow: any = true;
+  floodshow: any = true;
+  eqcolor: any = "assets/imgs/user/eq1.png";
+  firecolor: any = "assets/imgs/user/fire1.png";
+  floodcolor: any = "assets/imgs/user/flood1.png";
 
   request: any;
   distanceArr: any;
@@ -144,38 +144,38 @@ export class EventReportPage {
   minimum:any;
   index: any;
 
-  showHCF(e:any, value){
-          if(this.HCFshow == true){
-            this.HCFcolor = "assets/imgs/user/hcfa.png";
-            this.HCFshow = false;
+  showeq(e:any, value){
+          if(this.eqshow == true){
+            this.eqcolor = "assets/imgs/user/eq.png";
+            this.eqshow = false;
             this.event=value;
           }else{
-            this.HCFcolor = "assets/imgs/user/hcfi.png";
-            this.HCFshow = true;
+            this.eqcolor = "assets/imgs/user/eq1.png";
+            this.eqshow = true;
             console.log("false");
           }
   }
   
-  showEmergency(e:any, value){
-          if(this.emergencyshow == true){
-            this.emergencycolor = "assets/imgs/user/emergency2.png";
-            this.emergencyshow = false;
+  showfire(e:any, value){
+          if(this.fireshow == true){
+            this.firecolor = "assets/imgs/user/fire.png";
+            this.fireshow = false;
             this.event=value;
           }else{
-            this.emergencycolor = "assets/imgs/user/emergency.png";
-            this.emergencyshow = true;
+            this.firecolor = "assets/imgs/user/fire1.png";
+            this.fireshow = true;
             console.log("false");
           }
   }
 
-  showevac(e:any, value){
-          if(this.evacshow == true){
-            this.evaccolor = "assets/imgs/user/evac.png";
-            this.evacshow = false;
+  showflood(e:any, value){
+          if(this.floodshow == true){
+            this.floodcolor = "assets/imgs/user/flood.png";
+            this.floodshow = false;
             this.event=value;
           }else{
-            this.evaccolor = "assets/imgs/user/evac1.png";
-            this.evacshow = true;
+            this.floodcolor = "assets/imgs/user/flood1.png";
+            this.floodshow = true;
             console.log("false");
           }
   }
