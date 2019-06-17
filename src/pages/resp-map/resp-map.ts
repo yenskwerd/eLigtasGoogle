@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, Platform, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClient } from '@angular/common/http';
 import {Http, Headers, RequestOptions}  from '@angular/http';
@@ -51,28 +51,23 @@ export class RespMapPage {
   datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
 
   constructor(public modalCtrl: ModalController, public navCtrl: NavController, public geolocation: Geolocation, public http2 : Http, public http : HttpClient, public navParams: NavParams,
-    public loginService: LoginServiceProvider, public alertCtrl : AlertController, public localNotifications: LocalNotifications) {
+    public loginService: LoginServiceProvider, public alertCtrl : AlertController, public localNotifications: LocalNotifications,
+    public platform: Platform) {
     this.hcfMarkers = [];
     this.requestMarkers = [];
 
-    this.redMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
+    this.redMarker = "https://raw.gihttps://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/405a5aa4-3a64-4382-9504-c4d23fe8f8b3/dbc9jhc-b06f606d-3c7e-49d8-9922-6dabb214308d.pngthubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
     this.purpleMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png";
     this.yellowMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png";
     this.grayMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png";
     this.blackMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png";
   }
 
-  // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad RespMapPage');
-  //   this.loadmap();
-  //   // window.location.reload();
-  // //   google.maps.event.trigger(window, 'resize', function() {
-  // //     // var lastCenter = this.map.getCenter();
-  // //     google.maps.event.trigger(this.map, 'resize');
-  // //     // this.map.setCenter(lastCenter);
-  // // });
-  //   // google.maps.event.trigger(this.map, 'resize');
-  // }
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad RespMapPage');
+    // this.testNotification();
+    this.loadmap();
+  }
 
   // ionViewWillEnter() {
   //   this.loadmap();
@@ -80,24 +75,54 @@ export class RespMapPage {
   //   // google.maps.event.trigger(this.map, 'resize');
   // }
 
-  ionViewDidEnter(){
-    this.loadmap();
-    console.log(this.datetoday);
-      console.log(this.myDate);
-      console.log(this.h);
-      this.localNotifications.schedule({
-        title: 'Notifs testing',
-        text: 'There is a new request'
-      });
-    //   cordova.plugins.localNotifications.local.schedule({
-    //     title: 'My first notification',
-    //     text: 'Thats pretty easy...',
-    //     foreground: true
-    // });
-    // window.location.reload();
-    // google.maps.event.trigger(this.map, 'resize');
-  }
-  
+  // ionViewDidEnter(){
+  //   this.loadmap();
+  //   console.log(this.datetoday);
+  //     console.log(this.myDate);
+  //     console.log(this.h);
+  //     // this.localNotifications.schedule({
+  //     //   title: 'Notifs testing',
+  //     //   text: 'There is a new request'
+  //     // });
+  //     // cordova.plugins.notifications.local.schedule({
+  //     //   title: "New Message",
+  //     //   message: "Hi, are you ready? We are waiting."
+  //     // });
+  //   // window.location.reload();
+  //   // google.maps.event.trigger(this.map, 'resize');
+  // }
+  notifications: any[] = [];
+  testNotification() {
+
+    // The notification
+    let notification = {
+        id:1,
+        title: "test",
+        text: "I am tester ?",
+        every: "minute"
+    };
+
+    this.notifications.push(notification);
+
+    if(this.platform.is('cordova')){
+
+            // Cancel any existing notifications
+            this.localNotifications.cancelAll().then(() => {
+
+                // Schedule the new notifications
+                this.localNotifications.schedule(this.notifications);
+
+                this.notifications = [];
+
+                let alert = this.alertCtrl.create({
+                    title: 'Notifications set',
+                    buttons: ['Ok']
+                });
+                alert.present();
+            });
+        }
+    console.log("Notifications to be scheduled: ", this.notifications);
+}
 
   /********** Google Maps **********/
   // map: any;
@@ -140,10 +165,10 @@ export class RespMapPage {
             this.stat_id = res.stat_id;
             
             this.geolocation.getCurrentPosition().then((position) => {
-                this.latitude = 10.355158;
-                this.longitude = 123.9184494;
-                // this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                this.latLng1 = new google.maps.LatLng(10.355158, 123.9184494);
+                this.latitude = position.coords.latitude;
+                this.longitude = position.coords.longitude;
+                this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                // this.latLng1 = new google.maps.LatLng(10.355158, 123.9184494);
                 let mapOptions = {
                   center: this.latLng1,
                   zoom: 14,
@@ -163,8 +188,15 @@ export class RespMapPage {
                 console.log(err);
               
             });
-      
+        //    let alert = this.alertCtrl.create({
+        //     title: 'Notifications set',
+        //     buttons: ['Ok']
+        // });
+    
+        // alert.present();
       this.requestMarker();
+        
+
     });
   }
 

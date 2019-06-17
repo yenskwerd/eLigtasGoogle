@@ -70,10 +70,10 @@ export class UserMapPage {
 
   loadmap(){
         this.geolocation.getCurrentPosition().then((position) => {
-          this.latitude = 10.355158;
-          this.longitude = 123.9184494;
-          // this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          this.latLng1 = new google.maps.LatLng(10.355158, 123.9184494);
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
+          this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          // this.latLng1 = new google.maps.LatLng(10.355158, 123.9184494);
           // 10.355158, 123.9184494
           let mapOptions = {
             center: this.latLng1,
