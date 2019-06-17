@@ -7,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { HistoryPage } from '../pages/history/history';
 import { LoginServiceProvider } from '../providers/login-service/login-service';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 @Component({
   templateUrl: 'app.html'
@@ -25,7 +26,7 @@ export class MyApp {
   home: Array<{icon:string, title: string, component: any}>;
   shownGroup = null;
  
-  constructor(public platform: Platform, public app: App, public alertCtrl: AlertController, private push: Push, public menuCtrl: MenuController, public statusBar: StatusBar, public events: Events, public splashScreen: SplashScreen, public loginService: LoginServiceProvider) {
+  constructor(public platform: Platform, private http: Http, public app: App, public alertCtrl: AlertController, private push: Push, public menuCtrl: MenuController, public statusBar: StatusBar, public events: Events, public splashScreen: SplashScreen, public loginService: LoginServiceProvider) {
     this.initializeApp();
 
     events.subscribe('user:sidebar', () => {
@@ -33,6 +34,10 @@ export class MyApp {
       this.createSidebar();
       this.pushSetup();
     });
+
+    this.extrapages = [
+      { icon: 'log-out', title:'Log out', component: HomePage}
+    ];
 
     
     this.submenus = [
@@ -122,9 +127,6 @@ export class MyApp {
           { icon: "time", title: 'History', component: HistoryPage},
           { icon: 'settings', title: 'Settings', component: ""}
         ];
-        this.extrapages = [
-          { icon: 'log-out', title:'Log out', component: HomePage}
-        ];
         this.mainmenu = { icon: 'apps', title: 'Apps', component: ""};
   }
 
@@ -149,7 +151,40 @@ export class MyApp {
    this.nav.push(page.component);
   }
 
-  openPage2(page) {
+  logout(page) {
+    
+    var headers = new Headers();
+    
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Access-Control-Allow-Origin' , '*');
+    headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+    headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+    
+    let options = new RequestOptions({ headers: headers });
+    let data2 = {
+      user_id: this.loginService.logged_in_user_id,
+      loginStatus: 0
+    }
+    this.http.post('http://usc-dcis.com/eligtas.app/update-login.php', data2, options)
+    .map(res=> res.json())
+    .subscribe((data2: any) =>
+    {
+      console.log("here2")
+       //insert code here
+    },
+    (error : any) =>
+    {
+      console.log(error);
+      let alert2 = this.alertCtrl.create({
+        title:"FAILED",
+        subTitle: "Something went wrong!",
+        buttons: ['OK']
+        });
+
+      alert2.present();
+    });
+    
     this.nav.setRoot(page.component);
    }
 

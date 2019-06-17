@@ -110,7 +110,7 @@ export class LoginPage {
             loader.dismiss()
             console.log(res)
         
-          if(res != "Your username or password is invalid!"){
+          if(res != "Your username or password is invalid or you may have already logged in on another device!"){
             this.loginService.loginState = res.specUser_id;
             this.loginService.logged_in_user_id = res.user_id;
             this.loginService.logged_in_user_request_id = res.request_id;
@@ -131,10 +131,38 @@ export class LoginPage {
               // this.navCtrl.setRoot('RequestVisualizationPage');
               this.navCtrl.setRoot('RespMapPage');
             }
+
+            let data2 = {
+              user_id: this.loginService.logged_in_user_id,
+              loginStatus: 1
+            }
+            this.http.post('http://usc-dcis.com/eligtas.app/update-login.php', data2, options)
+            .map(res=> res.json())
+            .subscribe((data2: any) =>
+            {
+               // If the request was successful notify the user
+              //  console.log(data2);
+              //  let alert = this.alertCtrl.create({
+              //   message: "You have started navigating(???)",
+              //   buttons: ['OK']
+              //   });
+              //   alert.present();
+            },
+            (error : any) =>
+            {
+              console.log(error);
+              let alert2 = this.alertCtrl.create({
+                title:"FAILED",
+                subTitle: "Something went wrong!",
+                buttons: ['OK']
+                });
+        
+              alert2.present();
+            });
             
           }else{
             let alert = this.alertCtrl.create({
-            subTitle:"Your Username or Password is invalid",
+            subTitle:"Your username or password is invalid or you may have already logged in on another device!",
             buttons: ['OK']
             });
             
