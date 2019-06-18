@@ -321,7 +321,7 @@ export class UserMapPage {
     // });
     
     this.http
-       .get('http://usc-dcis.com/eligtas.app/retrieve-emergencies.php')
+       .get('http://usc-dcis.com/eligtas.app/retrieve-evac.php')
        .subscribe((data : any) =>
        {
           console.log(data);
@@ -495,5 +495,39 @@ export class UserMapPage {
   recenter() {
     this.map.setCenter(this.latLng1);
   }
+
+  lat:any;
+  long:any;
+  marker3:any;
+  addMarker3(){
+    this.directionsDisplay.setMap(null);
+    this.directionsDisplay.setPanel(null);
+     this.marker3 = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: {lat: parseFloat(this.lat), lng: parseFloat(this.long)},
+      icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png'
+    });
+  }
+
+  showlastlocation(){
+    this.lat=this.loginService.lastlat;
+    this.long=this.loginService.lastlong;
+    if(this.evacshow == true){
+      // this.evaccolor = "assets/imgs/user/evac.png";
+      this.evacshow = false;
+      this.addMarker3();
+    }else{
+      // this.evaccolor = "assets/imgs/user/evac1.png";
+      this.evacshow = true;
+      console.log("false");
+      this.marker3=null;
+    }
+  }
+
+  showreportedevents($event){
+
+  }
+
   
 }

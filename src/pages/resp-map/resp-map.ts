@@ -56,7 +56,7 @@ export class RespMapPage {
     this.hcfMarkers = [];
     this.requestMarkers = [];
 
-    this.redMarker = "https://raw.gihttps://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/405a5aa4-3a64-4382-9504-c4d23fe8f8b3/dbc9jhc-b06f606d-3c7e-49d8-9922-6dabb214308d.pngthubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
+    this.redMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
     this.purpleMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png";
     this.yellowMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png";
     this.grayMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png";
@@ -64,9 +64,16 @@ export class RespMapPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RespMapPage');
+    // console.log('ionViewDidLoad RespMapPage');
     // this.testNotification();
     this.loadmap();
+    // this.localNotifications.schedule({
+    //   id: 1,
+    //   text: 'Single ILocalNotification',
+    //   sound: null,
+    //   data: 'notified'
+    // });
+    // console.log(this.localNotifications.schedule)
   }
 
   // ionViewWillEnter() {
@@ -323,6 +330,7 @@ yellow:any = 0;
         // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
         this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
       } else if (data.request_status_id == 0) {
+        this.eventForReport = data.event;
         var headers = new Headers();
         
         headers.append("Accept", 'application/json');
@@ -538,10 +546,11 @@ yellow:any = 0;
   HCFshow: any = true;
   emergencyshow: any = true;
   evacshow: any = true;
+  locationshow:any=true;
   HCFcolor: any = "assets/imgs/user/hcfi.png";
   emergencycolor: any = "assets/imgs/user/emergency.png";
   evaccolor: any = "assets/imgs/user/evac1.png";
-
+  locationshowcolor:any;
   request: any;
   distanceArr: any;
   
@@ -658,7 +667,7 @@ yellow:any = 0;
     // });
     
     this.http
-       .get('http://usc-dcis.com/eligtas.app/retrieve-emergencies.php')
+       .get('http://usc-dcis.com/eligtas.app/retrieve-evac.php')
        .subscribe((data : any) =>
        {
           console.log(data);
@@ -954,12 +963,12 @@ yellow:any = 0;
       request_status_id: 0
     }
 
-    this.http2.post('http://usc-dcis.com/eligtas.app/update-request.php', data2, options)
+    this.http2.post('http://usc-dcis.com/eligtas.app/update-request1.php', data2, options)
     .map(res=> res.json())
     .subscribe((data2: any) =>
     {
       console.log(data2);
-       // If the request was successful notify the user
+      // If the request was successful notify the user
       //  console.log(data2);
       //  let alert = this.alertCtrl.create({
       //   message: "You have started navigating(???)",
@@ -1099,6 +1108,12 @@ yellow:any = 0;
 
       alert2.present();
     });
+    this.directionsDisplay.setMap(null);
+    this.directionsDisplay.setPanel(null);
+    this.directionsDisplay.setOptions({suppressMarkers:true});
+    this.directionsDisplay.setOptions({suppressPolylines:true});
+    // this.directionsDisplay.setDirections(null);
+    this.directionsDisplay.set('directionsPanel', null);
 
   }
 
@@ -1280,6 +1295,59 @@ yellow:any = 0;
       request_id: this.user_request_id,
     });
     modalPage.present(); 
+  }
+
+  llat:any;
+  llong:any;
+  marker3:any;
+
+  addMarker3(){
+    this.directionsDisplay.setMap(null);
+    this.directionsDisplay.setPanel(null);
+     this.marker3 = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: {lat: parseFloat(this.llat), lng: parseFloat(this.llong)},
+      icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_white.png'
+    });
+  }
+
+  showlastlocation(){
+    var headers = new Headers();
+        
+        headers.append("Accept", 'application/json');
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        headers.append('Access-Control-Allow-Origin' , '*');
+        headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+        headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+        
+        let options = new RequestOptions({ headers: headers });
+  
+        let data1 = {
+          request_id: this.loginService.logged_in_user_request_id,
+          specUser_id: 1
+        }
+  
+         this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-user-request2.php',data1,options)
+         .map(res=> res.json())
+           .subscribe(
+             res => {
+               console.log(res.laslat);
+               this.llat=res.lastlat;
+               this.llong=res.lastlong;
+         }); 
+         console.log(this.llat)
+         console.log(this.llong)
+    if(this.locationshow == true){
+      // this.locationshowcolor = "assets/imgs/user/evac.png";
+      this.locationshow = false;
+      this.addMarker3();
+    }else{
+      // this.locationshowcolor = "assets/imgs/user/evac1.png";
+      this.locationshow = true;
+      console.log("false");
+      this.marker3=null;
+    }
   }
 
   // deletemarker3(data:any, i:any){

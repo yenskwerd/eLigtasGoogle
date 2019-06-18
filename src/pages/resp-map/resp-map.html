@@ -19,6 +19,8 @@
     <button color="trans" (click)="showEmergency($event)" ion-fab><img src={{emergencycolor}} class="togglesht"></button>
     <button color="trans" (click)="showHCF($event)" ion-fab><img src={{HCFcolor}} class="togglesht"></button>
     <button color="trans" (click)="showevac($event)" ion-fab><img src={{evaccolor}} class="togglesht"></button>
+    <button color="trans" (click)="showlastlocation()" ion-fab><ion-icon name="pin" color="primary"></ion-icon></button>
+      <!-- <button color="trans" (click)="showreportedevents($event)" ion-fab><img src={{evaccolor}} class="togglesht"></button> -->
   </ion-fab>
 
   <ion-fab *ngIf="stat_id==2" right top>

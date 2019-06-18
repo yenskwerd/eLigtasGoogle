@@ -107,6 +107,72 @@ export class HelpRequestPage {
     console.log(this.event)
   }
 
+  eqshow: any = true;
+  fireshow: any = true;
+  floodshow: any = true;
+  eqcolor: any = "assets/imgs/user/eq1.png";
+  firecolor: any = "assets/imgs/user/fire1.png";
+  floodcolor: any = "assets/imgs/user/flood1.png";
+
+  request: any;
+  distanceArr: any;
+  
+  minimum:any;
+  index: any;
+
+  showeq(e:any, value){
+          if(this.eqshow == true){
+            this.eqcolor = "assets/imgs/user/eq.png";
+            this.eqshow = false;
+            this.event=value;
+          }else{
+            this.eqcolor = "assets/imgs/user/eq1.png";
+            this.eqshow = true;
+            console.log("false");
+          }
+  }
+  
+  showfire(e:any, value){
+          if(this.fireshow == true){
+            this.firecolor = "assets/imgs/user/fire.png";
+            this.fireshow = false;
+            this.event=value;
+          }else{
+            this.firecolor = "assets/imgs/user/fire1.png";
+            this.fireshow = true;
+            console.log("false");
+          }
+  }
+
+  showflood(e:any, value){
+          if(this.floodshow == true){
+            this.floodcolor = "assets/imgs/user/flood.png";
+            this.floodshow = false;
+            this.event=value;
+          }else{
+            this.floodcolor = "assets/imgs/user/flood1.png";
+            this.floodshow = true;
+            console.log("false");
+          }
+  }
+  limitinjured:any;
+  limittrapped:any;
+  checkreport(){
+    if(this.persons_injured.value<10 && this.persons_trapped.value<10){
+      this.limitinjured=this.persons_injured.value;   
+      this.limittrapped=this.persons_trapped.value;  
+      this.report();       
+    }
+    else{
+      let alert = this.alertCtrl.create({
+                message:"Number of injured/trapped is over the limit",
+                buttons: ['OK']
+      
+              });
+              alert.present();
+    }
+  }
+
   report(){
 
     if(this.visual!=null) {

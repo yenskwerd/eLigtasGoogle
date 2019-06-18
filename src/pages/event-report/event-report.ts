@@ -34,6 +34,8 @@ export class EventReportPage {
   walk: any;
   mental: any;
   others: any;
+  limitinjured:any;
+  limittrapped:any;
   myDate = new Date();
   m = this.myDate.getMonth() + 1;
   y = this.myDate.getFullYear();
@@ -179,7 +181,21 @@ export class EventReportPage {
             console.log("false");
           }
   }
-
+  checkreport(){
+    if(this.persons_injured.value<10 && this.persons_trapped.value<10){
+      this.limitinjured=this.persons_injured.value;   
+      this.limittrapped=this.persons_trapped.value;  
+      this.report();       
+    }
+    else{
+      let alert = this.alertCtrl.create({
+                message:"Number of injured/trapped is over the limit",
+                buttons: ['OK']
+      
+              });
+              alert.present();
+    }
+  }
   report(){
 
     if(this.visual!=null) {
@@ -238,8 +254,8 @@ export class EventReportPage {
           request_type_id : 1,
           person_to_check : null,
           event: this.event,
-          persons_injured: this.persons_injured.value,
-          persons_trapped: this.persons_trapped.value,
+          persons_injured: this.limitinjured,
+          persons_trapped: this.limittrapped,
           other_info: this.other_info.value,
           request_lat: this.lat,
           request_long: this.long,

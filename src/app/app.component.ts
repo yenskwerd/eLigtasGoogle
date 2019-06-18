@@ -8,6 +8,7 @@ import { ListPage } from '../pages/list/list';
 import { HistoryPage } from '../pages/history/history';
 import { LoginServiceProvider } from '../providers/login-service/login-service';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @Component({
   templateUrl: 'app.html'
@@ -26,8 +27,13 @@ export class MyApp {
   home: Array<{icon:string, title: string, component: any}>;
   shownGroup = null;
  
-  constructor(public platform: Platform, private http: Http, public app: App, public alertCtrl: AlertController, private push: Push, public menuCtrl: MenuController, public statusBar: StatusBar, public events: Events, public splashScreen: SplashScreen, public loginService: LoginServiceProvider) {
+  constructor(public platform: Platform, public geolocation: Geolocation, private http: Http, public app: App, public alertCtrl: AlertController, private push: Push, public menuCtrl: MenuController, public statusBar: StatusBar, public events: Events, public splashScreen: SplashScreen, public loginService: LoginServiceProvider) {
     this.initializeApp();
+
+    this.geolocation.getCurrentPosition().then((position) => {
+      console.log(position.coords.latitude);
+      // this.lastlong = position.coords.longitude;
+    });
 
     events.subscribe('user:sidebar', () => {
       this.username = this.loginService.logged_in_user_name;
@@ -150,7 +156,8 @@ export class MyApp {
   openPage(page) {
    this.nav.push(page.component);
   }
-
+  lastlat:any;
+  lastlong:any;
   logout(page) {
     
     var headers = new Headers();
@@ -184,6 +191,32 @@ export class MyApp {
 
       alert2.present();
     });
+
+    this.geolocation.getCurrentPosition().then((position) => {
+      this.lastlat = position.coords.latitude;
+      this.lastlong = position.coords.longitude;
+    });
+
+    let data = {
+      user_id: this.loginService.logged_in_user_id,
+      lastlat: this.lastlat,
+      lastlong: this.lastlong
+    }
+
+    this.http.post('http://usc-dcis.com/eligtas.app/update-lastloc.php', data, options)
+    .map(res => res.json())
+    .subscribe((data: any) => {
+
+    }, (error: any) => {
+      console.log(error);
+
+      let alert2 = this.alertCtrl.create({
+        title: "FAILED",
+        subTitle: "Something went wrong",
+        buttons: ['OK']
+      });
+      alert2.present();
+    })
     
     this.nav.setRoot(page.component);
    }
