@@ -49,13 +49,14 @@ export class RespMapPage {
   mi=this.myDate.getMinutes();
   s=this.myDate.getSeconds();
   datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
-
+  evaccolor2: any = "assets/imgs/user/testmarker.png";
   constructor(public modalCtrl: ModalController, public navCtrl: NavController, public geolocation: Geolocation, public http2 : Http, public http : HttpClient, public navParams: NavParams,
     public loginService: LoginServiceProvider, public alertCtrl : AlertController, public localNotifications: LocalNotifications,
     public platform: Platform) {
     this.hcfMarkers = [];
     this.requestMarkers = [];
-
+    
+// this.redMarker=this.evaccolor2;
     this.redMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
     this.purpleMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png";
     this.yellowMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png";

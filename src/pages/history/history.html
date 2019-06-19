@@ -19,6 +19,8 @@
   <ion-card padding *ngFor="let item of history">
       <ion-item>
           <h2>{{ item.action }}</h2>
+          <h5>{{ item.request_status_id }}</h5>
+          <button><img src= {{ item.event }} class="icons"></button>
           <h5>{{ item.action_datetime| date : 'longDate'  }}</h5>
           <h5>{{ item.action_datetime| date : 'shortTime'  }}</h5>
           <p>{{ item.request_id }}</p>

@@ -46,7 +46,7 @@ export class HistoryPage {
       user_id: this.loginService.logged_in_user_id
     }
 
-     this.http.post('http://usc-dcis.com/eligtas.app/retrieve-history.php',data,options)
+     this.http.post('http://usc-dcis.com/eligtas.app/retrieve-history1.php',data,options)
     //  .map(res=> res.json())
     //    .subscribe(
     //      res => {
@@ -67,14 +67,19 @@ export class HistoryPage {
     }); 
   }
 
-  
+  eventpic:any= "assets/imgs/user/eq1.png";
   generateHistory(data) {
-    console.log(data.request_id);
+    console.log(data);
     for (let i=0; i < data.length; i++) {
+      // if(data[i].event==0){
+      //   data[i].event=this.eventpic;
+      // }
       this.history.push(
         { request_id: data[i].request_id,
           action: data[i].action,
-          action_datetime: data[i].action_datetime
+          action_datetime: data[i].action_datetime,
+          event: data[i].event,
+          request_status_id: data[i].request_status_id
         }
       );
     }
