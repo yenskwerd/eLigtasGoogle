@@ -19,9 +19,19 @@ import { LoginServiceProvider } from '../../providers/login-service/login-servic
 export class HistoryPage {
   public items : any = [];
   history: any = [];
+  blueMarker: any;
+  yellowMarker: any;
+  grayMarker: any;
+  blackMarker:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public http   : Http, public loginService: LoginServiceProvider) {
+    this.blueMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue.png";
+    this.yellowMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png";
+    this.blackMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png";
+    this.grayMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png";
   }
+
+  
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HistoryPage');
@@ -67,21 +77,139 @@ export class HistoryPage {
     }); 
   }
 
-  eventpic:any= "assets/imgs/user/eq1.png";
+  earthquake:any= "assets/imgs/user/eq.png";
+  fire:any= "assets/imgs/user/fire.png";
+  flood:any= "assets/imgs/user/flood.png";
+  zerostatusid:any=this.blueMarker;
+  onestatusid:any=this.yellowMarker;
+  twostatusid:any=this.grayMarker;
+
+  firepic:any;
+  
   generateHistory(data) {
     console.log(data);
     for (let i=0; i < data.length; i++) {
-      // if(data[i].event==0){
-      //   data[i].event=this.eventpic;
-      // }
+      if(data[i].event=="Fire" && data[i].request_status_id == "NULL"){
+      
+        this.history.push(
+          { request_id: data[i].request_id,
+            action: data[i].action,
+            action_datetime: data[i].action_datetime,
+            event: this.fire,
+            request_status_id: this.blackMarker
+          }
+        );
+        }else if(data[i].event=="Fire" && data[i].request_status_id == 0){
+      
       this.history.push(
         { request_id: data[i].request_id,
           action: data[i].action,
           action_datetime: data[i].action_datetime,
-          event: data[i].event,
-          request_status_id: data[i].request_status_id
+          event: this.fire,
+          request_status_id: this.blueMarker
         }
       );
+      }else if(data[i].event=="Fire" && data[i].request_status_id == 1){
+      
+        this.history.push(
+          { request_id: data[i].request_id,
+            action: data[i].action,
+            action_datetime: data[i].action_datetime,
+            event: this.fire,
+            request_status_id: this.yellowMarker
+          }
+        );
+        }else if(data[i].event=="Fire" && data[i].request_status_id == 2){
+      
+          this.history.push(
+            { request_id: data[i].request_id,
+              action: data[i].action,
+              action_datetime: data[i].action_datetime,
+              event: this.fire,
+              request_status_id: this.grayMarker
+            }
+          );
+          }else if(data[i].event=="Fire" && data[i].request_status_id == "NULL"){
+      
+            this.history.push(
+              { request_id: data[i].request_id,
+                action: data[i].action,
+                action_datetime: data[i].action_datetime,
+                event: this.fire,
+                request_status_id: this.blackMarker
+              }
+            );
+            }else if(data[i].event=="Earthquake" && data[i].request_status_id == 0){
+      
+          this.history.push(
+            { request_id: data[i].request_id,
+              action: data[i].action,
+              action_datetime: data[i].action_datetime,
+              event: this.earthquake,
+              request_status_id: this.blueMarker
+            }
+          );
+          }else if(data[i].event=="Earthquake" && data[i].request_status_id == 1){
+      
+            this.history.push(
+              { request_id: data[i].request_id,
+                action: data[i].action,
+                action_datetime: data[i].action_datetime,
+                event: this.earthquake,
+                request_status_id: this.yellowMarker
+              }
+            );
+            }else if(data[i].event=="Earthquake" && data[i].request_status_id == 2){
+      
+              this.history.push(
+                { request_id: data[i].request_id,
+                  action: data[i].action,
+                  action_datetime: data[i].action_datetime,
+                  event: this.earthquake,
+                  request_status_id: this.grayMarker
+                }
+              );
+              }else if(data[i].event=="Fire" && data[i].request_status_id == "NULL"){
+      
+                this.history.push(
+                  { request_id: data[i].request_id,
+                    action: data[i].action,
+                    action_datetime: data[i].action_datetime,
+                    event: this.fire,
+                    request_status_id: this.blackMarker
+                  }
+                );
+                }else if(data[i].event=="Flood" && data[i].request_status_id == 0){
+      
+            this.history.push(
+              { request_id: data[i].request_id,
+                action: data[i].action,
+                action_datetime: data[i].action_datetime,
+                event: this.flood,
+                request_status_id: this.blueMarker
+              }
+            );
+      }else if(data[i].event=="Flood" && data[i].request_status_id == 1){
+      
+        this.history.push(
+          { request_id: data[i].request_id,
+            action: data[i].action,
+            action_datetime: data[i].action_datetime,
+            event: this.flood,
+            request_status_id: this.yellowMarker
+          }
+        );
+  }else if(data[i].event=="Flood" && data[i].request_status_id == 2){
+      
+    this.history.push(
+      { request_id: data[i].request_id,
+        action: data[i].action,
+        action_datetime: data[i].action_datetime,
+        event: this.flood,
+        request_status_id: this.grayMarker
+      }
+    );
+}
     }
   }
 

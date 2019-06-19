@@ -22,14 +22,19 @@
       <ion-label stacked>Persons Name</ion-label>
       <ion-input type="text" name="name" #person_to_check></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label stacked>Event</ion-label>
-      <ion-select #C interface="popover" (ionChange)="eventfilter(event);" [(ngModel)]="event" name="event">
-        <ion-option value="Fire">Fire</ion-option>
-        <ion-option value="Earthquake">Earthquake</ion-option>
-        <ion-option value="Flood">Flood</ion-option>
-      </ion-select>
-    </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button color="trans" (click)="showfire($event, 'Fire')" ion-fab><img src={{firecolor}} class="icons"></button>
+        </ion-col>
+        <ion-col>
+          <button color="trans" (click)="showeq($event, 'Earthquake')" ion-fab><img src={{eqcolor}} class="icons"></button>
+        </ion-col>
+        <ion-col>
+          <button color="trans" (click)="showflood($event, 'Flood')" ion-fab><img src={{floodcolor}} class="icons"></button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <ion-item>
       <ion-label stacked>Persons Injured</ion-label>
       <ion-input type="number" name="injured" #persons_injured></ion-input>
@@ -69,7 +74,7 @@
     <!-- <button ion-button type="submit" (click)="report()" block>Submit Request</button> -->
   </form>
   <div text-center>
-    <button ion-button type="submit" (click)="report()">Submit Request</button>
+    <button ion-button type="submit" (click)="checkreport()">Submit Request</button>
     <button ion-button (click)="pushBackToMap()">Back to Map</button>
   </div>
 </ion-content>

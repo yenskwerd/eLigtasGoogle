@@ -125,6 +125,7 @@ export class HelpRequestPage {
             this.eqcolor = "assets/imgs/user/eq.png";
             this.eqshow = false;
             this.event=value;
+            console.log(this.event)
           }else{
             this.eqcolor = "assets/imgs/user/eq1.png";
             this.eqshow = true;
@@ -137,6 +138,7 @@ export class HelpRequestPage {
             this.firecolor = "assets/imgs/user/fire.png";
             this.fireshow = false;
             this.event=value;
+            console.log(this.event)
           }else{
             this.firecolor = "assets/imgs/user/fire1.png";
             this.fireshow = true;
@@ -149,6 +151,7 @@ export class HelpRequestPage {
             this.floodcolor = "assets/imgs/user/flood.png";
             this.floodshow = false;
             this.event=value;
+            console.log(this.event)
           }else{
             this.floodcolor = "assets/imgs/user/flood1.png";
             this.floodshow = true;
@@ -159,8 +162,8 @@ export class HelpRequestPage {
   limittrapped:any;
   checkreport(){
     if(this.persons_injured.value<10 && this.persons_trapped.value<10){
-      this.limitinjured=this.persons_injured.value;   
-      this.limittrapped=this.persons_trapped.value;  
+      // this.limitinjured=this.persons_injured.value;   
+      // this.limittrapped=this.persons_trapped.value;  
       this.report();       
     }
     else{

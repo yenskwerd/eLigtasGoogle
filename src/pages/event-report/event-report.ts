@@ -151,6 +151,7 @@ export class EventReportPage {
             this.eqcolor = "assets/imgs/user/eq.png";
             this.eqshow = false;
             this.event=value;
+            console.log(this.event)
           }else{
             this.eqcolor = "assets/imgs/user/eq1.png";
             this.eqshow = true;
@@ -163,6 +164,7 @@ export class EventReportPage {
             this.firecolor = "assets/imgs/user/fire.png";
             this.fireshow = false;
             this.event=value;
+            console.log(this.event)
           }else{
             this.firecolor = "assets/imgs/user/fire1.png";
             this.fireshow = true;
@@ -175,6 +177,7 @@ export class EventReportPage {
             this.floodcolor = "assets/imgs/user/flood.png";
             this.floodshow = false;
             this.event=value;
+            console.log(this.event)
           }else{
             this.floodcolor = "assets/imgs/user/flood1.png";
             this.floodshow = true;
@@ -183,8 +186,8 @@ export class EventReportPage {
   }
   checkreport(){
     if(this.persons_injured.value<10 && this.persons_trapped.value<10){
-      this.limitinjured=this.persons_injured.value;   
-      this.limittrapped=this.persons_trapped.value;  
+      // this.limitinjured=this.persons_injured.value;   
+      // this.limittrapped=this.persons_trapped.value;  
       this.report();       
     }
     else{
@@ -254,8 +257,8 @@ export class EventReportPage {
           request_type_id : 1,
           person_to_check : null,
           event: this.event,
-          persons_injured: this.limitinjured,
-          persons_trapped: this.limittrapped,
+          persons_injured: this.persons_injured.value,
+          persons_trapped: this.persons_trapped.value,
           other_info: this.other_info.value,
           request_lat: this.lat,
           request_long: this.long,

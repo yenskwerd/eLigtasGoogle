@@ -728,21 +728,24 @@ yellow:any = 0;
         map: this.map,
         animation: google.maps.Animation.DROP,
         position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
-        icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png'
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png'
+        icon: 'assets/imgs/user/emergencymarker.png'
       });
     }else if(data.hcf_type == 3){
       this.hcfMarkers[i] = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
         position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
-        icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png'
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png'
+        icon: 'assets/imgs/user/hcfmarker.png'
       });
     }else if(data.hcf_type == 2){
       this.hcfMarkers[i] = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
         position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
-        icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+        icon: 'assets/imgs/user/evacmarker.png'
       });
     }else{
       this.hcfMarkers[i] = new google.maps.Marker({

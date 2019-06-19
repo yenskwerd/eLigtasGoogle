@@ -4,7 +4,67 @@ page-modal {
         color:white;
     }
 
-    #green {
-        background-color: green;
-    }
+    // #green {
+    //     background-color: green;
+    // }
+
+    // .alert-radio-icon{
+    //     border-radius: 0 !important;
+    //     border: none !important;
+    //     height: 40px !important;
+    //     width: 40px !important;
+    //     background-size: 40px 40px !important;
+    //     background-repeat: no-repeat ;
+    // }
+
+    // .alert-radio-group button:nth-child(1) .alert-radio-label:before {
+    //     content: url('https://github.com/ketanyekale/ionic-color-and-image-selector/wiki/images/ion_select_for_color_and_images.PNG');
+    // }
+    
+    // .alert-radio-group button:nth-child(2) .alert-radio-label:before {
+    //     content: url('/assets/imgs/user/emergencymarker.png');
+    // }
+    
+    // .alert-radio-group button:nth-child(3) .alert-radio-label:before {
+    //     content: url('assets/imgs/user/emergencymarker.png');
+    // }
+
+    // ion-option-button.button {
+    //     background-color: #000;
+
+    //     &.activated {
+    //         background-color: #000;
+    //     }
+    //     .button {
+    //         &:after {
+    //             content: '';
+    //             top: initial;
+    //             left: initial;
+    //             right: initial;
+    //             bottom: initial;
+    //         }
+    //         &.button-icon {
+    //             // color: light;
+    //             font-size: 26px;
+    //         }
+    //     }
+    // }
+    // ion-option-button {
+    //     display: flex;
+    //     flex-direction: column;
+    //     align-items: center;
+    //     justify-content: space-around; /* optional */
+    //   }
+    .GreenBox{ 
+        background-color: orange;
+        position: absolute;
+        height: 60%;
+        width: 60%;
+        left: 20%;
+        top: 20%;
+      }
+
+      ion.option .GreenBox{
+        color: red;
+      }
 }
