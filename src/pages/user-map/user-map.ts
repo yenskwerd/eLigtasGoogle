@@ -69,7 +69,9 @@ export class UserMapPage {
   directionsDisplay = new google.maps.DirectionsRenderer({ preserveViewport: true });
 
   loadmap(){
-        this.geolocation.getCurrentPosition().then((position) => {
+        // this.geolocation.getCurrentPosition().then((position) => {
+          let watch = this.geolocation.watchPosition();
+    watch.subscribe((position) => {
           this.latitude = position.coords.latitude;
           this.longitude = position.coords.longitude;
           this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);

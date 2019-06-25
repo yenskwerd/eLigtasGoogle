@@ -15,7 +15,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
  * Ionic pages and navigation.
  */
 
-declare var google;
+declare var google:any;
 
 @IonicPage()
 @Component({
@@ -64,24 +64,23 @@ export class RespMapPage {
     this.blackMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png";
   }
 
-  ionViewDidLoad() {
-    // console.log('ionViewDidLoad RespMapPage');
-    // this.testNotification();
-    this.loadmap();
-    // this.localNotifications.schedule({
-    //   id: 1,
-    //   text: 'Single ILocalNotification',
-    //   sound: null,
-    //   data: 'notified'
-    // });
-    // console.log(this.localNotifications.schedule)
-  }
-
-  // ionViewWillEnter() {
+  // ionViewDidLoad() {
+  //   // console.log('ionViewDidLoad RespMapPage');
+  //   // this.testNotification();
   //   this.loadmap();
-    
-  //   // google.maps.event.trigger(this.map, 'resize');
+  //   // this.localNotifications.schedule({
+  //   //   id: 1,
+  //   //   text: 'Single ILocalNotification',
+  //   //   sound: null,
+  //   //   data: 'notified'
+  //   // });
+  //   // console.log(this.localNotifications.schedule)
   // }
+  
+
+  ionViewWillEnter() {
+    this.loadmap();
+  }
 
   // ionViewDidEnter(){
   //   this.loadmap();
@@ -99,38 +98,38 @@ export class RespMapPage {
   //   // window.location.reload();
   //   // google.maps.event.trigger(this.map, 'resize');
   // }
-  notifications: any[] = [];
-  testNotification() {
+//   notifications: any[] = [];
+//   testNotification() {
 
-    // The notification
-    let notification = {
-        id:1,
-        title: "test",
-        text: "I am tester ?",
-        every: "minute"
-    };
+//     // The notification
+//     let notification = {
+//         id:1,
+//         title: "test",
+//         text: "I am tester ?",
+//         every: "minute"
+//     };
 
-    this.notifications.push(notification);
+//     this.notifications.push(notification);
 
-    if(this.platform.is('cordova')){
+//     if(this.platform.is('cordova')){
 
-            // Cancel any existing notifications
-            this.localNotifications.cancelAll().then(() => {
+//             // Cancel any existing notifications
+//             this.localNotifications.cancelAll().then(() => {
 
-                // Schedule the new notifications
-                this.localNotifications.schedule(this.notifications);
+//                 // Schedule the new notifications
+//                 this.localNotifications.schedule(this.notifications);
 
-                this.notifications = [];
+//                 this.notifications = [];
 
-                let alert = this.alertCtrl.create({
-                    title: 'Notifications set',
-                    buttons: ['Ok']
-                });
-                alert.present();
-            });
-        }
-    console.log("Notifications to be scheduled: ", this.notifications);
-}
+//                 let alert = this.alertCtrl.create({
+//                     title: 'Notifications set',
+//                     buttons: ['Ok']
+//                 });
+//                 alert.present();
+//             });
+//         }
+//     console.log("Notifications to be scheduled: ", this.notifications);
+// }
 
   /********** Google Maps **********/
   // map: any;
@@ -146,6 +145,9 @@ export class RespMapPage {
   
   user_request_id: any;
   stat_id: any;
+
+  //  watch = this.geolocation.watchPosition();
+  
 
   loadmap(){
     // this.map=null;
@@ -171,8 +173,10 @@ export class RespMapPage {
             this.user_request_id = res.request_id;
             console.log(res.stat_id);
             this.stat_id = res.stat_id;
-            
+            // let watch = this.geolocation.watchPosition();
             this.geolocation.getCurrentPosition().then((position) => {
+              // let watch = this.geolocation.watchPosition();
+                // this.watch.subscribe((position) => {
                 this.latitude = position.coords.latitude;
                 this.longitude = position.coords.longitude;
                 this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -463,7 +467,8 @@ yellow:any = 0;
     this.mapClass = "mapDirClass";
     // this.marker.setMap(null);
     let watch = this.geolocation.watchPosition();
-    watch.subscribe((data2) => {
+    // this.watch.subscribe((data2) => {
+      watch.subscribe((data2) => {
         // this.marker.setMap(null);
       this.directionsDisplay.setMap(this.map);  
       // this.directionsDisplay.setOptions({suppressMarkers:true});
@@ -1114,6 +1119,7 @@ yellow:any = 0;
     });
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
+    this.directionsDisplay.set('directionsPanel', null);
     this.directionsDisplay.setOptions({suppressMarkers:true});
     this.directionsDisplay.setOptions({suppressPolylines:true});
     // this.directionsDisplay.setDirections(null);
@@ -1266,6 +1272,7 @@ yellow:any = 0;
     // this.marker4.setMap(null);
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
+    this.directionsDisplay.set('directionsPanel', null);
     this.directionsDisplay.setOptions({suppressMarkers:true});
     this.directionsDisplay.setOptions({suppressPolylines:true});
     // this.directionsDisplay.setDirections(null);
