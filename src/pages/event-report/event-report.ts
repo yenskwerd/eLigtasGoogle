@@ -147,43 +147,32 @@ export class EventReportPage {
   index: any;
 
   showeq(e:any, value){
-          if(this.eqshow == true){
+            this.firecolor = "assets/imgs/user/fire1.png";
             this.eqcolor = "assets/imgs/user/eq.png";
+            this.floodcolor = "assets/imgs/user/flood1.png";
             this.eqshow = false;
             this.event=value;
             console.log(this.event)
-          }else{
-            this.eqcolor = "assets/imgs/user/eq1.png";
-            this.eqshow = true;
-            console.log("false");
-          }
   }
   
   showfire(e:any, value){
-          if(this.fireshow == true){
             this.firecolor = "assets/imgs/user/fire.png";
+            this.eqcolor = "assets/imgs/user/eq1.png";
+            this.floodcolor = "assets/imgs/user/flood1.png";
             this.fireshow = false;
             this.event=value;
             console.log(this.event)
-          }else{
-            this.firecolor = "assets/imgs/user/fire1.png";
-            this.fireshow = true;
-            console.log("false");
-          }
   }
 
   showflood(e:any, value){
-          if(this.floodshow == true){
             this.floodcolor = "assets/imgs/user/flood.png";
+            this.eqcolor = "assets/imgs/user/eq1.png";
+            this.firecolor = "assets/imgs/user/fire1.png";
             this.floodshow = false;
             this.event=value;
             console.log(this.event)
-          }else{
-            this.floodcolor = "assets/imgs/user/flood1.png";
-            this.floodshow = true;
-            console.log("false");
-          }
   }
+  
   checkreport(){
     if(this.persons_injured.value<10 && this.persons_trapped.value<10){
       // this.limitinjured=this.persons_injured.value;   
@@ -216,18 +205,18 @@ export class EventReportPage {
       this.others = this.others + this.mental
     }
     console.log(this.others);
-
     
-    // if (this.persons_injured.value==""){
+    
+    if (this.event==null){
         
-    //       let alert = this.alertCtrl.create({
-    //         message:"Persons injured field is empty!",
-    //         buttons: ['OK']
+          let alert = this.alertCtrl.create({
+            message:"No event selected.",
+            buttons: ['OK']
           
-    //       });
+          });
           
-    //       alert.present();
-    //       this.persons_injured.value = 0;
+          alert.present();
+          // this.persons_injured.value = 0;
         
     // } else if (this.persons_trapped.value==""){
         
@@ -240,7 +229,7 @@ export class EventReportPage {
     //       alert.present();
     //       this.persons_trapped.value = 0;
          
-    // } else {
+    } else {
 
         var headers = new Headers();
       
@@ -316,7 +305,7 @@ export class EventReportPage {
         });
 
 
-      // }
+      }
 
   }
 
