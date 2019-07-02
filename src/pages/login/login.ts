@@ -136,7 +136,7 @@ export class LoginPage {
 
             let data2 = {
               user_id: this.loginService.logged_in_user_id,
-              loginStatus: 1
+              // loginStatus: 1
             }
             this.http.post('http://usc-dcis.com/eligtas.app/update-login.php', data2, options)
             .map(res=> res.json())

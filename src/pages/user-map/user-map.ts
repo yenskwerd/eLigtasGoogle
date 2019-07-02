@@ -37,6 +37,7 @@ export class UserMapPage {
   constructor(public http2: Http,public navCtrl: NavController, public alertCtrl : AlertController, public navParams: NavParams, public geolocation: Geolocation, 
     public loginService: LoginServiceProvider, public http : HttpClient, public modalCtrl: ModalController) {
     this.hcfMarkers = [];
+    this.distanceArr = [];
 
     this.redMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
     this.purpleMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png";
@@ -168,6 +169,11 @@ export class UserMapPage {
       // },5000);
   }
 
+  ionViewWillLeave() {
+    console.log("leave");
+    clearInterval(this.dataRefresher);
+  }
+
   /********* Existing Report Markers ********/
 
   addMarker2(data,content,latuser,longuser){
@@ -274,8 +280,15 @@ export class UserMapPage {
           console.log(data);
           this.request = data;
           if(this.HCFshow == true){
+            if(this.hcfMarkers.length!=0) {
+              for(let i=0; i<this.hcfMarkers.length; i++){
+                this.deleteMarker(i);
+              }
+            }
             this.map.setZoom(14);
             this.HCFcolor = "assets/imgs/user/hcfa.png";
+            this.emergencycolor = "assets/imgs/user/emergency.png";
+            this.evaccolor = "assets/imgs/user/evac1.png";
             this.HCFshow = false;
             for(let i=0; i<data.length; i++){
               if(data[i].status==1) {
@@ -322,7 +335,6 @@ export class UserMapPage {
     //   setView: true,
     //   maxZoom: 13
     // });
-    
     this.http
        .get('http://usc-dcis.com/eligtas.app/retrieve-evac.php')
        .subscribe((data : any) =>
@@ -330,9 +342,16 @@ export class UserMapPage {
           console.log(data);
           this.request = data;
           if(this.emergencyshow == true){
+            if(this.hcfMarkers.length!=0) {
+              for(let i=0; i<this.hcfMarkers.length; i++){
+                this.deleteMarker(i);
+              }
+            }
             this.map.setZoom(14);
             
             this.emergencycolor = "assets/imgs/user/emergency2.png";
+            this.HCFcolor = "assets/imgs/user/hcfi.png";
+            this.evaccolor = "assets/imgs/user/evac1.png";
             this.emergencyshow = false;
             for(let i=0; i<data.length; i++){
               if(data[i].status==1) {
@@ -369,7 +388,6 @@ export class UserMapPage {
 
   showevac(){
     // this.dataRefresher = setInterval(() =>{
-
     this.http
        .get('http://usc-dcis.com/eligtas.app/retrieve-hcf.php')
        .subscribe((data : any) =>
@@ -379,7 +397,14 @@ export class UserMapPage {
           if(this.evacshow == true){
             this.map.setZoom(14);
             this.evaccolor = "assets/imgs/user/evac.png";
+            this.HCFcolor = "assets/imgs/user/hcfi.png";
+            this.emergencycolor = "assets/imgs/user/emergency.png";
             this.evacshow = false;
+            if(this.hcfMarkers.length!=0) {
+              for(let i=0; i<this.hcfMarkers.length; i++){
+                this.deleteMarker(i);
+              }
+            }
             for(let i=0; i<data.length; i++){
               if(data[i].status==1) {
                 this.createMarker(data[i], i);
@@ -423,6 +448,24 @@ export class UserMapPage {
 
   /********** SHOW MARKERS ************/
   hcfMarkers: any[];
+  hospital: any = {
+    url: "assets/imgs/user/hospital.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+  hospital1: any = {
+    url: "assets/imgs/user/hospital1.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+  hospital2: any = {
+    url: "assets/imgs/user/hospital2.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
 
   createMarker(data:any, i:any){
 
@@ -432,7 +475,8 @@ export class UserMapPage {
         animation: google.maps.Animation.DROP,
         position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
         // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png'
-        icon: 'assets/imgs/user/emergencymarker.png'
+        // icon: 'assets/imgs/user/emergencymarker.png'
+        icon: this.hospital1
       });
     }else if(data.hcf_type == 3){
       this.hcfMarkers[i] = new google.maps.Marker({
@@ -440,7 +484,8 @@ export class UserMapPage {
         animation: google.maps.Animation.DROP,
         position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
         // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png'
-        icon: 'assets/imgs/user/hcfmarker.png'
+        // icon: 'assets/imgs/user/hcfmarker.png'
+        icon: this.hospital
       });
     }else if(data.hcf_type == 2){
       this.hcfMarkers[i] = new google.maps.Marker({
@@ -448,7 +493,8 @@ export class UserMapPage {
         animation: google.maps.Animation.DROP,
         position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
         // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
-        icon: 'assets/imgs/user/evacmarker.png'
+        // icon: 'assets/imgs/user/evacmarker.png'
+        icon: this.hospital2
       });
     }else{
       this.hcfMarkers[i] = new google.maps.Marker({
@@ -533,6 +579,83 @@ export class UserMapPage {
 
   showreportedevents($event){
 
+  }
+
+  hospitalshow: any = true;
+  hosimage: any = "assets/imgs/user/ambu1.png";
+
+  emergencyhospital() {
+      this.http
+       .get('http://usc-dcis.com/eligtas.app/retrieve-hcf.php')
+       .subscribe((data : any) =>
+       {
+          console.log(data);
+          for(let i=0; i<data.length; i++){
+            // console.log(this.getDistance(this.latitude, this.longitude, data[i].xloc, data[i].yloc));
+            this.distanceArr.push({
+                distance: this.getDistance(this.latitude, this.longitude, data[i].xloc, data[i].yloc),
+                xloc: data[i].xloc,
+                yloc: data[i].yloc
+            });
+          }
+        if(this.hospitalshow==true) {
+          this.minimum = this.distanceArr[0].distance;
+          this.index = 0;
+          
+          for(let i=1; i<this.distanceArr.length; i++){
+            if(this.distanceArr[i].distance<this.minimum){
+              this.minimum = this.distanceArr[i].distance;
+              this.index = i;
+            }
+          }
+
+          this.route(this.distanceArr[this.index]);
+          this.hospitalshow=false;
+          this.hosimage = "assets/imgs/user/ambu.png";
+        } else {
+          this.hosimage ="assets/imgs/user/ambu1.png";
+          this.directionsDisplay.setMap(null);
+          this.directionsDisplay.setPanel(null);
+          this.hospitalshow = true;
+        }
+       },
+       (error : any) =>
+       {
+          console.dir(error);
+       });  
+  }
+
+  getDistance(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lon2-lon1); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+
+    function deg2rad(deg) {
+      return deg * (Math.PI/180)
+    }
+  }
+
+  route(data){
+    this.directionsDisplay.setMap(this.map);
+    this.directionsService.route({
+            origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
+            destination: {lat: data.xloc, lng: data.yloc},
+            travelMode: google.maps.TravelMode['DRIVING']
+    }, (res, status) => {
+      if(status == google.maps.DirectionsStatus.OK){
+        this.directionsDisplay.setDirections(res);
+      } else {
+        console.warn(status);
+      }
+    });
   }
 
   

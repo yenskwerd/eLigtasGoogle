@@ -25,6 +25,8 @@ export class RespondToRequestPage {
   special: any;
   request_status_id;
   request_id;
+  lat: any;
+  long: any;
 
   option: any;
   z=0;
@@ -46,6 +48,8 @@ export class RespondToRequestPage {
     this.request_status_id=navParams.data.request_status_id;
     this.request_id=navParams.data.request_id;
     this.option = navParams.data.option;
+    this.lat = navParams.data.request_lat;
+    this.long = navParams.data.request_long;
   }
 
   ionViewDidLoad() {

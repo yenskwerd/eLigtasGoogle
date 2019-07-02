@@ -5,9 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import {Http, Headers, RequestOptions}  from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import 'rxjs/add/operator/map';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import { sample } from 'rxjs/operators';
 
 /**
  * Generated class for the RespMapPage page.
@@ -17,6 +15,7 @@ import { sample } from 'rxjs/operators';
  */
 
 declare var google:any;
+
 
 @IonicPage()
 @Component({
@@ -34,7 +33,7 @@ export class RespMapPage {
   yellowMarker: any;
   grayMarker: any;
   blackMarker: any; 
-
+  initialMapLoad: boolean = true;
   eventForReport: any;
   request_id: any;
 
@@ -56,6 +55,7 @@ export class RespMapPage {
     public platform: Platform) {
     this.hcfMarkers = [];
     this.requestMarkers = [];
+    this.distanceArr = [];
     
 // this.redMarker=this.evaccolor2;
     this.redMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
@@ -65,72 +65,25 @@ export class RespMapPage {
     this.blackMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png";
   }
 
-  // ionViewDidLoad() {
-  //   // console.log('ionViewDidLoad RespMapPage');
-  //   // this.testNotification();
+  // ngAfterViewInit(){
   //   this.loadmap();
-  //   // this.localNotifications.schedule({
-  //   //   id: 1,
-  //   //   text: 'Single ILocalNotification',
-  //   //   sound: null,
-  //   //   data: 'notified'
-  //   // });
-  //   // console.log(this.localNotifications.schedule)
   // }
-  
 
   ionViewWillEnter() {
     this.loadmap();
-  }
+    // if(!this.initialMapLoad){
+    //     this.map.setDiv(this.mapRef.nativeElement);
+    // }else{
+    //         // this.loadmap();
+    //         this.initialMapLoad = false;
+    // }
+}
 
-  // ionViewDidEnter(){
-  //   this.loadmap();
-  //   console.log(this.datetoday);
-  //     console.log(this.myDate);
-  //     console.log(this.h);
-  //     // this.localNotifications.schedule({
-  //     //   title: 'Notifs testing',
-  //     //   text: 'There is a new request'
-  //     // });
-  //     // cordova.plugins.notifications.local.schedule({
-  //     //   title: "New Message",
-  //     //   message: "Hi, are you ready? We are waiting."
-  //     // });
-  //   // window.location.reload();
-  //   // google.maps.event.trigger(this.map, 'resize');
+  // ionViewWillLeave() {
+  //   // unset div & visibility on exit
+  //   // this.map.setVisible(false);
+  //   this.map.setDiv(null);
   // }
-//   notifications: any[] = [];
-//   testNotification() {
-
-//     // The notification
-//     let notification = {
-//         id:1,
-//         title: "test",
-//         text: "I am tester ?",
-//         every: "minute"
-//     };
-
-//     this.notifications.push(notification);
-
-//     if(this.platform.is('cordova')){
-
-//             // Cancel any existing notifications
-//             this.localNotifications.cancelAll().then(() => {
-
-//                 // Schedule the new notifications
-//                 this.localNotifications.schedule(this.notifications);
-
-//                 this.notifications = [];
-
-//                 let alert = this.alertCtrl.create({
-//                     title: 'Notifications set',
-//                     buttons: ['Ok']
-//                 });
-//                 alert.present();
-//             });
-//         }
-//     console.log("Notifications to be scheduled: ", this.notifications);
-// }
 
   /********** Google Maps **********/
   // map: any;
@@ -333,11 +286,11 @@ yellow:any = 0;
         // console.log(this.marker4);
         }
       } else if( data.request_status_id==2 ){
-        this.eventForReport = data.event;
+        // this.eventForReport = data.event;
         // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
         this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
       } else if (data.request_status_id == 0) {
-        this.eventForReport = data.event;
+        // this.eventForReport = data.event;
         var headers = new Headers();
         
         headers.append("Accept", 'application/json');
@@ -438,7 +391,7 @@ yellow:any = 0;
   cancelConfirm() {
     let alert = this.alertCtrl.create({
       title: 'Response',
-      message: 'Do you want really want to cancel request? Are you sure? Last najud?',
+      message: 'Do you want really want to cancel request?',
       buttons: [
         {
           text: 'No',
@@ -461,6 +414,7 @@ yellow:any = 0;
     alert.present();
   }
 
+  
   rout(data){
     
     // clearInterval(this.dataRefresher);
@@ -480,8 +434,8 @@ yellow:any = 0;
           // origin: {lat: position.coords.latitude, lng: position.coords.longitude},
         destination: {lat: data.request_lat, lng: data.request_long},
         // destination: {lat: data.xloc, lng: data.yloc},
-        origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
-        // origin: {lat: data2.coords.latitude, lng: data2.coords.longitude},
+        // origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
+        origin: {lat: data2.coords.latitude, lng: data2.coords.longitude},
         travelMode: google.maps.TravelMode['DRIVING']
       }, (res, status) => {
 
@@ -576,8 +530,15 @@ yellow:any = 0;
           console.log(data);
           this.request = data;
           if(this.HCFshow == true){
+            if(this.hcfMarkers.length!=0) {
+              for(let i=0; i<this.hcfMarkers.length; i++){
+                this.deleteMarker(i);
+              }
+            }
             this.map.setZoom(12);
             this.HCFcolor = "assets/imgs/user/hcfa.png";
+            this.emergencycolor = "assets/imgs/user/emergency.png";
+            this.evaccolor = "assets/imgs/user/evac1.png";
             this.HCFshow = false;
             for(let i=0; i<data.length; i++){
               if(data[i].status==1) {
@@ -632,9 +593,16 @@ yellow:any = 0;
           console.log(data);
           this.request = data;
           if(this.emergencyshow == true){
+            if(this.hcfMarkers.length!=0) {
+              for(let i=0; i<this.hcfMarkers.length; i++){
+                this.deleteMarker(i);
+              }
+            }
             this.map.setZoom(12);
             
             this.emergencycolor = "assets/imgs/user/emergency2.png";
+            this.HCFcolor = "assets/imgs/user/hcfi.png";
+            this.evaccolor = "assets/imgs/user/evac1.png";
             this.emergencyshow = false;
             for(let i=0; i<data.length; i++){
               if(data[i].status==1) {
@@ -682,9 +650,16 @@ yellow:any = 0;
           console.log(data);
           this.request = data;
           if(this.evacshow == true){
+            if(this.hcfMarkers.length!=0) {
+              for(let i=0; i<this.hcfMarkers.length; i++){
+                this.deleteMarker(i);
+              }
+            }
             this.map.setZoom(12);
             
             this.evaccolor = "assets/imgs/user/evac.png";
+            this.HCFcolor = "assets/imgs/user/hcfi.png";
+            this.emergencycolor = "assets/imgs/user/emergency.png";
             this.evacshow = false;
             for(let i=0; i<data.length; i++){
               if(data[i].status==1) {
@@ -720,14 +695,32 @@ yellow:any = 0;
   }
   
   /********** RECENTER ************/
-  recenter() {
-    this.map.setCenter(this.latLng1);
-    this.map.setZoom(15);
-  }
+  // recenter() {
+  //   this.map.setCenter(this.latLng1);
+  //   this.map.setZoom(15);
+  // }
 
 
   /********** SHOW MARKERS ************/
   hcfMarkers: any[];
+  hospital: any = {
+    url: "assets/imgs/user/hospital.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+  hospital1: any = {
+    url: "assets/imgs/user/hospital1.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+  hospital2: any = {
+    url: "assets/imgs/user/hospital2.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
 
   createMarker(data:any, i:any){
 
@@ -738,7 +731,8 @@ yellow:any = 0;
         animation: google.maps.Animation.DROP,
         position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
         // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png'
-        icon: 'assets/imgs/user/emergencymarker.png'
+        // icon: 'assets/imgs/user/emergencymarker.png',
+        icon: this.hospital1
       });
     }else if(data.hcf_type == 3){
       this.hcfMarkers[i] = new google.maps.Marker({
@@ -746,7 +740,7 @@ yellow:any = 0;
         animation: google.maps.Animation.DROP,
         position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
         // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png'
-        icon: 'assets/imgs/user/hcfmarker.png'
+        icon: this.hospital
       });
     }else if(data.hcf_type == 2){
       this.hcfMarkers[i] = new google.maps.Marker({
@@ -754,7 +748,8 @@ yellow:any = 0;
         animation: google.maps.Animation.DROP,
         position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
         // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
-        icon: 'assets/imgs/user/evacmarker.png'
+        // icon: 'assets/imgs/user/evacmarker.png'
+        icon: this.hospital2
       });
     }else{
       this.hcfMarkers[i] = new google.maps.Marker({
@@ -770,7 +765,7 @@ yellow:any = 0;
           this.hcfMarkers[i].addListener('click', function() {
             // self.presentConfirm(data);
             if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
-              self.rout(data);
+              self.routeforhcfs(data);
             } else {
               console.log("hcf route di pwede")
             }
@@ -786,9 +781,43 @@ yellow:any = 0;
   }
   /******** END UNSHOW MARKERS **********/
 
+  routeforhcfs(data){
+    
+    // clearInterval(this.dataRefresher);
+    // this.markerGroup2.clearLayers();
+
+    this.mapClass = "mapDirClass";
+    // this.marker.setMap(null);
+    let watch = this.geolocation.watchPosition();
+    // this.watch.subscribe((data2) => {
+      watch.subscribe((data2) => {
+        // this.marker.setMap(null);
+      this.directionsDisplay.setMap(this.map);  
+      // this.directionsDisplay.setOptions({suppressMarkers:true});
+      this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
+      
+      this.directionsService.route({
+          // origin: {lat: position.coords.latitude, lng: position.coords.longitude},
+        destination: {lat: data.xloc, lng: data.yloc},
+        // destination: {lat: data.xloc, lng: data.yloc},
+        // origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
+        origin: {lat: data2.coords.latitude, lng: data2.coords.longitude},
+        travelMode: google.maps.TravelMode['DRIVING']
+      }, (res, status) => {
+
+        if(status == google.maps.DirectionsStatus.OK){
+            this.directionsDisplay.setDirections(res);
+                          
+        } else {
+            console.warn(status);
+        }
+      });
+    });
+    
+  }
   
   /******** BUTTON FUNCTIONS **********/
-  start(data:any){
+  start(){
 
     this.stat_id = 1;
 
@@ -846,7 +875,7 @@ yellow:any = 0;
     }
     this.http2.post('http://usc-dcis.com/eligtas.app/update-stat.php', data2, options)
     .map(res=> res.json())
-    .subscribe((data2: any) =>
+    .subscribe(() =>
     {
        // If the request was successful notify the user
       //  console.log(data2);
@@ -930,7 +959,7 @@ yellow:any = 0;
     }
     this.http2.post('http://usc-dcis.com/eligtas.app/update-stat.php', data2, options)
     .map(res=> res.json())
-    .subscribe((data2: any) =>
+    .subscribe(() =>
     {
        // If the request was successful notify the user
       //  console.log(data2);
@@ -1110,7 +1139,7 @@ yellow:any = 0;
     }
     this.http2.post('http://usc-dcis.com/eligtas.app/update-stat.php', data4, options)
     .map(res=> res.json())
-    .subscribe((data2: any) =>
+    .subscribe(() =>
     {
        // If the request was successful notify the user
       //  console.log(data2);
@@ -1202,7 +1231,7 @@ yellow:any = 0;
     }
     this.http2.post('http://usc-dcis.com/eligtas.app/update-stat.php', data4, options)
     .map(res=> res.json())
-    .subscribe((data2: any) =>
+    .subscribe(() =>
     {
        // If the request was successful notify the user
       //  console.log(data2);
@@ -1233,7 +1262,7 @@ yellow:any = 0;
     }
     this.http2.post('http://usc-dcis.com/eligtas.app/update-stat2.php', data5, options)
     .map(res=> res.json())
-    .subscribe((data5: any) =>
+    .subscribe(() =>
     {
        // If the request was successful notify the user
       //  console.log(data2);
@@ -1444,4 +1473,83 @@ yellow:any = 0;
   //     icon: data
   //   });
   // }
+  
+  hospitalshow: any = true;
+  hosimage: any = "assets/imgs/user/ambu1.png";
+
+  emergencyhospital() {
+      this.http
+       .get('http://usc-dcis.com/eligtas.app/retrieve-hcf.php')
+       .subscribe((data : any) =>
+       {
+          console.log(data);
+          for(let i=0; i<data.length; i++){
+            // console.log(this.getDistance(this.latitude, this.longitude, data[i].xloc, data[i].yloc));
+            this.distanceArr.push({
+                distance: this.getDistance(this.latitude, this.longitude, data[i].xloc, data[i].yloc),
+                xloc: data[i].xloc,
+                yloc: data[i].yloc
+            });
+          }
+        if(this.hospitalshow==true) {
+          this.minimum = this.distanceArr[0].distance;
+          this.index = 0;
+          
+          for(let i=1; i<this.distanceArr.length; i++){
+            if(this.distanceArr[i].distance<this.minimum){
+              this.minimum = this.distanceArr[i].distance;
+              this.index = i;
+            }
+          }
+
+          this.route(this.distanceArr[this.index]);
+          this.hospitalshow=false;
+          this.hosimage = "assets/imgs/user/ambu.png";
+        } else {
+          this.hosimage ="assets/imgs/user/ambu1.png";
+          this.directionsDisplay.setMap(null);
+          this.directionsDisplay.setPanel(null);
+          this.hospitalshow = true;
+        }
+       },
+       (error : any) =>
+       {
+          console.dir(error);
+       });  
+  }
+
+  getDistance(lat1, lon1, lat2, lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lon2-lon1); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+
+    function deg2rad(deg) {
+      return deg * (Math.PI/180)
+    }
+  }
+
+  route(data){
+    this.directionsDisplay.setMap(this.map);
+    this.directionsService.route({
+            origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
+            destination: {lat: data.xloc, lng: data.yloc},
+            travelMode: google.maps.TravelMode['DRIVING']
+    }, (res, status) => {
+      if(status == google.maps.DirectionsStatus.OK){
+        this.directionsDisplay.setDirections(res);
+      } else {
+        console.warn(status);
+      }
+    });
+  }
+            
+
 }

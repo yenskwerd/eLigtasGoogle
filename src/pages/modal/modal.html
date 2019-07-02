@@ -28,15 +28,20 @@
       <ion-label stacked>Description</ion-label>
       <ion-textarea name="other" #victim_desc></ion-textarea>
     </ion-item>
-    <ion-item>
+    <!-- <ion-item> -->
       <ion-label stacked>Triage</ion-label>
-      <ion-select #C interface="popover" (ionChange)="triagefilter(triage);" [(ngModel)]="triage" name="triage">
+      <!-- <ion-select #C interface="popover" (ionChange)="triagefilter(triage);" [(ngModel)]="triage" name="triage">
         <ion-option value="Green">&#9989;Green (Minor)</ion-option>
         <ion-option value="Yellow">Yellow (Delayed)</ion-option>
         <ion-option value="Red">Red (Immediate)</ion-option>
         <ion-option value="Black">Black (Expectant)</ion-option>
-      </ion-select>
-    </ion-item>
+      </ion-select> -->   
+      <div padding> 
+              <button ion-button color={{green}} (click)="showg($event, 'Green')" round block>Green (Minor)</button>
+              <button ion-button color={{yellow}} (click)="showy($event, 'Yellow')" round block>Yellow (Delayed)</button>
+              <button ion-button color={{red}} (click)="showr($event, 'Red')" round block>Red (Immediate)</button>
+              <button ion-button color={{black}} (click)="showb($event, 'Black')" round block>Black (Expectant)</button></div>  
+    <!-- </ion-item> -->
     <button ion-button type="submit" (click)="report()" block>Report</button>
   </form>
 </ion-content>

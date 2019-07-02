@@ -34,6 +34,55 @@ export class ModalPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ModalPage');
   }
+  
+  green: any = "Green";
+  yellow: any = "Yellow";
+  red: any = "Red";
+  black: any = "Black";
+  gshow: any;
+  yshow: any;
+  rshow: any;
+  bshow: any;
+
+  showg(e:any, value){
+            this.green = "light";
+            this.yellow = "Yellow";
+            this.red = "Red";
+            this.black = "Black"
+            this.gshow = false;
+            this.triage=value;
+            console.log(this.triage)
+  }
+
+  showr(e:any, value){
+            this.green = "Green";
+            this.yellow = "Yellow";
+            this.red = "light";
+            this.black = "Black"
+            this.rshow = false;
+            this.triage=value;
+            console.log(this.triage)
+  }
+
+  showy(e:any, value){
+            this.green = "Green";
+            this.yellow = "light";
+            this.red = "Red";
+            this.black = "Black"
+            this.yshow = false;
+            this.triage=value;
+            console.log(this.triage)
+  }
+
+  showb(e:any, value){
+            this.green = "Green";
+            this.yellow = "Yellow";
+            this.red = "Red";
+            this.black = "light"
+            this.bshow = false;
+            this.triage=value;
+            console.log(this.triage)
+  }
 
   public closeModal(){
     let data = { 
@@ -62,7 +111,7 @@ export class ModalPage {
           });
           
           alert.present();
-        
+         
     } else if (this.victim_desc.value==""){
         
           let alert = this.alertCtrl.create({
@@ -73,6 +122,16 @@ export class ModalPage {
           
           alert.present();
          
+        
+    } else if (this.triage==null){
+        
+          let alert = this.alertCtrl.create({
+            message:"No triage selected.",
+            buttons: ['OK']
+  
+          });
+          
+          alert.present();
     } else {
         var headers = new Headers();
       
