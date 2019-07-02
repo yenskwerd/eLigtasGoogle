@@ -7,6 +7,7 @@ import { LoginServiceProvider } from '../../providers/login-service/login-servic
 import 'rxjs/add/operator/map';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { sample } from 'rxjs/operators';
 
 /**
  * Generated class for the RespMapPage page.
@@ -192,7 +193,8 @@ export class RespMapPage {
                   disableDefaultUI: true,
                   fullscreenControl: true,
                   zoomControl: false,
-                  scaleControl: true
+                  scaleControl: true,
+                  clickableIcons: false
                 };
                 // google.maps.event.trigger(this.map,'resize');
                 this.addMarker(this.redMarker);
@@ -477,6 +479,7 @@ yellow:any = 0;
       this.directionsService.route({
           // origin: {lat: position.coords.latitude, lng: position.coords.longitude},
         destination: {lat: data.request_lat, lng: data.request_long},
+        // destination: {lat: data.xloc, lng: data.yloc},
         origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
         // origin: {lat: data2.coords.latitude, lng: data2.coords.longitude},
         travelMode: google.maps.TravelMode['DRIVING']
@@ -728,6 +731,7 @@ yellow:any = 0;
 
   createMarker(data:any, i:any){
 
+    
     if(data.hcf_type == 1){
       this.hcfMarkers[i] = new google.maps.Marker({
         map: this.map,
@@ -761,6 +765,16 @@ yellow:any = 0;
       });
     }
 
+    let self = this
+        // marker3[i].addListener('click', function() {
+          this.hcfMarkers[i].addListener('click', function() {
+            // self.presentConfirm(data);
+            if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
+              self.rout(data);
+            } else {
+              console.log("hcf route di pwede")
+            }
+          });
     let content = data.name;
     this.addInfoWindow(this.hcfMarkers[i], content);
   }
@@ -1128,6 +1142,7 @@ yellow:any = 0;
   }
 
   pushCancel() {
+    // document.getElementById("hh").style.display = "none";
     console.log("clicked cancel");
     this.user_request_id = null;
     this.stat_id=0;
@@ -1276,7 +1291,7 @@ yellow:any = 0;
     this.directionsDisplay.setOptions({suppressMarkers:true});
     this.directionsDisplay.setOptions({suppressPolylines:true});
     // this.directionsDisplay.setDirections(null);
-    this.directionsDisplay.set('directionsPanel', null);
+    // this.directionsDisplay.set('directionsPanel', null);
     // this.directionsDisplay.setMap(null);
     // this.directionsDisplay.setPanel(null);
     // this.requestMarker();

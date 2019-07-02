@@ -88,7 +88,8 @@ export class UserMapPage {
             // disableDefaultUI: true,
             fullscreenControl: true,
             zoomControl: false,
-            scaleControl: true
+            scaleControl: true,
+            clickableIcons: false
           };
           // this.addMarker();
          }, (err) => {
