@@ -79,11 +79,19 @@ export class RespMapPage {
     // }
 }
 
-  // ionViewWillLeave() {
-  //   // unset div & visibility on exit
-  //   // this.map.setVisible(false);
-  //   this.map.setDiv(null);
+  // ionViewDidEnter(){
+  //   google.maps.event.trigger(this.map,'resize');
   // }
+
+  ionViewWillLeave() {
+    // unset div & visibility on exit
+    // this.map.setVisible(false);
+    // this.map.setDiv();
+  //  this.mapRef.nativeElement=null;
+  //  this.map=null;
+  clearInterval(this.dataRefresher);
+  console.log("nj left");
+  }
 
   /********** Google Maps **********/
   // map: any;
@@ -139,7 +147,11 @@ export class RespMapPage {
                   center: this.latLng1,
                   zoom: 14,
                   disableDefaultUI: true,
-                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                  mapTypeId: google.maps.MapTypeId.ROADMAP,
+                  fullscreenControl: true,
+                  zoomControl: false,
+                  scaleControl: true,
+                  clickableIcons: false
                 }
                 // 10.3813503, 123.9815693
                 this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions), {
@@ -220,7 +232,7 @@ export class RespMapPage {
       {
           console.dir(error);
       });
-      console.log(this.marker2);
+      // console.log(this.marker2);
     },5000);
   }
   
@@ -417,7 +429,7 @@ yellow:any = 0;
   
   rout(data){
     
-    // clearInterval(this.dataRefresher);
+    clearInterval(this.dataRefresher);
     // this.markerGroup2.clearLayers();
 
     this.mapClass = "mapDirClass";
@@ -695,10 +707,10 @@ yellow:any = 0;
   }
   
   /********** RECENTER ************/
-  // recenter() {
-  //   this.map.setCenter(this.latLng1);
-  //   this.map.setZoom(15);
-  // }
+  recenter() {
+    this.map.setCenter(this.latLng1);
+    this.map.setZoom(15);
+  }
 
 
   /********** SHOW MARKERS ************/
@@ -980,6 +992,13 @@ yellow:any = 0;
 
       alert2.present();
     });
+    this.directionsDisplay.setMap(null);
+    this.directionsDisplay.setPanel(null);
+    // this.directionsDisplay.set('directionsPanel', null);
+    this.mapClass = "mapClass";
+    this.directionsDisplay.setOptions({suppressMarkers:true});
+    this.directionsDisplay.setOptions({suppressPolylines:true});
+    this.requestMarker();
   }
 
   requestCallForBackUp(){
@@ -1162,11 +1181,11 @@ yellow:any = 0;
     });
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
-    this.directionsDisplay.set('directionsPanel', null);
+    // this.directionsDisplay.set('directionsPanel', null);
+    this.mapClass = "mapClass";
     this.directionsDisplay.setOptions({suppressMarkers:true});
     this.directionsDisplay.setOptions({suppressPolylines:true});
-    // this.directionsDisplay.setDirections(null);
-    this.directionsDisplay.set('directionsPanel', null);
+    this.requestMarker();
 
   }
 
@@ -1305,36 +1324,13 @@ yellow:any = 0;
 // {
 //     console.dir(error);
 // });
-    // this.marker4.setMap(null);
-    // this.marker.setMap(null);
-    // this.marker2.setMap(null)
-    // this.deleteyellow();
-    // this.requestMarkers.remove();
-    // if (this.requestmarkers && this.requestmarkers.setMap) {
-    //   this.requestmarkers.setMap(null);
-    // }
-    // this.marker4.setMap(null);
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
-    this.directionsDisplay.set('directionsPanel', null);
+    // this.directionsDisplay.set('directionsPanel', null);
+    this.mapClass = "mapClass";
     this.directionsDisplay.setOptions({suppressMarkers:true});
     this.directionsDisplay.setOptions({suppressPolylines:true});
-    // this.directionsDisplay.setDirections(null);
-    // this.directionsDisplay.set('directionsPanel', null);
-    // this.directionsDisplay.setMap(null);
-    // this.directionsDisplay.setPanel(null);
-    // this.requestMarker();
-    // this.directionsDisplay.setMap(null);  
-    // this.directionsDisplay.setPanel(null);
-    // this.map.removeControl(this.control);
-    // this.addMarker(this.redMarker);
-    // this.marker.setMap(null);
-    // this.directionsDisplay.setMap(null);
-    // this.directionsDisplay.setPanel(null);
-    // this.marker2.setMap(null);
-    // this.requestMarker();
-    // this.directionsDisplay.setMap(null);
-    // this.directionsDisplay.setPanel(null);
+    this.requestMarker();
   }
 
   // deleteyellow(){
