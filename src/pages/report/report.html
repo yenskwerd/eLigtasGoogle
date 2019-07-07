@@ -27,10 +27,21 @@
 
 <ion-content >
   <h1 text-center>{{event}}</h1>
-        <ion-item text-wrap *ngFor="let item of reports">
+
+  <!-- <ion-card text-wrap padding *ngFor="let item of reports" (click)="">
+    <ion-item>
+        <h2>{{ item.victim_name }}</h2>
+        <ion-icon item-end  name="water" color="{{ item.triage }}"></ion-icon>
+    </ion-item>
+  </ion-card> -->
+
+  <ion-item text-wrap *ngFor="let item of reports" (click)="reportmore(item)">
           
           <ion-icon item-end  name="water" color="{{ item.triage }}"></ion-icon>
           <h2>{{ item.victim_name }}</h2>
-          <!-- <ion-icon item-end name="arrow-dropright"></ion-icon> -->
-        </ion-item>
+  </ion-item>
+  <ion-item text-wrap *ngFor="let value of value" (click)="reportmore(value)">
+          <ion-icon *ngIf='value.triage!=null' item-end  name="water" color="{{ value.triage }}"></ion-icon>
+          <h2 *ngIf='value.victim_name!=""'>{{ value.victim_name }}</h2>
+  </ion-item>
 </ion-content>

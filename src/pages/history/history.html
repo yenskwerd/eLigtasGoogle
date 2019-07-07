@@ -16,7 +16,7 @@
 
 
 <ion-content (root)="rootPage">
-  <ion-card padding *ngFor="let item of history">
+  <ion-card padding *ngFor="let item of history" (click)="historymore(item)">
       <ion-item>
           <ion-row>
             <ion-col><h2>{{ item.action }} {{ item.request_id }}</h2></ion-col>

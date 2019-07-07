@@ -157,6 +157,8 @@ export class ModalPage {
           action_done: this.triage,
           action_datetime: new Date()
         }
+
+        this.viewCtrl.dismiss(data);
         // let data2 = {
         //   user_id: this.loginService.logged_in_user_id,
         //   action: "Report",

@@ -19,7 +19,7 @@ export class ReportPage {
 
   public items : Array<any> = [];
   reports: any = [];
-  value: any;
+  value: any = [];
   hello: any;
   event: any;
   request_id: any;
@@ -38,8 +38,9 @@ export class ReportPage {
     });
     modalPage.onDidDismiss(data => {
       console.log(data);
-      this.value=data;//here
-      console.log(JSON.stringify(this.value,undefined,2));
+      this.value.push(data);//here
+      console.log(this.value)
+      // console.log(JSON.stringify(this.value,undefined,2));
     });
     modalPage.present(); 
   }
@@ -91,4 +92,9 @@ export class ReportPage {
     this.viewCtrl.dismiss();
   }
 
+  reportmore(data) {
+    this.navCtrl.push('ReportMorePage', {
+      data: data
+    });
+  }
 }
