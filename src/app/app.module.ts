@@ -16,7 +16,7 @@ import { HttpModule } from '@angular/http';
 import { HTTP, HTTPOriginal } from '@ionic-native/http';
 import { HistoryPage } from '../pages/history/history';
 import { Push } from '@ionic-native/push'
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 @NgModule({
   declarations: [
     MyApp,

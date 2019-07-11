@@ -1,10 +1,11 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController, Platform } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { HttpClient } from '@angular/common/http'; 
 import { UserHomePage } from '../user-home/user-home'; 
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 
 /**
@@ -34,8 +35,29 @@ export class UserMapPage {
 
   looking: any=false;
   
-  constructor(public http2: Http,public navCtrl: NavController, public alertCtrl : AlertController, public navParams: NavParams, public geolocation: Geolocation, 
-    public loginService: LoginServiceProvider, public http : HttpClient, public modalCtrl: ModalController) {
+  constructor(public http2: Http,
+      public navCtrl: NavController, 
+      public alertCtrl : AlertController, 
+      public navParams: NavParams, 
+      public geolocation: Geolocation, 
+      public loginService: LoginServiceProvider, 
+      public http : HttpClient, 
+      public modalCtrl: ModalController,
+      public plt: Platform,
+      public localNotifications: LocalNotifications) {
+
+        // this.plt.ready().then(() => {
+        //   this.localNotifications.on('click').subscribe(res => {
+        //     let msg = res.data ? res.data.mydata : '';
+        //     this.showAlert(res.title, res.text, msg);
+        //   });
+     
+        //   this.localNotifications.on('trigger').subscribe(res => {
+        //     let msg = res.data ? res.data.mydata : '';
+        //     this.showAlert(res.title, res.text, msg);
+        //   });
+        // });
+    
     this.hcfMarkers = [];
     this.distanceArr = [];
 
@@ -68,6 +90,37 @@ export class UserMapPage {
   mapClass: string = "mapClass";
   directionsService = new google.maps.DirectionsService();
   directionsDisplay = new google.maps.DirectionsRenderer({ preserveViewport: true });
+
+  notification() {
+    this.localNotifications.schedule({
+      id: 1,
+      title: 'Attention',
+      text: 'Simons Notification',
+      data: { mydata: 'My hidden message this is' },
+      // trigger: { in: 5, unit: ELocalNotificationTriggerUnit.SECOND },
+      trigger:{at: new Date()},
+      // foreground: true // Show the notification while app is open
+    });
+ 
+    // Works as well!
+    // this.localNotifications.schedule({
+    //   id: 1,
+    //   title: 'Attention',
+    //   text: 'Simons Notification',
+    //   data: { mydata: 'My hidden message this is' },
+    //   trigger: { at: new Date(new Date().getTime() + 5 * 1000) }
+    // });
+  }
+
+  showAlert(header, sub, msg) {
+    let alert =this.alertCtrl.create({
+      // header: header,
+      // subHeader: sub,
+      message: msg,
+      buttons: ['Ok']
+    })
+    alert.present();
+  }
 
   loadmap(){
         // this.geolocation.getCurrentPosition().then((position) => {
