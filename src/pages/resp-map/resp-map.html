@@ -32,6 +32,10 @@
   <ion-fab *ngIf="stat_id==0 && user_request_id!=NULL || stat_id==1" right top>
     <button color="danger" (click)="cancelConfirm()" ion-fab><ion-icon name="close"></ion-icon></button>
   </ion-fab>
+
+  <ion-fab *ngIf="statrouteforhcfs==1" right top>
+    <button color="danger" (click)="cancelConfirm1()" ion-fab><ion-icon name="close"></ion-icon></button>
+  </ion-fab>
   
   <ion-fab *ngIf="stat_id==0 && user_request_id==NULL" right top>
     <button color="light" class="fab-trans" (click)="recenter()" ion-fab><ion-icon name="locate"></ion-icon></button>

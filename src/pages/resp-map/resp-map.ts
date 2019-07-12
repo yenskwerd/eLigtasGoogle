@@ -787,10 +787,12 @@ yellow:any = 0;
     this.hcfMarkers[i].setMap(null);
   }
   /******** END UNSHOW MARKERS **********/
+  statrouteforhcfs:any;
+
 
   routeforhcfs(data){
-    
-    // clearInterval(this.dataRefresher);
+    this.statrouteforhcfs=1;
+    clearInterval(this.dataRefresher);
     // this.markerGroup2.clearLayers();
 
     this.mapClass = "mapDirClass";
@@ -1180,7 +1182,7 @@ yellow:any = 0;
     this.mapClass = "mapClass";
     this.directionsDisplay.setOptions({suppressMarkers:true});
     this.directionsDisplay.setOptions({suppressPolylines:true});
-    this.requestMarker();
+    // this.requestMarker();
 
   }
 
@@ -1443,6 +1445,7 @@ yellow:any = 0;
   }
 
   route(data){
+    this.statrouteforhcfs=1;
     this.directionsDisplay.setMap(this.map);
     this.directionsService.route({
             origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
@@ -1455,6 +1458,40 @@ yellow:any = 0;
         console.warn(status);
       }
     });
+  }
+
+  cancelConfirm1() {
+    let alert = this.alertCtrl.create({
+      title: 'Response',
+      message: 'Do you want really want to cancel request?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            // this.change1();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Buy clicked');
+            // clearInterval(this.dataRefresher);
+            // this.pushCancel();
+            this.statrouteforhcfs=0;
+            this.directionsDisplay.setMap(null);
+            this.directionsDisplay.setPanel(null);
+            // this.directionsDisplay.set('directionsPanel', null);
+            this.mapClass = "mapClass";
+            this.directionsDisplay.setOptions({suppressMarkers:true});
+            this.directionsDisplay.setOptions({suppressPolylines:true});
+            this.requestMarker();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
             
 
