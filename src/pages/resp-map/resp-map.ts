@@ -65,30 +65,13 @@ export class RespMapPage {
     this.blackMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png";
   }
 
-  // ngAfterViewInit(){
-  //   this.loadmap();
-  // }
 
   ionViewWillEnter() {
     this.loadmap();
-    // if(!this.initialMapLoad){
-    //     this.map.setDiv(this.mapRef.nativeElement);
-    // }else{
-    //         // this.loadmap();
-    //         this.initialMapLoad = false;
-    // }
 }
 
-  // ionViewDidEnter(){
-  //   google.maps.event.trigger(this.map,'resize');
-  // }
 
   ionViewWillLeave() {
-    // unset div & visibility on exit
-    // this.map.setVisible(false);
-    // this.map.setDiv();
-  //  this.mapRef.nativeElement=null;
-  //  this.map=null;
   clearInterval(this.dataRefresher);
   console.log("nj left");
   }
@@ -173,6 +156,7 @@ export class RespMapPage {
         // });
     
         // alert.present();
+        this.checkcount();
       this.requestMarker();
         
 
@@ -210,6 +194,29 @@ export class RespMapPage {
   
   /********* REQUESTS MARKERS *********/
   public status : any=false;
+  ctr:any;
+
+  checkcount(){
+      if(this.loginService.logged_in_user_request_id!= null){
+        this.status = true;
+      }
+      this.http.get('http://usc-dcis.com/eligtas.app/retrieve-request.php')
+      .subscribe((data : any) =>
+      {
+        console.log(data);
+          this.ctr = data.length;
+          this.request = data;
+          console.log(this.ctr);
+          for(let i=0; i<data.length; i++){
+            // this.createMarker2(data[i]);
+            this.createMarker2(data[i]);
+          }
+      },
+      (error : any) =>
+      {
+          console.dir(error);
+      });
+  }
 
   requestMarker(){
     
@@ -222,11 +229,16 @@ export class RespMapPage {
       {
         console.log(data);
           this.request = data;
-          // this.markerGroup.clearLayers();
-          for(let i=0; i<data.length; i++){
-            // this.createMarker2(data[i]);
-            this.createMarker2(data[i]);
+          if(this.ctr!=data.length){
+            this.notification();
+            console.log(this.ctr);
+            console.log(data.length);
+            for(let i=this.ctr; i<data.length; i++){
+              // this.createMarker2(data[i]);
+              this.createMarker2(data[i]);
           }
+          this.ctr=data.length;
+        }
       },
       (error : any) =>
       {
@@ -235,7 +247,18 @@ export class RespMapPage {
       // console.log(this.marker2);
     },5000);
   }
-  
+
+  notification() {
+    this.localNotifications.schedule({
+      id: 1,
+      title: 'NEW REPORTS!!',
+      text: 'A request has been made',
+      data: { mydata: 'My hidden message this is' },
+      // trigger: { in: 5, unit: ELocalNotificationTriggerUnit.SECOND },
+      trigger:{at: new Date()},
+      // foreground: true // Show the notification while app is open
+    });
+  }
   
   // marker22: any[];
 
@@ -254,10 +277,6 @@ export class RespMapPage {
     // return this.marker;
   }
 
-  // deleteMarker2(){
-  //   this.marker3.setMap(null);
-  // }
-// marker3: any[];
 yellow:any = 0;
   createMarker2(data:any){
     // createMarker2(data:any){
@@ -331,15 +350,6 @@ yellow:any = 0;
          }); 
       }
 
-    // var circle = leaflet.circle([data.request_lat, data.request_long], {
-    //   color: "rgba(255,255,255,0)",
-    //       fillColor: '#81C784',
-    //     fillOpacity: 0,
-    //     radius: 100
-    // }).addTo(this.map);
-    // this.map.removeLayer(this.markerGroup);
-    // this.markerGroup.addLayer(this.marker2);
-    // this.map.addLayer(this.markerGroup);
   }
 
   callForBackUpMarker(data:any, data1:any){
@@ -562,17 +572,6 @@ yellow:any = 0;
                 // });
               }
             }
-
-            // this.minimum = this.distanceArr[0].distance;
-            // this.index = 0;
-            
-            // for(let i=1; i<this.distanceArr.length; i++){
-            //   if(this.distanceArr[i].distance<this.minimum){
-            //     this.minimum = this.distanceArr[i].distance;
-            //     this.index = i;
-            //   }
-            // }
-            // this.route(this.distanceArr[this.index]);
             console.log("true");
           }else{
             this.map.setZoom(15);
@@ -593,10 +592,6 @@ yellow:any = 0;
   }
   
   showEmergency(){
-    // this.map.locate({
-    //   setView: true,
-    //   maxZoom: 13
-    // });
     
     this.http
        .get('http://usc-dcis.com/eligtas.app/retrieve-emergencies.php')
@@ -1306,24 +1301,6 @@ yellow:any = 0;
       alert2.present();
     });
     
-    /////try og delete sa requested markers
-// if(this.loginService.logged_in_user_request_id!= null){
-//   this.status = true;
-// }
-// this.http.get('http://usc-dcis.com/eligtas.app/retrieve-request.php')
-// .subscribe((data : any) =>
-// {
-//   console.log(data);
-//     this.request = data;
-    
-//     for(let i=0; i<data.length; i++){
-//       this.marker4.setMap(null);
-//     }
-// },
-// (error : any) =>
-// {
-//     console.dir(error);
-// });
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
     // this.directionsDisplay.set('directionsPanel', null);
@@ -1401,74 +1378,7 @@ yellow:any = 0;
     }
   }
 
-  // deletemarker3(data:any, i:any){
-  //   // createMarker2(data:any){
-  //     // console.log("createmarker2");
   
-  //     if(data.request_status_id==null){
-  //       var lat = data.request_lat;
-  //       var long = data.request_long;
-  //       //  this.marker3 = new google.maps.Marker({
-  //       const marker4 = new google.maps.Marker({
-  //         position: { lat: parseFloat(lat), lng: parseFloat(long) },
-  //         animation: google.maps.Animation.DROP,
-  //         map: this.map,
-  //         icon: this.purpleMarker   
-  //       })
-  //         this
-  //           marker4.setMap(null);
-  //       }
-  //     }
-
-  //remove requested markes
-  // createMarker3(data:any){
-  //   // console.log("createmarker2");
-
-  //   if(data.request_status_id==null){
-  //     var lat = data.request_lat;
-  //     var long = data.request_long;
-
-  //     const marker = new google.maps.Marker({
-  //       position: { lat: parseFloat(lat), lng: parseFloat(long) },
-  //       animation: google.maps.Animation.DROP,
-  //       map: this.map,
-  //       icon: this.purpleMarker   
-  //     })
-  
-  //     // i show the alert on mark click yeeeeees <3
-  //     let self = this
-  //       marker.addListener('click', function() {
-  //         // self.presentConfirm(data);
-  //         if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
-  //           self.presentConfirm(data);
-  //         } else {
-  //           self.cantAlert();
-  //         }
-  //       });
-
-  //   } else if(data.request_status_id==1 && data.request_id == this.user_request_id){
-  //     this.rout(data);
-  //     this.eventForReport = data.event;
-  //     this.request_id = data.request_id;
-  //     this.marker2 = this.addMarker3(this.yellowMarker, data.request_lat, data.request_long);
-
-  //   } else if( data.request_status_id==2 ){
-  //     this.eventForReport = data.event;
-  //     this.marker2 = this.addMarker3(this.grayMarker, data.request_lat, data.request_long);
-  //   } 
-  //     this.marker.setMap(null);
-  //     // this.marker2.setMap(null);
-  // }
-  // addMarker3(data, lat, long){
-  //   // this.directionsDisplay.setMap(null);
-  //   // this.directionsDisplay.setPanel(null);
-  //    this.marker = new google.maps.Marker({
-  //     map: this.map,
-  //     animation: google.maps.Animation.DROP,
-  //     position: {lat: parseFloat(lat), lng: parseFloat(long)},
-  //     icon: data
-  //   });
-  // }
   
   hospitalshow: any = true;
   hosimage: any = "assets/imgs/user/ambu1.png";

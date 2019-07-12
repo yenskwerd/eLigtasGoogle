@@ -38,7 +38,6 @@ export class MyApp {
     events.subscribe('user:sidebar', () => {
       this.username = this.loginService.logged_in_user_name;
       this.createSidebar();
-      this.pushSetup();
     });
 
     this.extrapages = [
@@ -66,55 +65,6 @@ export class MyApp {
     //   { icon: '', title: 'Logout', component: HomePage}
     // ]; 
     
-  }
-  pushSetup(){
-    const options: PushOptions = {
-      android: {
-        senderID: this.loginService.logged_in_user_id
-         
-      },
-      ios: {
-          alert: 'true',
-          badge: true,
-          sound: 'false'
-      },
-     
-   };
-   
-   const pushObject: PushObject = this.push.init(options);
-   
-   
-   pushObject.on('notification').subscribe((data:any) => {
-    console.log('Received a notification', data);
-      if (data.additionalData.foreground) {
-        // if application open, show popup
-        let confirmAlert = this.alertCtrl.create({
-          title: 'New Notification',
-          message: 'HELLO',
-          buttons: [{
-            text: 'Ignore',
-            role: 'cancel'
-          }, {
-            text: 'View',
-            handler: () => {
-              //TODO: Your logic here
-              this.nav.push(HomePage, { message: 'Hello' });
-            }
-          }]
-        });
-        
-        confirmAlert.present();
-      } else {
-        //if user NOT using app and push notification comes
-        //TODO: Your logic on click of push notification directly
-        this.nav.push(HomePage, { message: data.message });
-        console.log('Push notification clicked');
-      }
-    });
-   
-   pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
-   
-   pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
   }
 
   toggleGroup(group) {
@@ -144,14 +94,6 @@ export class MyApp {
       this.splashScreen.hide();
     });
   }
-  
-  // logoutClicked() {
-  //   console.log("Logout");
-  //   //this.authService.logout();
-  //   this.menuCtrl.close();
-  //   var nav = this.app.getRootNav();
-  //   //nav.setRoot(LoginPage);
-  // }
 
   openPage(page) {
    this.nav.push(page.component);
@@ -221,31 +163,5 @@ export class MyApp {
     this.nav.setRoot(page.component);
    }
 
-  // pages: Array<{title: string, component: any}>;
-
-  // constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
-  //   this.initializeApp();
-
-  //   // used for an example of ngFor and navigation
-  //   this.pages = [
-  //     { title: 'Home', component: HomePage },
-  //     { title: 'List', component: ListPage }
-  //   ];
-
-  // }
-
-  // initializeApp() {
-  //   this.platform.ready().then(() => {
-  //     // Okay, so the platform is ready and our plugins are available.
-  //     // Here you can do any higher level native things you might need.
-  //     this.statusBar.styleDefault();
-  //     this.splashScreen.hide();
-  //   });
-  // }
-
-  // openPage(page) {
-  //   // Reset the content nav to have just this page
-  //   // we wouldn't want the back button to show in this scenario
-  //   this.nav.setRoot(page.component);
-  // }
+  
 }

@@ -6,6 +6,7 @@ import { UserHomePage } from '../user-home/user-home';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { escapeRegExp } from '@angular/compiler/src/util';
 
 
 /**
@@ -91,36 +92,6 @@ export class UserMapPage {
   directionsService = new google.maps.DirectionsService();
   directionsDisplay = new google.maps.DirectionsRenderer({ preserveViewport: true });
 
-  notification() {
-    this.localNotifications.schedule({
-      id: 1,
-      title: 'Attention',
-      text: 'Simons Notification',
-      data: { mydata: 'My hidden message this is' },
-      // trigger: { in: 5, unit: ELocalNotificationTriggerUnit.SECOND },
-      trigger:{at: new Date()},
-      // foreground: true // Show the notification while app is open
-    });
- 
-    // Works as well!
-    // this.localNotifications.schedule({
-    //   id: 1,
-    //   title: 'Attention',
-    //   text: 'Simons Notification',
-    //   data: { mydata: 'My hidden message this is' },
-    //   trigger: { at: new Date(new Date().getTime() + 5 * 1000) }
-    // });
-  }
-
-  showAlert(header, sub, msg) {
-    let alert =this.alertCtrl.create({
-      // header: header,
-      // subHeader: sub,
-      message: msg,
-      buttons: ['Ok']
-    })
-    alert.present();
-  }
 
   loadmap(){
         // this.geolocation.getCurrentPosition().then((position) => {
@@ -244,10 +215,12 @@ export class UserMapPage {
     this.addInfoWindow(this.marker, content);
   }
 
+  dataRefresher1:any;
+
   getUserRequest1(){
     //gets user data
     var headers = new Headers();
-      
+  
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('Access-Control-Allow-Origin' , '*');
@@ -255,25 +228,59 @@ export class UserMapPage {
     headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
     
     let options = new RequestOptions({ headers: headers });
+
     let data = {
       request_id: this.loginService.logged_in_user_request_id
     }
-    console.log(data);
 
-   this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-user-request1.php',data,options)
-   .map(res=> res.json())
-     .subscribe(
-       res => {
-      // leaflet.marker([res.request_lat,res.request_long], {icon: this.grayIcon}).bindTooltip(res.event, {direction: 'bottom'}).addTo(this.map);
-      // this.addMarker2(this.grayMarker, res.event);
+    let dataUser = {
+      username: this.loginService.logged_in_user_name,
+      password: this.loginService.logged_in_user_password,
+    }
+
+    this.dataRefresher1 = setInterval(() => {
+
+      this.http2.post('http://usc-dcis.com/eligtas.app/login.php',dataUser,options)
+        .map(res=> res.json()) 
+        .subscribe(
+        res => {
+          let dataReq = {
+            request_id: res.request_id
+          }
+
+          console.log(dataReq);
+
+          this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-user-request1.php',dataReq,options)
+        .map(res=> res.json()) 
+        .subscribe(
+        res => {
+        // leaflet.marker([res.request_lat,res.request_long], {icon: this.grayIcon}).bindTooltip(res.event, {direction: 'bottom'}).addTo(this.map);
+        // this.addMarker2(this.grayMarker, res.event);
       
-      if (res.request_status_id == null) {
-        this.looking = true;
-        this.responseAlert();
-      } else {
-        this.looking = false;
-      }
-   }); 
+        console.log(res.request_status_id);
+
+        if (res.request_status_id == null) {
+          this.looking = true;
+          this.responseAlert();
+        } else if (res.request_status_id == 1){
+          console.log("END");
+          clearInterval(this.dataRefresher1);
+            this.localNotifications.schedule({
+              id: 1,
+              title: 'RESPONDER',
+              text: 'A responder is on his way!',
+              data: { mydata: 'My hidden message this is' },
+              // trigger: { in: 5, unit: ELocalNotificationTriggerUnit.SECOND },
+              trigger:{at: new Date()},
+              // foreground: true // Show the notification while app is open
+            });
+        } else {
+          this.looking = false;
+        }
+   });
+
+        }); 
+    }, 5000);
 
    let data2 = {
       user_id: this.loginService.logged_in_user_id
