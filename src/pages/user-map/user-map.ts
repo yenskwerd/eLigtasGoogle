@@ -35,6 +35,7 @@ export class UserMapPage {
   blueMarker: any;
 
   looking: any=false;
+  ETA: any;
   
   constructor(public http2: Http,
       public navCtrl: NavController, 
@@ -260,6 +261,8 @@ export class UserMapPage {
         // this.addMarker2(this.grayMarker, res.event);
       
         console.log(res.request_status_id);
+        this.ETA = res.ETA;
+        console.log(this.ETA);
 
         if (res.request_status_id == null) {
           this.looking = true;
@@ -270,7 +273,7 @@ export class UserMapPage {
             this.localNotifications.schedule({
               id: 1,
               title: 'RESPONDER',
-              text: 'A responder is on his way!',
+              text: 'A responder is on his way! He/she is '+this.ETA+' away.',
               data: { mydata: 'My hidden message this is' },
               // trigger: { in: 5, unit: ELocalNotificationTriggerUnit.SECOND },
               trigger:{at: new Date()},
