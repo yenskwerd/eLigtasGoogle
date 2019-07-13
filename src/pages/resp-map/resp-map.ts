@@ -1476,6 +1476,7 @@ yellow:any = 0;
           this.hosimage = "assets/imgs/user/ambu.png";
         } else {
           this.hosimage ="assets/imgs/user/ambu1.png";
+          this.mapClass = "mapClass";
           this.directionsDisplay.setMap(null);
           this.directionsDisplay.setPanel(null);
           this.hospitalshow = true;

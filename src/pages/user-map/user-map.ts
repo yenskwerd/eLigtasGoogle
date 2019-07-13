@@ -285,7 +285,7 @@ export class UserMapPage {
    });
 
         }); 
-    }, 5000);
+    }, 1000);
 
    let data2 = {
       user_id: this.loginService.logged_in_user_id
@@ -378,7 +378,10 @@ export class UserMapPage {
             // this.route(this.distanceArr[this.index]);
             console.log("true");
           }else{
-            this.map.setZoom(15);
+            this.directionsDisplay.setMap(null);
+            this.directionsDisplay.setPanel(null);
+            this.mapClass = "mapClass";
+            // this.map.setZoom(15);
             this.HCFcolor = "assets/imgs/user/hcfi.png";
             this.HCFshow = true;
             for(let i=0; i<this.hcfMarkers.length; i++){
@@ -435,7 +438,10 @@ export class UserMapPage {
             // }
             console.log("true");
           }else{
-            this.map.setZoom(15);
+            this.directionsDisplay.setMap(null);
+            this.directionsDisplay.setPanel(null);
+            this.mapClass = "mapClass";
+            // this.map.setZoom(15);
             this.emergencycolor = "assets/imgs/user/emergency.png";
             this.emergencyshow = true;
             for(let i=0; i<this.hcfMarkers.length; i++){
@@ -493,7 +499,10 @@ export class UserMapPage {
             // this.route(this.distanceArr[this.index]);
             console.log("true");
           }else{
-            this.map.setZoom(15);
+            this.directionsDisplay.setMap(null);
+            this.directionsDisplay.setPanel(null);
+            this.mapClass = "mapClass";
+            // this.map.setZoom(15);
             this.evaccolor = "assets/imgs/user/evac1.png";
             this.evacshow = true;
             for(let i=0; i<this.hcfMarkers.length; i++){
@@ -569,15 +578,66 @@ export class UserMapPage {
         icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png'
       });
     }
+
+    let self = this
+        // marker3[i].addListener('click', function() {
+          this.hcfMarkers[i].addListener('click', function() {
+            // self.presentConfirm(data);
+            if(data.hcf_type == 1 || data.hcf_type == 2 || data.hcf_type == 3){
+              self.route(data);
+            } else {
+              self.routeforemergency(data);
+              // console.log("hcf route di pwede")
+            }
+          });
+    let content = data.name;
+    this.addInfoWindow(this.hcfMarkers[i], content);
   }
   /******** END SHOW MARKERS **********/
 
   /********** UNSHOW MARKERS ************/
   deleteMarker(i:any){
-    this.hcfMarkers[i].setMap(null);
+    try {
+      this.hcfMarkers[i].setMap(null);
+    } catch (error) {
+      console.log(error)
+    }
   }
   /******** END UNSHOW MARKERS **********/
 
+  routeforemergency(data){
+    // clearInterval(this.dataRefresher);
+    // this.markerGroup2.clearLayers();
+
+    this.mapClass = "mapDirClass";
+    // this.marker.setMap(null);
+    let watch = this.geolocation.watchPosition();
+    // this.watch.subscribe((data2) => {
+      watch.subscribe((data2) => {
+        // this.marker.setMap(null);
+      this.directionsDisplay.setMap(this.map);  
+      // this.directionsDisplay.setOptions({suppressMarkers:true});
+      this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
+      
+      this.directionsService.route({
+          // origin: {lat: position.coords.latitude, lng: position.coords.longitude},
+        destination: {lat: data.request_lat, lng: data.request_long},
+        // destination: {lat: data.xloc, lng: data.yloc},
+        // origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
+        origin: {lat: data2.coords.latitude, lng: data2.coords.longitude},
+        travelMode: google.maps.TravelMode['DRIVING']
+      }, (res, status) => {
+
+        if(status == google.maps.DirectionsStatus.OK){
+            this.directionsDisplay.setDirections(res);
+                          
+        } else {
+            console.warn(status);
+        }
+      });
+    });
+    
+  }
 
   /******** SHOW MODAL **********/
   passPage: any;
@@ -709,7 +769,9 @@ export class UserMapPage {
   }
 
   route(data){
+    this.mapClass = "mapDirClass";
     this.directionsDisplay.setMap(this.map);
+    this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
     this.directionsService.route({
             origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
             destination: {lat: data.xloc, lng: data.yloc},
