@@ -100,7 +100,8 @@ export class HistoryPage {
             data: data[i]
           }
         );
-      }else if(data[i].event=="Fire" && data[i].request_status_id == 0){
+      }
+      else if(data[i].event=="Fire" && data[i].request_status_id == 0){
         this.history.push(
           { request_id: data[i].request_id,
             action: data[i].action,

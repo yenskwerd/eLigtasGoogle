@@ -14,7 +14,7 @@
   <ion-fab top>
     <img *ngIf="looking==true" top src="assets/imgs/user/wfr.gif" class="loading">
   </ion-fab>
-  <ion-fab left top>
+  <ion-fab *ngIf="responderongoing==0" left top>
     <button color="trans" ion-fab menuToggle><ion-icon color="primary" name="menu"></ion-icon></button>
     <button color="trans" (click)="showEmergency($event)" ion-fab><img src={{emergencycolor}} class="togglesht"></button>
     <button color="trans" (click)="showHCF($event)" ion-fab><img src={{HCFcolor}} class="togglesht"></button>
@@ -33,9 +33,9 @@
     <button color="danger" (click)="cancelConfirm()" ion-fab><ion-icon name="close"></ion-icon></button>
   </ion-fab>
 
-  <ion-fab *ngIf="statrouteforhcfs==1" right top>
+  <!-- <ion-fab *ngIf="statrouteforhcfs==1" right top>
     <button color="danger" (click)="cancelConfirm1()" ion-fab><ion-icon name="close"></ion-icon></button>
-  </ion-fab>
+  </ion-fab> -->
   
   <ion-fab *ngIf="stat_id==0 && user_request_id==NULL" right top>
     <button color="light" class="fab-trans" (click)="recenter()" ion-fab><ion-icon name="locate"></ion-icon></button>

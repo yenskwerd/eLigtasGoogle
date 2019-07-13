@@ -134,7 +134,8 @@ export class RespMapPage {
                   fullscreenControl: true,
                   zoomControl: false,
                   scaleControl: true,
-                  clickableIcons: false
+                  clickableIcons: false,
+                  streetViewControl:true
                 }
                 // 10.3813503, 123.9815693
                 this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions), {
@@ -233,7 +234,7 @@ export class RespMapPage {
             this.notification();
             console.log(this.ctr);
             console.log(data.length);
-            for(let i=0; i<data.length; i++){
+            for(let i=this.ctr; i<data.length; i++){
               // this.createMarker2(data[i]);
               this.createMarker2(data[i]);
           }
@@ -245,7 +246,7 @@ export class RespMapPage {
           console.dir(error);
       });
       // console.log(this.marker2);
-    },5000);
+    },1000);
   }
 
   notification() {
@@ -436,22 +437,18 @@ yellow:any = 0;
     alert.present();
   }
 
-  
+  responderongoing:any=0;
   rout(data){
     
     clearInterval(this.dataRefresher);
-    // this.markerGroup2.clearLayers();
-
     this.mapClass = "mapDirClass";
     // this.marker.setMap(null);
     let watch = this.geolocation.watchPosition();
     // this.watch.subscribe((data2) => {
       watch.subscribe((data2) => {
-        // this.marker.setMap(null);
       this.directionsDisplay.setMap(this.map);  
-      // this.directionsDisplay.setOptions({suppressMarkers:true});
       this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
-      
+      this.responderongoing=1;
       this.directionsService.route({
           // origin: {lat: position.coords.latitude, lng: position.coords.longitude},
         destination: {lat: data.request_lat, lng: data.request_long},
@@ -460,10 +457,8 @@ yellow:any = 0;
         origin: {lat: data2.coords.latitude, lng: data2.coords.longitude},
         travelMode: google.maps.TravelMode['DRIVING']
       }, (res, status) => {
-
         if(status == google.maps.DirectionsStatus.OK){
-            this.directionsDisplay.setDirections(res);
-                          
+            this.directionsDisplay.setDirections(res);    
         } else {
             console.warn(status);
         }
@@ -572,9 +567,13 @@ yellow:any = 0;
                 // });
               }
             }
+            // this.route(data);
             console.log("true");
           }else{
-            this.map.setZoom(15);
+            this.directionsDisplay.setMap(null);
+            this.directionsDisplay.setPanel(null);
+            this.mapClass = "mapClass";
+            // this.map.setZoom(15);
             this.HCFcolor = "assets/imgs/user/hcfi.png";
             this.HCFshow = true;
             for(let i=0; i<this.hcfMarkers.length; i++){
@@ -627,8 +626,13 @@ yellow:any = 0;
             //   }
             // }
             console.log("true");
+            //code para sa iglick sa emergency marker
+            // this.route(this.distanceArr[this.index]);
           }else{
-            this.map.setZoom(15);
+            this.directionsDisplay.setMap(null);
+            this.directionsDisplay.setPanel(null);
+            this.mapClass = "mapClass";
+            // this.map.setZoom(15);
             this.emergencycolor = "assets/imgs/user/emergency.png";
             this.emergencyshow = true;
             for(let i=0; i<this.hcfMarkers.length; i++){
@@ -636,7 +640,7 @@ yellow:any = 0;
             }
             console.log("false");
           }
-          
+
        },
        (error : any) =>
        {
@@ -685,7 +689,11 @@ yellow:any = 0;
             // }
             console.log("true");
           }else{
-            this.map.setZoom(15);
+            this.directionsDisplay.setMap(null);
+            this.directionsDisplay.setPanel(null);
+            this.mapClass = "mapClass";
+            // this.requestMarker();
+            // this.map.setZoom(15);
             this.evaccolor = "assets/imgs/user/evac1.png";
             this.evacshow = true;
             for(let i=0; i<this.hcfMarkers.length; i++){
@@ -771,10 +779,11 @@ yellow:any = 0;
         // marker3[i].addListener('click', function() {
           this.hcfMarkers[i].addListener('click', function() {
             // self.presentConfirm(data);
-            if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
-              self.routeforhcfs(data);
+            if(data.hcf_type == 1 || data.hcf_type == 2 || data.hcf_type == 3){
+              self.route(data);
             } else {
-              console.log("hcf route di pwede")
+              self.routeforemergency(data);
+              // console.log("hcf route di pwede")
             }
           });
     let content = data.name;
@@ -784,15 +793,17 @@ yellow:any = 0;
 
   /********** UNSHOW MARKERS ************/
   deleteMarker(i:any){
-    this.hcfMarkers[i].setMap(null);
+    try {
+      this.hcfMarkers[i].setMap(null);
+    } catch (error) {
+      console.log(error)
+    }
   }
   /******** END UNSHOW MARKERS **********/
-  statrouteforhcfs:any;
 
 
-  routeforhcfs(data){
-    this.statrouteforhcfs=1;
-    clearInterval(this.dataRefresher);
+  routeforemergency(data){
+    // clearInterval(this.dataRefresher);
     // this.markerGroup2.clearLayers();
 
     this.mapClass = "mapDirClass";
@@ -807,7 +818,7 @@ yellow:any = 0;
       
       this.directionsService.route({
           // origin: {lat: position.coords.latitude, lng: position.coords.longitude},
-        destination: {lat: data.xloc, lng: data.yloc},
+        destination: {lat: data.request_lat, lng: data.request_long},
         // destination: {lat: data.xloc, lng: data.yloc},
         // origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
         origin: {lat: data2.coords.latitude, lng: data2.coords.longitude},
@@ -835,7 +846,7 @@ yellow:any = 0;
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('Access-Control-Allow-Origin' , '*');
-    headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+    headers.append('Access-Control-Allow-Headers' , 'Content-Type');  
     headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
     
     let options = new RequestOptions({ headers: headers });
@@ -910,6 +921,7 @@ yellow:any = 0;
   pushArrive() {
     // this.map.removeControl(this.control);
     this.stat_id=2;
+    this.responderongoing=0;
 
 
     var headers = new Headers();
@@ -1081,6 +1093,7 @@ yellow:any = 0;
   }
 
   pushDone() {
+    this.responderongoing=0;
     this.stat_id=3;
     // if(this.loginService.logged_in_user_request_id!= null){
     //   this.status = true;
@@ -1176,19 +1189,22 @@ yellow:any = 0;
 
       alert2.present();
     });
-    this.directionsDisplay.setMap(null);
-    this.directionsDisplay.setPanel(null);
-    // this.directionsDisplay.set('directionsPanel', null);
-    this.mapClass = "mapClass";
-    this.directionsDisplay.setOptions({suppressMarkers:true});
-    this.directionsDisplay.setOptions({suppressPolylines:true});
-    // this.requestMarker();
-
+    try {
+      this.directionsDisplay.setMap(null);
+      this.directionsDisplay.setPanel(null);
+      // this.directionsDisplay.set('directionsPanel', null);
+      this.mapClass = "mapClass";
+      this.directionsDisplay.setOptions({suppressMarkers:true});
+      this.directionsDisplay.setOptions({suppressPolylines:true});
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   pushCancel() {
     // document.getElementById("hh").style.display = "none";
     console.log("clicked cancel");
+    this.responderongoing=0;
     this.user_request_id = null;
     this.stat_id=0;
     
@@ -1302,14 +1318,17 @@ yellow:any = 0;
 
       alert2.present();
     });
-    
-    this.directionsDisplay.setMap(null);
-    this.directionsDisplay.setPanel(null);
-    // this.directionsDisplay.set('directionsPanel', null);
-    this.mapClass = "mapClass";
-    this.directionsDisplay.setOptions({suppressMarkers:true});
-    this.directionsDisplay.setOptions({suppressPolylines:true});
-    this.requestMarker();
+    try {
+      this.directionsDisplay.setMap(null);
+      this.directionsDisplay.setPanel(null);
+      // this.directionsDisplay.set('directionsPanel', null);
+      this.mapClass = "mapClass";
+      this.directionsDisplay.setOptions({suppressMarkers:true});
+      this.directionsDisplay.setOptions({suppressPolylines:true});
+      this.requestMarker();
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // deleteyellow(){
@@ -1445,8 +1464,9 @@ yellow:any = 0;
   }
 
   route(data){
-    this.statrouteforhcfs=1;
+    this.mapClass = "mapDirClass";
     this.directionsDisplay.setMap(this.map);
+    this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
     this.directionsService.route({
             origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
             destination: {lat: data.xloc, lng: data.yloc},
@@ -1459,40 +1479,5 @@ yellow:any = 0;
       }
     });
   }
-
-  cancelConfirm1() {
-    let alert = this.alertCtrl.create({
-      title: 'Response',
-      message: 'Do you want really want to cancel request?',
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-            // this.change1();
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            console.log('Buy clicked');
-            // clearInterval(this.dataRefresher);
-            // this.pushCancel();
-            this.statrouteforhcfs=0;
-            this.directionsDisplay.setMap(null);
-            this.directionsDisplay.setPanel(null);
-            // this.directionsDisplay.set('directionsPanel', null);
-            this.mapClass = "mapClass";
-            this.directionsDisplay.setOptions({suppressMarkers:true});
-            this.directionsDisplay.setOptions({suppressPolylines:true});
-            this.requestMarker();
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-            
 
 }

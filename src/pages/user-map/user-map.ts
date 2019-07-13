@@ -78,7 +78,7 @@ export class UserMapPage {
   
   ionViewWillEnter() {
     this.loadmap();
-    this.getUserRequest1();
+    // this.getUserRequest1();
   }
 
   /********** Google Maps **********/
@@ -94,9 +94,9 @@ export class UserMapPage {
 
 
   loadmap(){
-        // this.geolocation.getCurrentPosition().then((position) => {
-          let watch = this.geolocation.watchPosition();
-    watch.subscribe((position) => {
+        this.geolocation.getCurrentPosition().then((position) => {
+    //       let watch = this.geolocation.watchPosition();
+    // watch.subscribe((position) => {
           this.latitude = position.coords.latitude;
           this.longitude = position.coords.longitude;
           this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -112,6 +112,7 @@ export class UserMapPage {
           this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions), {
             // disableDefaultUI: true,
             fullscreenControl: true,
+            streetViewControl: true,
             zoomControl: false,
             scaleControl: true,
             clickableIcons: false
@@ -121,6 +122,7 @@ export class UserMapPage {
            console.log(err);
          
          });
+         this.getUserRequest1();
   }
 
   addMarker(){

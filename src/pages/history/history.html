@@ -19,21 +19,13 @@
   <ion-card padding *ngFor="let item of history" (click)="historymore(item)">
       <ion-item>
           <ion-row>
-            <ion-col><h2>{{ item.action }} {{ item.request_id }}</h2></ion-col>
-            <ion-col><h5>{{ item.action_datetime| date : 'longDate' }} {{ item.action_datetime| date : 'shortTime' }}</h5></ion-col>
+            <ion-col><h2>{{item.action}}</h2></ion-col>
+            <ion-col><h2>{{item.request_id}}</h2></ion-col>
+            <ion-col><h5>{{item.action_datetime| date : 'longDate' }} {{ item.action_datetime| date : 'shortTime' }}</h5></ion-col>
           </ion-row>
-          
-          <!-- <h5>{{ item.request_status_id }}</h5> -->
-          <!-- <h3>{{ item.event }}</h3> -->
-          <!-- <button color="trans" (click)="showfire($event, 'Fire')" ion-fab><img src={{ item.firepic }} class="icons"></button> -->
-          
-          <!-- <button><img src={{item.event}} class="togglesht"></button>
-          <button><img src={{item.request_status_id}}></button> -->
           <ion-row>
             <ion-col><img src={{item.event}} class="togglesht"></ion-col>
             <ion-col><img src={{item.request_status_id}} class="icons"></ion-col>
-            <ion-col></ion-col>
-            <ion-col></ion-col>
           </ion-row>
           <!-- <p>{{ item.request_status_id }}</p> -->
           <!-- <ion-icon item-end name="more"></ion-icon> -->
