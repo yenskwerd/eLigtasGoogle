@@ -9,6 +9,7 @@ import { HistoryPage } from '../pages/history/history';
 import { LoginServiceProvider } from '../providers/login-service/login-service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Storage } from '@ionic/storage';
 
 @Component({
   templateUrl: 'app.html'
@@ -27,7 +28,18 @@ export class MyApp {
   home: Array<{icon:string, title: string, component: any}>;
   shownGroup = null;
  
-  constructor(public platform: Platform, public geolocation: Geolocation, private http: Http, public app: App, public alertCtrl: AlertController, private push: Push, public menuCtrl: MenuController, public statusBar: StatusBar, public events: Events, public splashScreen: SplashScreen, public loginService: LoginServiceProvider) {
+  constructor(public platform: Platform, 
+    public geolocation: Geolocation, 
+    private http: Http, public app: App, 
+    public alertCtrl: AlertController, 
+    private push: Push, 
+    public menuCtrl: MenuController, 
+    public statusBar: StatusBar, 
+    public events: Events, 
+    public splashScreen: SplashScreen, 
+    public loginService: LoginServiceProvider,
+    public storage: Storage) {
+    
     this.initializeApp();
 
     this.geolocation.getCurrentPosition().then((position) => {
@@ -101,6 +113,8 @@ export class MyApp {
   lastlat:any;
   lastlong:any;
   logout(page) {
+
+    this.storage.clear()
     
     var headers = new Headers();
     

@@ -17,6 +17,7 @@ import { HTTP, HTTPOriginal } from '@ionic-native/http';
 import { HistoryPage } from '../pages/history/history';
 import { Push } from '@ionic-native/push'
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { IonicStorageModule } from '@ionic/storage'
 @NgModule({
   declarations: [
     MyApp,
@@ -30,6 +31,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
     HttpClientModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
