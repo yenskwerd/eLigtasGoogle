@@ -458,7 +458,49 @@ yellow:any = 0;
         travelMode: google.maps.TravelMode['DRIVING']
       }, (res, status) => {
         if(status == google.maps.DirectionsStatus.OK){
-            this.directionsDisplay.setDirections(res);    
+            this.directionsDisplay.setDirections(res);  
+            console.log(this.directionsPanel.nativeElement);
+
+            let x = document.getElementsByClassName('adp-summary');
+            let y = document.getElementsByTagName('span')
+            try {
+              console.log(y[6].textContent);
+              /******** UPDATE REQUEST STATUS ID **********/
+              var headers = new Headers();
+    
+              headers.append("Accept", 'application/json');
+              headers.append('Content-Type', 'application/x-www-form-urlencoded');
+              headers.append('Access-Control-Allow-Origin' , '*');
+              headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+              headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+              
+              let options = new RequestOptions({ headers: headers });
+              let data2 = {
+                request_id: this.request_id,
+                ETA: y[6].textContent
+              }
+
+              this.http2.post('http://usc-dcis.com/eligtas.app/update-request-ETA.php', data2, options)
+              .map(res=> res.json())
+              .subscribe((data2: any) =>
+              {
+                console.log(data2);
+              },
+              (error : any) =>
+              {
+                console.log(error);
+                let alert2 = this.alertCtrl.create({
+                  title:"FAILED",
+                  subTitle: "Request not updated. huhu!",
+                  buttons: ['OK']
+                  });
+
+                alert2.present();
+              });
+            } catch (error) {
+              console.log(error);
+            }
+
         } else {
             console.warn(status);
         }
