@@ -4,7 +4,7 @@ import {Http, Headers, RequestOptions}  from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import 'rxjs/add/operator/map';
 import { Events } from 'ionic-angular';
-import { HTTP } from '@ionic-native/http';
+import { Storage } from '@ionic/storage';
 
 /**
  * Generated class for the LoginPage page.
@@ -21,7 +21,7 @@ import { HTTP } from '@ionic-native/http';
 export class LoginPage {
 
   constructor(public navCtrl: NavController, public menuCtrl: MenuController, public loading:LoadingController, private http: Http, public alertCtrl: AlertController, public navParams: NavParams,
-    public loginService: LoginServiceProvider, public events: Events) {
+    public loginService: LoginServiceProvider, public events: Events, public storage: Storage) {
   }
 
   ionViewWillEnter() {
@@ -83,6 +83,11 @@ export class LoginPage {
       alert.present();
     
     }else{
+
+      this.storage.set('name', this.username.value);
+      this.storage.set('password', this.password.value);
+
+      
     
       var headers = new Headers();
       
