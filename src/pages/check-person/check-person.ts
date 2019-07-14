@@ -243,7 +243,10 @@ export class CheckPersonPage {
           user_id: this.loginService.logged_in_user_id,
           action: "Request",
           action_done: this.event,
-          action_datetime: new Date()
+          action_datetime: new Date(),
+
+          /******** REPORT *********/
+          triage: "Green"
         }
         console.log(data);
         this.http.post('http://usc-dcis.com/eligtas.app/report.php', data, options)

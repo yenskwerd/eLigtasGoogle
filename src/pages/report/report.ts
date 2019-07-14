@@ -19,7 +19,6 @@ export class ReportPage {
 
   public items : Array<any> = [];
   reports: any = [];
-  value: any = [];
   hello: any;
   event: any;
   request_id: any;
@@ -38,15 +37,23 @@ export class ReportPage {
     });
     modalPage.onDidDismiss(data => {
       console.log(data);
-      this.value.push(data);//here
-      console.log(this.value)
+      this.reports.push(data);//here
       // console.log(JSON.stringify(this.value,undefined,2));
     });
     modalPage.present(); 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ReportPage');
+  // ionViewDidLoad() {
+  //   console.log('ionViewDidLoad ReportPage');
+  //   this.load();
+  // }
+
+  ionViewWillEnter() { 
+    if(this.reports.length!=0) {
+      console.log("Clearing reports")
+      this.reports = [];
+      console.log(this.reports)
+    }
     this.load();
   }
 
@@ -72,7 +79,9 @@ export class ReportPage {
     for (let i=0; i < data.length; i++) {
       if(data[i].victim_name != "" && data[i].request_id == this.request_id && data[i].event == this.event) {
         this.reports.push(
-          { victim_name: data[i].victim_name,
+          { 
+            report_id: data[i].report_id,
+            victim_name: data[i].victim_name,
             victim_desc: data[i].victim_desc,
             triage: data[i].triage
           }

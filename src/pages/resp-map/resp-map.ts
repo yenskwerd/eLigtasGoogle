@@ -736,6 +736,24 @@ yellow:any = 0;
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor 
   };
+  rhu: any = {
+    url: "assets/imgs/user/health.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+  evacuation: any = {
+    url: "assets/imgs/user/pav1.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+  firestation: any = {
+    url: "assets/imgs/user/fstn.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
 
   createMarker(data:any, i:any){
 
@@ -765,6 +783,33 @@ yellow:any = 0;
         // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
         // icon: 'assets/imgs/user/evacmarker.png'
         icon: this.hospital2
+      });
+    }else if(data.hcf_type == 6){
+      this.hcfMarkers[i] = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+        // icon: 'assets/imgs/user/evacmarker.png'
+        icon: this.rhu
+      });
+    }else if(data.hcf_type == 7){
+      this.hcfMarkers[i] = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+        // icon: 'assets/imgs/user/evacmarker.png'
+        icon: this.evacuation
+      });
+    }else if(data.hcf_type == 8){
+      this.hcfMarkers[i] = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+        // icon: 'assets/imgs/user/evacmarker.png'
+        icon: this.firestation
       });
     }else{
       this.hcfMarkers[i] = new google.maps.Marker({

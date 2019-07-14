@@ -12,7 +12,7 @@
 
 <ion-content padding>
 
-  <ion-item text-center>
+  <!-- <ion-item text-center>
       <ion-icon item-center  name="water" color="{{ data.triage }}" style="zoom:4.0;"></ion-icon>
   </ion-item>
     <ion-row>
@@ -26,5 +26,31 @@
         <ion-label>Victim Description:</ion-label>
         <h5>{{ data.victim_desc }}</h5>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
+    
+  <form>
+    <ion-item>
+      <ion-label stacked>Person Name</ion-label>
+      <ion-input type="text" [(ngModel)]="victim_nametext" name="victim_name" #victim_name></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Description</ion-label>
+      <ion-textarea [(ngModel)]="victim_desctext" name="victim_desc" #victim_desc></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Triage</ion-label>
+      <ion-select #C interface="popover" [(ngModel)]="triage" name="triage">
+        <ion-option value="Green">Green (Minor)</ion-option>
+        <ion-option value="Yellow">Yellow (Delayed)</ion-option>
+        <ion-option value="Red">Red (Immediate)</ion-option>
+        <ion-option value="Black">Black (Expectant)</ion-option>
+      </ion-select>   
+      <!-- <div padding> 
+              <button ion-button color={{green}} (click)="showg($event, 'Green')" round block>Green (Minor)</button>
+              <button ion-button color={{yellow}} (click)="showy($event, 'Yellow')" round block>Yellow (Delayed)</button>
+              <button ion-button color={{red}} (click)="showr($event, 'Red')" round block>Red (Immediate)</button>
+              <button ion-button color={{black}} (click)="showb($event, 'Black')" round block>Black (Expectant)</button></div>   -->
+    </ion-item>
+    <button ion-button type="submit" (click)="update()" block>Update</button>
+  </form>
 </ion-content>
