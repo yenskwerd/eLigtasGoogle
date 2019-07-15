@@ -234,7 +234,7 @@ export class RespMapPage {
             this.notification();
             console.log(this.ctr);
             console.log(data.length);
-            for(let i=this.ctr; i<data.length; i++){
+            for(let i=0; i<data.length; i++){
               // this.createMarker2(data[i]);
               this.createMarker2(data[i]);
           }
