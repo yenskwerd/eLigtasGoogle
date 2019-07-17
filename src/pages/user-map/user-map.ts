@@ -159,7 +159,6 @@ export class UserMapPage {
  
   responseAlert(){
     this.dataRefresher = setInterval(() =>{
-      console.log("nj gwapo");
       let alert = this.alertCtrl.create({
         title: 'Alert',
         message: 'Did anyone respond to your request?',
@@ -168,32 +167,22 @@ export class UserMapPage {
             text: 'Yes',
             role: 'cancel',
             handler: () => {
-            this.check=1;
-            console.log(this.check);
             this.looking = false;
             }
           },
           {
             text: 'No',
             handler: () => {
-              console.log('Cancel clicked');
-              // this.navCtrl.push('RespondToRequestPage'); 
-            this.check=0;
-            console.log(this.check);
-            this.responseAlert();
+            this.temp = null;
             }
           }
         ]
       });
-      if(this.check==0){
-          clearInterval(this.dataRefresher);
-          alert.present();
-      } else {
-          clearInterval(this.dataRefresher);
-      } 
+      clearInterval(this.dataRefresher);
+      alert.present();
       
-        },600000);
-      // },5000);
+      
+    },600000);
   }
 
   ionViewWillLeave() {
@@ -218,7 +207,8 @@ export class UserMapPage {
     this.addInfoWindow(this.marker, content);
   }
 
-  dataRefresher1:any;
+  dataRefresher1: any;
+  temp: any;
 
   getUserRequest1(){
     //gets user data
@@ -253,37 +243,40 @@ export class UserMapPage {
 
           console.log(dataReq);
 
-          this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-user-request1.php',dataReq,options)
-        .map(res=> res.json()) 
-        .subscribe(
-        res => {
-        // leaflet.marker([res.request_lat,res.request_long], {icon: this.grayIcon}).bindTooltip(res.event, {direction: 'bottom'}).addTo(this.map);
-        // this.addMarker2(this.grayMarker, res.event);
-      
-        console.log(res.request_status_id);
-        this.ETA = res.ETA;
-        console.log(this.ETA);
+          if(dataReq.request_id != null){
+            this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-user-request1.php',dataReq,options)
+            .map(res=> res.json()) 
+            .subscribe(
+            res => {
+            // leaflet.marker([res.request_lat,res.request_long], {icon: this.grayIcon}).bindTooltip(res.event, {direction: 'bottom'}).addTo(this.map);
+            // this.addMarker2(this.grayMarker, res.event);
+          
+              this.ETA = res.ETA;
 
-        if (res.request_status_id == null) {
-          this.looking = true;
-          this.responseAlert();
-        } else if (res.request_status_id == 1){
-          console.log("END");
-          clearInterval(this.dataRefresher1);
-            this.localNotifications.schedule({
-              id: 1,
-              title: 'RESPONDER',
-              text: 'A responder is on his way! He/she is '+this.ETA+' away.',
-              data: { mydata: 'My hidden message this is' },
-              // trigger: { in: 5, unit: ELocalNotificationTriggerUnit.SECOND },
-              trigger:{at: new Date()},
-              // foreground: true // Show the notification while app is open
+              if (res.request_status_id == null) {
+                console.log("NULL");
+                if(this.temp == null){
+                  this.temp = 1;
+                  this.looking = true;
+                  this.responseAlert();
+                }
+                
+              } else if (res.request_status_id == 1){
+                console.log("1");
+                console.log(this.ETA);
+                this.temp = 1;
+                this.localNotifications.schedule({
+                  id: 1,
+                  title: 'RESPONDER',
+                  text: 'A responder is on his way! Responder is '+this.ETA+' away.',
+                  data: { mydata: 'My hidden message this is' },
+                  trigger:{at: new Date()},
+                });
+              } else {
+                this.looking = false;
+              }
             });
-        } else {
-          this.looking = false;
-        }
-   });
-
+          }    
         }); 
     }, 1000);
 

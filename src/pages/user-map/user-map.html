@@ -29,6 +29,10 @@
       <button color="light" class="fab-trans" (click)="recenter()" ion-fab><ion-icon name="locate"></ion-icon></button>
     </ion-fab>
 
+    <ion-fab bottom>
+        <p class="pstyle">Please pin point the location <br>before making a <strong>REPORT</strong></p> 
+      </ion-fab>
+
     <ion-fab right bottom>
       <button *ngIf="passPage==null" color="secondary" (click)="showModal()" ion-fab><ion-icon name="apps"></ion-icon></button>
     </ion-fab>
@@ -36,7 +40,6 @@
   </div>
   <img src="assets/imgs/eligtasMarker.png" class="map-marker-centered" text-center>
 </ion-content>
-
 <ion-footer text-center>
   <div *ngIf="passPage!=null">
     <button ion-button (click)="PushPage()" block>Make Report</button> 
