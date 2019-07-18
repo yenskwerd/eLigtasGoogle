@@ -231,9 +231,8 @@ export class RespMapPage {
         console.log(data);
           this.request = data;
           if(this.ctr!=data.length){
-            this.notification();
-            console.log(this.ctr);
-            console.log(data.length);
+            
+            this.notification(data[data.length-1].request_type_id, data[data.length-1].event);
             for(let i=0; i<data.length; i++){
               // this.createMarker2(data[i]);
               this.createMarker2(data[i]);
@@ -249,15 +248,20 @@ export class RespMapPage {
     },1000);
   }
 
-  notification() {
+  type: any;
+
+  notification(id: any, event: any) {
+    switch(id){
+      case 1: this.type = 'Report Event'
+      case 2: this.type = 'Call For Help'
+      case 3: this.type = 'Please Check On Person'
+    }
     this.localNotifications.schedule({
       id: 1,
-      title: 'NEW REPORTS!!',
-      text: 'A request has been made',
+      title: 'NEW REPORT!!',
+      text: 'A request has been made type: '+ this.type +' event: '+ event,
       data: { mydata: 'My hidden message this is' },
-      // trigger: { in: 5, unit: ELocalNotificationTriggerUnit.SECOND },
       trigger:{at: new Date()},
-      // foreground: true // Show the notification while app is open
     });
   }
   
@@ -390,6 +394,7 @@ yellow:any = 0;
             console.log('Buy clicked');
             // clearInterval(this.dataRefresher);
             console.log('asdfasdf');
+            this.rout(data);
             this.navCtrl.push('RespondToRequestPage', {
               request_id : data.request_id,
               request_status_id : data.request_status_id, 

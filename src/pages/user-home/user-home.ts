@@ -31,30 +31,30 @@ export class UserHomePage {
   }
   
   PushReportEventPage(){
-    // this.navCtrl.setRoot('EventReportPage', {
-    //   lat: this.lat,
-    //   long: this.long
-    // });
-    let data = "EventReportPage";
-    this.viewCtrl.dismiss(data);
+    this.navCtrl.setRoot('EventReportPage', {
+      lat: this.lat,
+      long: this.long
+    });
+    // let data = "EventReportPage";
+    // this.viewCtrl.dismiss(data);
   }
 
   PushCallForHelpPage(){
-    // this.navCtrl.setRoot('HelpRequestPage', {
-    //   lat: this.lat,
-    //   long: this.long
-    // });
-    let data = "HelpRequestPage";
-    this.viewCtrl.dismiss(data);
+    this.navCtrl.setRoot('HelpRequestPage', {
+      lat: this.lat,
+      long: this.long
+    });
+    // let data = "HelpRequestPage";
+    // this.viewCtrl.dismiss(data);
   }
 
   PushCheckOnPage(){
-    // this.navCtrl.setRoot('CheckPersonPage', {
-    //   lat: this.lat,
-    //   long: this.long
-    // });
-    let data = "CheckPersonPage";
-    this.viewCtrl.dismiss(data);
+    this.navCtrl.setRoot('CheckPersonPage', {
+      lat: this.lat,
+      long: this.long
+    });
+    // let data = "CheckPersonPage";
+    // this.viewCtrl.dismiss(data);
   }
 
 }

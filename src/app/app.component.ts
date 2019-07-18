@@ -63,7 +63,7 @@ export class MyApp {
       { icon: 'globe', title: 'Batingaw App', component: ""},
       { icon: 'medkit', title: 'Red Cross App', component: ""},
       { icon: 'locate', title: 'Google Maps', component: ""},
-      { icon: 'globe', title: 'MIMS App', component: ""}
+      { icon: 'globe', title: 'MIMS App', component: ""},
     ];
 
     // this.pages = [
@@ -78,6 +78,11 @@ export class MyApp {
     // ]; 
     
   }
+
+  message(): void {
+    alert("jssjs");
+  
+    }
 
   toggleGroup(group) {
     if (this.isGroupShown(group)) {
