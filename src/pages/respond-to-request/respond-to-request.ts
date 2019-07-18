@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import {Http, Headers, RequestOptions}  from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import 'rxjs/add/operator/map';
@@ -27,6 +27,7 @@ export class RespondToRequestPage {
   request_id;
   lat: any;
   long: any;
+  eta:any;
 
   option: any;
   z=0;
@@ -39,7 +40,7 @@ export class RespondToRequestPage {
   s=this.myDate.getSeconds();
   datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http   : Http, public loading:LoadingController, public loginService: LoginServiceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http   : Http, public loading:LoadingController, public loginService: LoginServiceProvider, public alertCtrl: AlertController) {
     this.event = navParams.data.event;
     this.injured = navParams.data.persons_injured;
     this.trapped = navParams.data.persons_trapped;
@@ -50,6 +51,7 @@ export class RespondToRequestPage {
     this.option = navParams.data.option;
     this.lat = navParams.data.request_lat;
     this.long = navParams.data.request_long;
+    this.eta = navParams.data.ETA;
   }
 
   ionViewDidLoad() {
@@ -121,6 +123,39 @@ export class RespondToRequestPage {
             user_id: this.loginService.logged_in_user_id
           }
           console.log(data);
+          //update eta
+          var headers = new Headers();
+    
+              headers.append("Accept", 'application/json');
+              headers.append('Content-Type', 'application/x-www-form-urlencoded');
+              headers.append('Access-Control-Allow-Origin' , '*');
+              headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+              headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+              
+              let options1 = new RequestOptions({ headers: headers });
+              let data3 = {
+                request_id: this.request_id,
+                ETA: this.eta
+              }
+
+              this.http.post('http://usc-dcis.com/eligtas.app/update-request-ETA.php', data3, options1)
+              .map(res=> res.json())
+              .subscribe((data3: any) =>
+              {
+                console.log(data3);
+                console.log(this.eta);
+              },
+              (error : any) =>
+              {
+                console.log(error);
+                let alert2 = this.alertCtrl.create({
+                  title:"FAILED",
+                  subTitle: "Request not updated. huhu!",
+                  buttons: ['OK']
+                  });
+
+                alert2.present();
+              });
 
     this.navCtrl.setRoot('RespMapPage');
   // this.navCtrl.pop();

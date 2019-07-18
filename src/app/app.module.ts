@@ -18,6 +18,8 @@ import { HistoryPage } from '../pages/history/history';
 import { Push } from '@ionic-native/push'
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { IonicStorageModule } from '@ionic/storage'
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -48,7 +50,8 @@ import { IonicStorageModule } from '@ionic/storage'
     Push,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginServiceProvider,
-    LocalNotifications
+    LocalNotifications,
+    NativeGeocoder
   ]
 })
 export class AppModule {}

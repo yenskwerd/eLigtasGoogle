@@ -6,6 +6,7 @@ import {Http, Headers, RequestOptions}  from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import 'rxjs/add/operator/map';
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 
 /**
  * Generated class for the RespMapPage page.
@@ -52,7 +53,7 @@ export class RespMapPage {
   evaccolor2: any = "assets/imgs/user/testmarker.png";
   constructor(public modalCtrl: ModalController, public navCtrl: NavController, public geolocation: Geolocation, public http2 : Http, public http : HttpClient, public navParams: NavParams,
     public loginService: LoginServiceProvider, public alertCtrl : AlertController, public localNotifications: LocalNotifications,
-    public platform: Platform) {
+    public platform: Platform, public geocoder: NativeGeocoder) {
     this.hcfMarkers = [];
     this.requestMarkers = [];
     this.distanceArr = [];
@@ -205,13 +206,14 @@ export class RespMapPage {
       .subscribe((data : any) =>
       {
         console.log(data);
-          this.ctr = data.length;
+          // this.ctr = data.length;
           this.request = data;
           console.log(this.ctr);
           for(let i=0; i<data.length; i++){
             // this.createMarker2(data[i]);
-            this.createMarker2(data[i]);
+            this.createMarker2(data[i],i);
           }
+          this.ctr = data.length;
       },
       (error : any) =>
       {
@@ -219,9 +221,12 @@ export class RespMapPage {
       });
   }
 
+  geolat:any;
+  geolong:any;
+
   requestMarker(){
     
-    this.dataRefresher = setInterval(() =>{
+    // this.dataRefresher = setInterval(() =>{
       if(this.loginService.logged_in_user_request_id!= null){
         this.status = true;
       }
@@ -231,11 +236,14 @@ export class RespMapPage {
         console.log(data);
           this.request = data;
           if(this.ctr!=data.length){
-            
-            this.notification(data[data.length-1].request_type_id, data[data.length-1].event);
-            for(let i=0; i<data.length; i++){
+            this.geolat =data[data.length-1].request_lat;
+            this.geolong =data[data.length-1].request_long;
+            this.ReverseGeocoding(data[data.length-1].request_lat, data[data.length-1].request_long);
+
+            this.notification(data[data.length-1].request_type_id, data[data.length-1].event, this.reverseGeocodingResults);
+            for(let i=this.ctr; i<data.length; i++){
               // this.createMarker2(data[i]);
-              this.createMarker2(data[i]);
+              this.createMarker2(data[i],i);
           }
           this.ctr=data.length;
         }
@@ -245,21 +253,42 @@ export class RespMapPage {
           console.dir(error);
       });
       // console.log(this.marker2);
-    },1000);
+    // },1000);
+  }
+
+  // deleterequestMarker(){
+  //     for (let i = 0; i < this.pmarker.length; i++ ) {
+  //       this.pmarker[i].setVisible(false)
+  //     }
+  // }
+
+  reverseGeocodingResults:string;
+
+  ReverseGeocoding(req_lat,req_long){
+    var options:NativeGeocoderOptions={
+      useLocale:true,
+      maxResults:1
+    }
+
+    this.geocoder.reverseGeocode(req_lat, req_long, options)
+    .then((results: NativeGeocoderReverseResult[])=>{
+      this.reverseGeocodingResults=JSON.stringify(results[0].locality+","+results[0].thoroughfare);
+      console.log("geocode")
+    })
   }
 
   type: any;
 
-  notification(id: any, event: any) {
+  notification(id: any, event: any,realaddressusinggeocode:any) {
     switch(id){
       case 1: this.type = 'Report Event'
       case 2: this.type = 'Call For Help'
-      case 3: this.type = 'Please Check On Person'
+      case 3: this.type = 'Check On Person'
     }
     this.localNotifications.schedule({
       id: 1,
-      title: 'NEW REPORT!!',
-      text: 'A request has been made type: '+ this.type +' event: '+ event,
+      title: this.type,
+      text: event+" near "+ realaddressusinggeocode,
       data: { mydata: 'My hidden message this is' },
       trigger:{at: new Date()},
     });
@@ -281,22 +310,29 @@ export class RespMapPage {
     // this.marker4.push(this.marker4);
     // return this.marker;
   }
-
+// pmarker:any[];
 yellow:any = 0;
-  createMarker2(data:any){
+  createMarker2(data:any,i:any){
     // createMarker2(data:any){
       // console.log("createmarker2");
   
       if(data.request_status_id==null){
         var lat = data.request_lat;
         var long = data.request_long;
-        //  this.marker4 = new google.maps.Marker({
+
         const marker = new google.maps.Marker({
           position: { lat: parseFloat(lat), lng: parseFloat(long) },
           animation: google.maps.Animation.DROP,
           map: this.map,
           icon: this.purpleMarker   
         })
+
+        // this.pmarker = new google.maps.Marker({
+        //   position: { lat: parseFloat(lat), lng: parseFloat(long) },
+        //   animation: google.maps.Animation.DROP,
+        //   map: this.map,
+        //   icon: this.purpleMarker   
+        // })
     
         // i show the alert on mark click yeeeeees <3
         let self = this
@@ -394,7 +430,9 @@ yellow:any = 0;
             console.log('Buy clicked');
             // clearInterval(this.dataRefresher);
             console.log('asdfasdf');
-            this.rout(data);
+            this.routforETA(data);
+            console.log("ETA "+this.eta);
+            setTimeout(() => {
             this.navCtrl.push('RespondToRequestPage', {
               request_id : data.request_id,
               request_status_id : data.request_status_id, 
@@ -406,9 +444,11 @@ yellow:any = 0;
               special_needs: data.special_needs,
               request_lat: data.request_lat,
               request_long: data.request_long,
-
+              ETA: this.eta,
+              
               option: "CFB"
             });
+          }, 500);
           }
         }
       ]
@@ -442,8 +482,14 @@ yellow:any = 0;
     alert.present();
   }
 
+
   responderongoing:any=0;
+  x:any;
+  y1:any;
+  eta:any;
+
   rout(data){
+    // this.deleterequestMarker();
     
     clearInterval(this.dataRefresher);
     this.mapClass = "mapDirClass";
@@ -464,48 +510,83 @@ yellow:any = 0;
       }, (res, status) => {
         if(status == google.maps.DirectionsStatus.OK){
             this.directionsDisplay.setDirections(res);  
-            console.log(this.directionsPanel.nativeElement);
-
-            let x = document.getElementsByClassName('adp-summary');
-            let y = document.getElementsByTagName('span')
-            try {
-              console.log(y[6].textContent);
-              /******** UPDATE REQUEST STATUS ID **********/
-              var headers = new Headers();
+            // this.eta=this.y1[6].textContent;
+            this.eta=this.directionsDisplay.directions.routes[0].legs[0].duration.text;
+            console.log(this.directionsDisplay.directions.routes[0].legs[0].duration.text);
+              console.log(this.eta);
+            // try {
+            //   // this.eta=this.y1[6].textContent;
+            //   console.log(this.directionsDisplay.directions.routes[0].legs[0].duration.text);
+            //   console.log(this.eta);
+            //   /******** UPDATE REQUEST STATUS ID **********/
+            //   // var headers = new Headers();
     
-              headers.append("Accept", 'application/json');
-              headers.append('Content-Type', 'application/x-www-form-urlencoded');
-              headers.append('Access-Control-Allow-Origin' , '*');
-              headers.append('Access-Control-Allow-Headers' , 'Content-Type');
-              headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+            //   // headers.append("Accept", 'application/json');
+            //   // headers.append('Content-Type', 'application/x-www-form-urlencoded');
+            //   // headers.append('Access-Control-Allow-Origin' , '*');
+            //   // headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+            //   // headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
               
-              let options = new RequestOptions({ headers: headers });
-              let data2 = {
-                request_id: this.request_id,
-                ETA: y[6].textContent
-              }
+            //   // let options = new RequestOptions({ headers: headers });
+            //   // let data2 = {
+            //   //   request_id: this.request_id,
+            //   //   ETA: y[6].textContent
+            //   // }
 
-              this.http2.post('http://usc-dcis.com/eligtas.app/update-request-ETA.php', data2, options)
-              .map(res=> res.json())
-              .subscribe((data2: any) =>
-              {
-                console.log(data2);
-              },
-              (error : any) =>
-              {
-                console.log(error);
-                let alert2 = this.alertCtrl.create({
-                  title:"FAILED",
-                  subTitle: "Request not updated. huhu!",
-                  buttons: ['OK']
-                  });
+            //   // this.http2.post('http://usc-dcis.com/eligtas.app/update-request-ETA.php', data2, options)
+            //   // .map(res=> res.json())
+            //   // .subscribe((data2: any) =>
+            //   // {
+            //   //   console.log(data2);
+            //   // },
+            //   // (error : any) =>
+            //   // {
+            //   //   console.log(error);
+            //   //   let alert2 = this.alertCtrl.create({
+            //   //     title:"FAILED",
+            //   //     subTitle: "Request not updated. huhu!",
+            //   //     buttons: ['OK']
+            //   //     });
 
-                alert2.present();
-              });
-            } catch (error) {
-              console.log(error);
-            }
+            //   //   alert2.present();
+            //   // });
+            // } catch (error) {
+            //   console.log(error);
+            // }
 
+        } else {
+            console.warn(status);
+        }
+      });
+    });
+    
+  }
+
+  routforETA(data){
+    
+    // clearInterval(this.dataRefresher);
+    // this.mapClass = "mapDirClass";
+    // this.marker.setMap(null);
+    let watch = this.geolocation.watchPosition();
+    // this.watch.subscribe((data2) => {
+      watch.subscribe((data2) => {
+      // this.directionsDisplay.setMap(this.map);  
+      // this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
+      // this.responderongoing=1;
+      this.directionsService.route({
+          // origin: {lat: position.coords.latitude, lng: position.coords.longitude},
+        destination: {lat: data.request_lat, lng: data.request_long},
+        // destination: {lat: data.xloc, lng: data.yloc},
+        // origin: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
+        origin: {lat: data2.coords.latitude, lng: data2.coords.longitude},
+        travelMode: google.maps.TravelMode['DRIVING']
+      }, (res, status) => {
+        if(status == google.maps.DirectionsStatus.OK){
+            this.directionsDisplay.setDirections(res);  
+            // this.eta=this.y1[6].textContent;
+            this.eta=this.directionsDisplay.directions.routes[0].legs[0].duration.text;
+            console.log(this.directionsDisplay.directions.routes[0].legs[0].duration.text);
+              console.log(this.eta);
         } else {
             console.warn(status);
         }
@@ -535,6 +616,11 @@ yellow:any = 0;
             // clearInterval(this.dataRefresher);
             // clearInterval(this.watchrefresher);
             console.log('asdfasdf');
+            this.routforETA(data);
+            console.log("ETA "+this.eta);
+            // console.log("duration"+this.directionsDisplay.directions.routes[0].legs[0].duration.text);
+            setTimeout(() => {
+              console.log("ETA "+this.eta);
             this.navCtrl.setRoot('RespondToRequestPage', {
               request_id : data.request_id,
               request_status_id : data.request_status_id, 
@@ -546,9 +632,10 @@ yellow:any = 0;
               special_needs: data.special_needs,
               request_lat: data.request_lat,
               request_long: data.request_long,
-              
+              ETA: this.eta,
               option: "respond"
             });
+          }, 500);
             // this.requestMarker(); 
             console.log("request id: ");
             console.log(data.request_id);
