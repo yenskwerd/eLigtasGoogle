@@ -57,6 +57,7 @@ export class RespMapPage {
     this.hcfMarkers = [];
     this.requestMarkers = [];
     this.distanceArr = [];
+    this.pmarker = [];
     
 // this.redMarker=this.evaccolor2;
     this.redMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
@@ -226,7 +227,7 @@ export class RespMapPage {
 
   requestMarker(){
     
-    // this.dataRefresher = setInterval(() =>{
+    this.dataRefresher = setInterval(() =>{
       if(this.loginService.logged_in_user_request_id!= null){
         this.status = true;
       }
@@ -253,14 +254,52 @@ export class RespMapPage {
           console.dir(error);
       });
       // console.log(this.marker2);
-    // },1000);
+    },1000);
   }
 
-  // deleterequestMarker(){
-  //     for (let i = 0; i < this.pmarker.length; i++ ) {
-  //       this.pmarker[i].setVisible(false)
-  //     }
+  deleterequestMarker(){
+    clearInterval(this.dataRefresher)
+      if(this.pmarker.length!=0) {
+        for(let i=0; i<this.pmarker.length; i++){
+          // this.DRMarker(i);
+          try {
+            this.pmarker[i].setVisible(false);
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      }
+  }
+
+  // DRMarker(i:any){
+  //   try {
+  //     this.pmarker[i].setVisible(false);
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
   // }
+
+  showrequestMarker(){
+    this.requestMarker();
+    if(this.pmarker.length!=0) {
+      for(let i=0; i<this.pmarker.length; i++){
+        // this.DRMarker(i);
+        try {
+          this.pmarker[i].setVisible(true);
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }
+}
+
+// DRMarker2(i:any){
+//   try {
+//     this.pmarker[i].setVisible(true);
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
   reverseGeocodingResults:string;
 
@@ -310,7 +349,8 @@ export class RespMapPage {
     // this.marker4.push(this.marker4);
     // return this.marker;
   }
-// pmarker:any[];
+
+pmarker: any[];
 yellow:any = 0;
   createMarker2(data:any,i:any){
     // createMarker2(data:any){
@@ -320,24 +360,24 @@ yellow:any = 0;
         var lat = data.request_lat;
         var long = data.request_long;
 
-        const marker = new google.maps.Marker({
-          position: { lat: parseFloat(lat), lng: parseFloat(long) },
-          animation: google.maps.Animation.DROP,
-          map: this.map,
-          icon: this.purpleMarker   
-        })
-
-        // this.pmarker = new google.maps.Marker({
+        // const marker = new google.maps.Marker({
         //   position: { lat: parseFloat(lat), lng: parseFloat(long) },
         //   animation: google.maps.Animation.DROP,
         //   map: this.map,
         //   icon: this.purpleMarker   
         // })
+
+        this.pmarker[i] = new google.maps.Marker({
+          position: { lat: parseFloat(lat), lng: parseFloat(long) },
+          animation: google.maps.Animation.DROP,
+          map: this.map,
+          icon: this.purpleMarker   
+        })
     
         // i show the alert on mark click yeeeeees <3
         let self = this
         // marker3[i].addListener('click', function() {
-          marker.addListener('click', function() {
+          this.pmarker[i].addListener('click', function() {
             // self.presentConfirm(data);
             if(self.loginService.logged_in_user_request_id == null || self.loginService.logged_in_stat_id == 3) {
               self.presentConfirm(data);
@@ -489,9 +529,9 @@ yellow:any = 0;
   eta:any;
 
   rout(data){
-    // this.deleterequestMarker();
+    // clearInterval(this.dataRefresher);
+    this.deleterequestMarker();
     
-    clearInterval(this.dataRefresher);
     this.mapClass = "mapDirClass";
     // this.marker.setMap(null);
     let watch = this.geolocation.watchPosition();
@@ -1186,7 +1226,7 @@ yellow:any = 0;
     this.mapClass = "mapClass";
     this.directionsDisplay.setOptions({suppressMarkers:true});
     this.directionsDisplay.setOptions({suppressPolylines:true});
-    this.requestMarker();
+    // this.requestMarker();
   }
 
   requestCallForBackUp(){
@@ -1375,6 +1415,8 @@ yellow:any = 0;
       this.mapClass = "mapClass";
       this.directionsDisplay.setOptions({suppressMarkers:true});
       this.directionsDisplay.setOptions({suppressPolylines:true});
+      // this.requestMarker();
+      this.showrequestMarker();
     } catch (error) {
       console.log(error)
     }
@@ -1504,7 +1546,8 @@ yellow:any = 0;
       this.mapClass = "mapClass";
       this.directionsDisplay.setOptions({suppressMarkers:true});
       this.directionsDisplay.setOptions({suppressPolylines:true});
-      this.requestMarker();
+      // this.checkcount();
+      this.showrequestMarker();
     } catch (error) {
       console.log(error)
     }
