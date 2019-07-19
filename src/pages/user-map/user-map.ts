@@ -168,6 +168,7 @@ export class UserMapPage {
             role: 'cancel',
             handler: () => {
             this.looking = false;
+            clearInterval(this.dataRefresher);
             }
           },
           {
@@ -272,6 +273,7 @@ export class UserMapPage {
                   data: { mydata: 'My hidden message this is' },
                   trigger:{at: new Date()},
                 });
+                clearInterval(this.dataRefresher1)
               } else {
                 this.looking = false;
               }
