@@ -14,12 +14,12 @@
   <ion-fab top>
     <img *ngIf="looking==true" top src="assets/imgs/user/wfr.gif" class="loading">
   </ion-fab>
-  <ion-fab *ngIf="responderongoing==0" left top>
+  <ion-fab left top>
     <button color="trans" ion-fab menuToggle><ion-icon color="primary" name="menu"></ion-icon></button>
     <button color="trans" (click)="showEmergency($event)" ion-fab><img src={{emergencycolor}} class="togglesht"></button>
     <button color="trans" (click)="showHCF($event)" ion-fab><img src={{HCFcolor}} class="togglesht"></button>
-    <button color="trans" (click)="showevac($event)" ion-fab><img src={{evaccolor}} class="togglesht"></button>
-    <button color="trans" (click)="emergencyhospital()" ion-fab><img src={{hosimage}} class="togglesht"></button>
+    <button color="trans" (click)="showrequestMarker($event)" ion-fab><img src={{evaccolor}} class="togglesht"></button>
+    <button color="trans" (click)="deleterequestMarker()" ion-fab><img src={{hosimage}} class="togglesht"></button>
     <button *ngIf="stat_id==2" color="trans" (click)="showlastlocation()" ion-fab><img src="assets/imgs/user/loc.png" class="togglesht"></button>
     <!-- <button color="trans" (click)="showlastlocation()" ion-fab><img src="assets/imgs/user/loc.png" class="togglesht"></button> -->
       <!-- <button color="trans" (click)="showreportedevents($event)" ion-fab><img src={{evaccolor}} class="togglesht"></button> -->
