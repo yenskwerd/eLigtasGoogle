@@ -10,6 +10,10 @@ import { LoginServiceProvider } from '../providers/login-service/login-service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Storage } from '@ionic/storage';
+import { OpenBatingawPage } from '../pages/open-batingaw/open-batingaw';
+import { OpenRedCrossPage } from '../pages/open-red-cross/open-red-cross';
+import { OpenGoogleMapsPage } from '../pages/open-google-maps/open-google-maps';
+import { OpenFaultFinderPage } from '../pages/open-fault-finder/open-fault-finder';
 
 @Component({
   templateUrl: 'app.html'
@@ -25,6 +29,7 @@ export class MyApp {
 
   extrapages: Array<{icon:string, title: string, component: any}>;
   submenus: Array<{icon:string, title: string, component: any}>;
+  submenus2: Array<{icon:string, title: string, component: any}>;
   home: Array<{icon:string, title: string, component: any}>;
   shownGroup = null;
  
@@ -58,24 +63,13 @@ export class MyApp {
 
     
     this.submenus = [
-      { icon: "medkit", title: 'First Aid App', component: ""},
-      { icon: 'filing', title: 'View Reports', component: ""},
-      { icon: 'globe', title: 'Batingaw App', component: ""},
-      { icon: 'medkit', title: 'Red Cross App', component: ""},
-      { icon: 'locate', title: 'Google Maps', component: ""},
-      { icon: 'globe', title: 'MIMS App', component: ""},
+      // { icon: "medkit", title: 'First Aid App', component: ""},
+      // { icon: 'filing', title: 'View Reports', component: ""},
+      { icon: 'globe', title: 'Batingaw App', component: OpenBatingawPage},
+      { icon: 'medkit', title: 'Red Cross App', component: OpenRedCrossPage},
+      { icon: 'locate', title: 'Google Maps', component: OpenGoogleMapsPage},
+      { icon: 'globe', title: 'Fault Finder', component: OpenFaultFinderPage},
     ];
-
-    // this.pages = [
-    //   { icon: '', title: 'Go to First Aid App', component: ""},
-    //   { icon: '', title: 'PDCAT Calculator', component: ""},
-    //   { icon: '', title: 'View Reports', component: ""},
-    //   { icon: '', title: 'Go to Batingaw App', component: ""},
-    //   { icon: '', title: 'Go to Red Cross App', component: ""},
-    //   { icon: '', title: 'Go to Google Maps', component: ""},
-    //   { icon: '', title: 'Go to MIMS App', component: ""},
-    //   { icon: '', title: 'Logout', component: HomePage}
-    // ]; 
     
   }
 
@@ -98,7 +92,7 @@ export class MyApp {
   createSidebar(){
         this.pages = [
           { icon: "time", title: 'History', component: HistoryPage},
-          { icon: 'settings', title: 'Settings', component: ""}
+          // { icon: 'settings', title: 'Settings', component: ""}
         ];
         this.mainmenu = { icon: 'apps', title: 'Apps', component: ""};
   }
@@ -115,6 +109,7 @@ export class MyApp {
   openPage(page) {
    this.nav.push(page.component);
   }
+
   lastlat:any;
   lastlong:any;
   logout(page) {
