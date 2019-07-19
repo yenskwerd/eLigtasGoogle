@@ -15,6 +15,7 @@ import { OpenRedCrossPage } from '../pages/open-red-cross/open-red-cross';
 import { OpenGoogleMapsPage } from '../pages/open-google-maps/open-google-maps';
 import { OpenFaultFinderPage } from '../pages/open-fault-finder/open-fault-finder';
 import { TranslateService } from '@ngx-translate/core';
+import { LanguagePage } from '../pages/language/language';
 
 @Component({
   templateUrl: 'app.html'
@@ -33,6 +34,7 @@ export class MyApp {
   submenus2: Array<{icon:string, title: string, component: any}>;
   home: Array<{icon:string, title: string, component: any}>;
   shownGroup = null;
+  shownGroup2 = null;
  
   constructor(public platform: Platform, 
     public geolocation: Geolocation, 
@@ -47,7 +49,7 @@ export class MyApp {
     public storage: Storage,
     public translate: TranslateService) {
 
-    translate.setDefaultLang('tg');
+    translate.setDefaultLang('en');
     
     this.initializeApp();
 
@@ -67,18 +69,26 @@ export class MyApp {
 
     
     this.submenus = [
-      // { icon: "medkit", title: 'First Aid App', component: ""},
-      // { icon: 'filing', title: 'View Reports', component: ""},
       { icon: 'globe', title: 'Batingaw App', component: OpenBatingawPage},
       { icon: 'medkit', title: 'Red Cross App', component: OpenRedCrossPage},
       { icon: 'locate', title: 'Google Maps', component: OpenGoogleMapsPage},
       { icon: 'globe', title: 'Fault Finder', component: OpenFaultFinderPage},
     ];
     
+    this.submenus2 = [
+      { icon: 'medkit', title: 'Profile', component: ""},
+      { icon: 'locate', title: 'Legends', component: ""},
+      { icon: 'globe', title: 'Language', component: LanguagePage},
+    ];
+
+    events.subscribe('user:login', () => {
+      this.switchLanguage();
+    });
+
   }
 
-  switchLanguage(language: string){
-    this.translate.use(language);
+  switchLanguage(){
+    this.translate.use(this.loginService.language);
   }
 
   message(): void {
@@ -95,6 +105,17 @@ export class MyApp {
   }
   isGroupShown(group) {
       return this.shownGroup === group;
+  }
+
+  toggleGroup2(group) {
+    if (this.isGroupShown2(group)) {
+        this.shownGroup2 = null;
+    } else {
+        this.shownGroup2 = group;
+    }
+  }
+  isGroupShown2(group) {
+      return this.shownGroup2 === group;
   }
 
   createSidebar(){
