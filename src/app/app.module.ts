@@ -10,9 +10,9 @@ import { UserHomePage } from '../pages/user-home/user-home';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Geolocation } from '@ionic-native/geolocation';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { LoginServiceProvider } from '../providers/login-service/login-service';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 import { HTTP, HTTPOriginal } from '@ionic-native/http';
 import { HistoryPage } from '../pages/history/history';
 import { Push } from '@ionic-native/push'
@@ -23,6 +23,13 @@ import { OpenBatingawPage } from '../pages/open-batingaw/open-batingaw';
 import { OpenFaultFinderPage } from '../pages/open-fault-finder/open-fault-finder';
 import { OpenGoogleMapsPage } from '../pages/open-google-maps/open-google-maps';
 import { OpenRedCrossPage } from '../pages/open-red-cross/open-red-cross';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 
 @NgModule({
   declarations: [
@@ -41,7 +48,14 @@ import { OpenRedCrossPage } from '../pages/open-red-cross/open-red-cross';
     HttpClientModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: (createTranslateLoader),
+          deps: [HttpClient]
+      }
+  })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

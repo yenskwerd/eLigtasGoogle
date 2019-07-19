@@ -14,6 +14,7 @@ import { OpenBatingawPage } from '../pages/open-batingaw/open-batingaw';
 import { OpenRedCrossPage } from '../pages/open-red-cross/open-red-cross';
 import { OpenGoogleMapsPage } from '../pages/open-google-maps/open-google-maps';
 import { OpenFaultFinderPage } from '../pages/open-fault-finder/open-fault-finder';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   templateUrl: 'app.html'
@@ -43,7 +44,10 @@ export class MyApp {
     public events: Events, 
     public splashScreen: SplashScreen, 
     public loginService: LoginServiceProvider,
-    public storage: Storage) {
+    public storage: Storage,
+    public translate: TranslateService) {
+
+    translate.setDefaultLang('tg');
     
     this.initializeApp();
 
@@ -71,6 +75,10 @@ export class MyApp {
       { icon: 'globe', title: 'Fault Finder', component: OpenFaultFinderPage},
     ];
     
+  }
+
+  switchLanguage(language: string){
+    this.translate.use(language);
   }
 
   message(): void {

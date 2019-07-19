@@ -7,6 +7,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { escapeRegExp } from '@angular/compiler/src/util';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 
 /**
@@ -20,7 +21,7 @@ declare var google;
 @IonicPage()
 @Component({
   selector: 'page-user-map',
-  templateUrl: 'user-map.html',
+  templateUrl: 'user-map.html'
 })
 export class UserMapPage {
   @ViewChild('map') mapRef: ElementRef;
@@ -46,20 +47,9 @@ export class UserMapPage {
       public http : HttpClient, 
       public modalCtrl: ModalController,
       public plt: Platform,
-      public localNotifications: LocalNotifications) {
-
-        // this.plt.ready().then(() => {
-        //   this.localNotifications.on('click').subscribe(res => {
-        //     let msg = res.data ? res.data.mydata : '';
-        //     this.showAlert(res.title, res.text, msg);
-        //   });
-     
-        //   this.localNotifications.on('trigger').subscribe(res => {
-        //     let msg = res.data ? res.data.mydata : '';
-        //     this.showAlert(res.title, res.text, msg);
-        //   });
-        // });
-    
+      public localNotifications: LocalNotifications,
+      public translate: TranslateService) {
+        
     this.hcfMarkers = [];
     this.distanceArr = [];
 
