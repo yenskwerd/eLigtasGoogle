@@ -242,7 +242,7 @@ export class RespMapPage {
             this.ReverseGeocoding(data[data.length-1].request_lat, data[data.length-1].request_long);
 
             this.notification(data[data.length-1].request_type_id, data[data.length-1].event, this.reverseGeocodingResults);
-            for(let i=this.ctr; i<data.length; i++){
+            for(let i=0; i<data.length; i++){
               // this.createMarker2(data[i]);
               this.createMarker2(data[i],i);
           }
@@ -1546,8 +1546,8 @@ yellow:any = 0;
       this.mapClass = "mapClass";
       this.directionsDisplay.setOptions({suppressMarkers:true});
       this.directionsDisplay.setOptions({suppressPolylines:true});
-      // this.checkcount();
-      this.showrequestMarker();
+      this.checkcount();
+      // this.showrequestMarker();
     } catch (error) {
       console.log(error)
     }
