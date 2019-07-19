@@ -16,6 +16,7 @@ import { OpenGoogleMapsPage } from '../pages/open-google-maps/open-google-maps';
 import { OpenFaultFinderPage } from '../pages/open-fault-finder/open-fault-finder';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguagePage } from '../pages/language/language';
+import { LegendPage } from '../pages/legend/legend';
 
 @Component({
   templateUrl: 'app.html'
@@ -77,7 +78,7 @@ export class MyApp {
     
     this.submenus2 = [
       { icon: 'medkit', title: 'Profile', component: ""},
-      { icon: 'locate', title: 'Legends', component: ""},
+      { icon: 'locate', title: 'Legends', component: LegendPage},
       { icon: 'globe', title: 'Language', component: LanguagePage},
     ];
 

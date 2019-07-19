@@ -26,6 +26,7 @@ import { OpenRedCrossPage } from '../pages/open-red-cross/open-red-cross';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { LanguagePage } from '../pages/language/language';
+import { LegendPage } from '../pages/legend/legend';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -43,7 +44,8 @@ export function createTranslateLoader(http: HttpClient) {
     OpenFaultFinderPage,
     OpenGoogleMapsPage,
     OpenRedCrossPage,
-    LanguagePage
+    LanguagePage,
+    LegendPage
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,8 @@ export function createTranslateLoader(http: HttpClient) {
     OpenFaultFinderPage,
     OpenGoogleMapsPage,
     OpenRedCrossPage,
-    LanguagePage
+    LanguagePage,
+    LegendPage
   ],
   providers: [
     StatusBar,
