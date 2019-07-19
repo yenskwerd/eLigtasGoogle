@@ -19,6 +19,10 @@ import { Push } from '@ionic-native/push'
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { IonicStorageModule } from '@ionic/storage'
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
+import { OpenBatingawPage } from '../pages/open-batingaw/open-batingaw';
+import { OpenFaultFinderPage } from '../pages/open-fault-finder/open-fault-finder';
+import { OpenGoogleMapsPage } from '../pages/open-google-maps/open-google-maps';
+import { OpenRedCrossPage } from '../pages/open-red-cross/open-red-cross';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,11 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
     HomePage,
     ListPage,
     HistoryPage,
-    UserHomePage
+    UserHomePage,
+    OpenBatingawPage,
+    OpenFaultFinderPage,
+    OpenGoogleMapsPage,
+    OpenRedCrossPage
   ],
   imports: [
     BrowserModule,
@@ -41,7 +49,11 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
     HomePage,
     ListPage,
     HistoryPage,
-    UserHomePage
+    UserHomePage,
+    OpenBatingawPage,
+    OpenFaultFinderPage,
+    OpenGoogleMapsPage,
+    OpenRedCrossPage
   ],
   providers: [
     StatusBar,
