@@ -48,7 +48,29 @@
             </ion-list>
           </ion-row>
         </ion-item>
-    </ion-list>   
+    </ion-list>
+
+    <ion-list no-lines>
+      <ion-item text-wrap (click)="toggleGroup2(i)" [ngClass]="{active: isGroupShown2(i)}">
+        <ion-row> 
+          <ion-col col-2><ion-icon name="settings"></ion-icon></ion-col>
+          <ion-col>Settings</ion-col>
+          <ion-col *ngIf="sublevel"><ion-icon color="success" item-right [name]="isGroupShown2(i) ? 'arrow-down' : 'arrow-forward'"></ion-icon></ion-col>
+        </ion-row>
+        <ion-row *ngIf="isGroupShown2(i)">
+          <ion-list>
+            <button menuClose ion-item *ngFor="let p of submenus2" (click)="openPage(p)">
+                <ion-row>
+                  <ion-col col-2>
+                    <ion-icon name="{{p.icon}}"></ion-icon>
+                  </ion-col>
+                  <ion-col>{{p.title}}</ion-col> 
+                </ion-row>
+            </button>
+          </ion-list>
+        </ion-row>
+      </ion-item>
+  </ion-list>
     
 
   </ion-content>

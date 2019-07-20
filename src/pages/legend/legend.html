@@ -1,0 +1,18 @@
+<!--
+  Generated template for the LegendPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Legend</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item *ngFor="let item of icons">
+    <label class="text" item-center>{{ item.label }}</label>
+    <img src="{{item.icon}}" class="icons" item-start>
+  </ion-item>
+</ion-content>
