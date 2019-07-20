@@ -27,6 +27,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { LanguagePage } from '../pages/language/language';
 import { LegendPage } from '../pages/legend/legend';
+import { ProfilePage } from '../pages/profile/profile';
+import { ChangePasswordPage } from '../pages/change-password/change-password';
+import { ChangeNamePage } from '../pages/change-name/change-name';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -45,7 +48,10 @@ export function createTranslateLoader(http: HttpClient) {
     OpenGoogleMapsPage,
     OpenRedCrossPage,
     LanguagePage,
-    LegendPage
+    LegendPage,
+    ProfilePage,
+    ChangePasswordPage,
+    ChangeNamePage
   ],
   imports: [
     BrowserModule,
@@ -73,7 +79,10 @@ export function createTranslateLoader(http: HttpClient) {
     OpenGoogleMapsPage,
     OpenRedCrossPage,
     LanguagePage,
-    LegendPage
+    LegendPage,
+    ProfilePage,
+    ChangePasswordPage,
+    ChangeNamePage
   ],
   providers: [
     StatusBar,
