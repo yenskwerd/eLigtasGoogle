@@ -165,7 +165,9 @@ export class RespMapPage {
 
     });
   }
-
+  latlangbounds(){
+    this.map.lat
+  }
   addMarker(data){
     // this.directionsDisplay.setMap(null);
     // this.directionsDisplay.setPanel(null);
