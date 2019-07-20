@@ -14,7 +14,8 @@
   <ion-fab top>
     <img *ngIf="looking==true" top src="assets/imgs/user/wfr.gif" class="loading">
   </ion-fab>
-  <ion-fab *ngIf="responderongoing==0" left top>
+  <!-- <ion-fab *ngIf="responderongoing==0" left top> -->
+      <ion-fab left top>
     <button color="trans" ion-fab menuToggle><ion-icon color="primary" name="menu"></ion-icon></button>
     <button color="trans" (click)="showEmergency($event)" ion-fab><img src={{emergencycolor}} class="togglesht"></button>
     <button color="trans" (click)="showHCF($event)" ion-fab><img src={{HCFcolor}} class="togglesht"></button>
