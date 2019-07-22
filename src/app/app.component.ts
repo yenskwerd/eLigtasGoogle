@@ -17,6 +17,7 @@ import { OpenFaultFinderPage } from '../pages/open-fault-finder/open-fault-finde
 import { TranslateService } from '@ngx-translate/core';
 import { LanguagePage } from '../pages/language/language';
 import { LegendPage } from '../pages/legend/legend';
+import { ProfilePage } from '../pages/profile/profile';
 
 @Component({
   templateUrl: 'app.html'
@@ -77,7 +78,7 @@ export class MyApp {
     ];
     
     this.submenus2 = [
-      { icon: 'medkit', title: 'Profile', component: ""},
+      { icon: 'medkit', title: 'Profile', component: ProfilePage},
       { icon: 'locate', title: 'Legends', component: LegendPage},
       { icon: 'globe', title: 'Language', component: LanguagePage},
     ];
