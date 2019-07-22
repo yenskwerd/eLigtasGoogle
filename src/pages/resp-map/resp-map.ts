@@ -123,7 +123,7 @@ export class RespMapPage {
             // let watch = this.geolocation.watchPosition();
             this.geolocation.getCurrentPosition().then((position) => {
               // let watch = this.geolocation.watchPosition();
-                // this.watch.subscribe((position) => {
+                // watch.subscribe((position) => {
                 this.latitude = position.coords.latitude;
                 this.longitude = position.coords.longitude;
                 this.latLng1 = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -133,7 +133,7 @@ export class RespMapPage {
                   zoom: 14,
                   disableDefaultUI: true,
                   mapTypeId: google.maps.MapTypeId.ROADMAP,
-                  fullscreenControl: true,
+                  // fullscreenControl: true,
                   zoomControl: false,
                   scaleControl: true,
                   clickableIcons: false,
@@ -141,12 +141,14 @@ export class RespMapPage {
                 }
                 // 10.3813503, 123.9815693
                 this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions), {
-                  disableDefaultUI: true,
-                  fullscreenControl: true,
+                  // disableDefaultUI: true,
+                  // fullscreenControl: true,
                   zoomControl: false,
                   scaleControl: true,
                   clickableIcons: false
                 };
+                this.checkcount();
+                this.requestMarker();
                 // google.maps.event.trigger(this.map,'resize');
                 this.addMarker(this.redMarker);
               }, (err) => {
@@ -159,8 +161,8 @@ export class RespMapPage {
         // });
     
         // alert.present();
-        this.checkcount();
-      this.requestMarker();
+      //   this.checkcount();
+      // this.requestMarker();
         
 
     });
@@ -226,7 +228,7 @@ export class RespMapPage {
 
   geolat:any;
   geolong:any;
-
+  distancekm:any;
   requestMarker(){
     
     this.dataRefresher = setInterval(() =>{
@@ -242,8 +244,12 @@ export class RespMapPage {
             this.geolat =data[data.length-1].request_lat;
             this.geolong =data[data.length-1].request_long;
             this.ReverseGeocoding(data[data.length-1].request_lat, data[data.length-1].request_long);
-
+            
+            this.distancekm=this.getDistance(data[data.length-1].request_lat, data[data.length-1].request_long,this.latitude,this.longitude);
+            console.log(this.distancekm);
+            if(this.distancekm>1.500){
             this.notification(data[data.length-1].request_type_id, data[data.length-1].event, this.reverseGeocodingResults);
+            }
             for(let i=0; i<data.length; i++){
               // this.createMarker2(data[i]);
               this.createMarker2(data[i],i);
