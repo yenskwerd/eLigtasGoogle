@@ -247,7 +247,7 @@ export class RespMapPage {
             
             this.distancekm=this.getDistance(data[data.length-1].request_lat, data[data.length-1].request_long,this.latitude,this.longitude);
             console.log(this.distancekm);
-            if(this.distancekm>1.500){
+            if(this.distancekm<1.500){
             this.notification(data[data.length-1].request_type_id, data[data.length-1].event, this.reverseGeocodingResults);
             }
             for(let i=0; i<data.length; i++){
