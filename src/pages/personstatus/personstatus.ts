@@ -30,35 +30,42 @@ export class PersonstatusPage {
     console.log('ionViewDidLoad PersonstatusPage');
   }
 
-  private incrementSafe () {
+  incrementSafe () {
     this.currentSafe++;
   }
   
-  private decrementSafe () {
-    this.currentSafe--;
+  decrementSafe () {
+    this.currentSafe=(this.currentSafe==0)?0:this.currentSafe-1;
   }
 
-  private incrementTransfer () {
+  incrementTransfer () {
     this.currentTransfer++;
   }
   
-  private decrementTransfer () {
-    this.currentTransfer--;
+  decrementTransfer () {
+    this.currentTransfer=(this.currentTransfer==0)?0:this.currentTransfer-1;
   }
 
-  private incrementDead () {
+  incrementDead () {
     this.currentDead++;
   }
   
-  private decrementDead () {
-    this.currentDead--;
+  decrementDead () {
+    this.currentDead=(this.currentDead==0)?0:this.currentDead-1;
   }
 
-  private incrementMissing () {
+  incrementMissing () {
     this.currentMissing++;
   }
   
-  private decrementMissing () {
-    this.currentMissing--;
+  decrementMissing () {
+    this.currentMissing=(this.currentMissing==0)?0:this.currentMissing-1;
+  }
+
+  SubmitDis(){
+    let alert = this.alertCtrl.create({
+      message: 'Diposition submitted.'
+    });
+    alert.present();
   }
 }

@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { TranslateService } from '@ngx-translate/core';
+import { PersonstatusPage } from '../personstatus/personstatus';
 import { CallForBackupPage } from '../call-for-backup/call-for-backup';
 
 /**
@@ -1242,9 +1243,7 @@ yellow:any = 0;
             text: 'Yes',
             handler: () => {
               console.log('Buy clicked');
-              // clearInterval(this.dataRefresher);
-              // this.navCtrl.push(CallForBackupPage);
-              // this.navCtrl.push('PersonstatusPage');
+              this.stat_id=2;
             }
           }
         ]
@@ -1780,6 +1779,10 @@ yellow:any = 0;
         console.warn(status);
       }
     });
+  }
+
+  opendisposition(){
+    this.navCtrl.push('PersonstatusPage');
   }
 
 }
