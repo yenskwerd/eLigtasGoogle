@@ -2,10 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import {Http, Headers, RequestOptions}  from '@angular/http';
 import 'rxjs/add/operator/map';
-import { elementProperty } from '@angular/core/src/render3/instructions';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
-import { asTextData } from '@angular/core/src/view';
-
 /**
  * Generated class for the EventReportPage page.
  *
@@ -23,6 +20,7 @@ export class EventReportPage {
   @ViewChild('persons_injured') persons_injured;
   @ViewChild('persons_trapped') persons_trapped;
   @ViewChild('other_info') other_info;
+  @ViewChild('other') other;
 
   max_id: any;
   today: number = Date.now();
@@ -44,6 +42,7 @@ export class EventReportPage {
   mi=this.myDate.getMinutes();
   s=this.myDate.getSeconds();
   datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
+  buttonClicked: boolean = false;
   private currentNumber = 0;
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController,private http: Http, public loginService: LoginServiceProvider) {
     this.lat = navParams.data.lat;
@@ -136,9 +135,11 @@ export class EventReportPage {
   eqshow: any = true;
   fireshow: any = true;
   floodshow: any = true;
+
   eqcolor: any = "assets/imgs/user/eq1.png";
   firecolor: any = "assets/imgs/user/fire1.png";
   floodcolor: any = "assets/imgs/user/flood1.png";
+  othercolor: any = "assets/imgs/user/other1.png";
 
   request: any;
   distanceArr: any;
@@ -150,7 +151,9 @@ export class EventReportPage {
             this.firecolor = "assets/imgs/user/fire1.png";
             this.eqcolor = "assets/imgs/user/eq.png";
             this.floodcolor = "assets/imgs/user/flood1.png";
+            this.othercolor = "assets/imgs/user/other1.png";
             this.eqshow = false;
+            this.buttonClicked = false;
             this.event=value;
             console.log(this.event)
   }
@@ -159,25 +162,51 @@ export class EventReportPage {
             this.firecolor = "assets/imgs/user/fire.png";
             this.eqcolor = "assets/imgs/user/eq1.png";
             this.floodcolor = "assets/imgs/user/flood1.png";
+            this.othercolor = "assets/imgs/user/other1.png";
             this.fireshow = false;
+            this.buttonClicked = false;
             this.event=value;
             console.log(this.event)
   }
 
   showflood(e:any, value){
-            this.floodcolor = "assets/imgs/user/flood.png";
-            this.eqcolor = "assets/imgs/user/eq1.png";
-            this.firecolor = "assets/imgs/user/fire1.png";
-            this.floodshow = false;
-            this.event=value;
-            console.log(this.event)
+    this.floodcolor = "assets/imgs/user/flood.png";
+    this.eqcolor = "assets/imgs/user/eq1.png";
+    this.firecolor = "assets/imgs/user/fire1.png";
+    this.othercolor = "assets/imgs/user/other1.png";
+    this.floodshow = false;
+    this.buttonClicked = false;
+    this.event=value;
+    console.log(this.event)
   }
+
+  showOthers(e:any, value){
+    this.floodcolor = "assets/imgs/user/flood1.png";
+    this.eqcolor = "assets/imgs/user/eq1.png";
+    this.firecolor = "assets/imgs/user/fire1.png";
+    this.othercolor = "assets/imgs/user/others.png";
+    // this.floodshow = false;
+    this.event=value;
+    this.buttonClicked = true;
+    console.log(this.event)
+}
   
   checkreport(){
     if(this.persons_injured.value<10 && this.persons_trapped.value<10){
-      // this.limitinjured=this.persons_injured.value;   
-      // this.limittrapped=this.persons_trapped.value;  
-      this.report();       
+      if(this.event == "Others"){
+        if(this.other.value == ""){
+          let alert = this.alertCtrl.create({
+            message:"State the event",
+            buttons: ['OK']
+            });
+          alert.present();
+        }else{
+          this.event = this.other.value;
+          this.report();
+        }
+      }else{
+        this.report();
+      }
     }
     else{
       let alert = this.alertCtrl.create({
@@ -232,7 +261,7 @@ export class EventReportPage {
     } else {
 
         var headers = new Headers();
-      
+
         headers.append("Accept", 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         headers.append('Access-Control-Allow-Origin' , '*');

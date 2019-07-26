@@ -39,10 +39,17 @@
             <ion-col>
               <button color="trans" (click)="showflood($event, 'Flood')" ion-fab><img src={{floodcolor}} class="icons"></button>
             </ion-col>
+            <ion-col>
+              <button color="trans" (click)="showOthers($event, 'Others')" ion-fab><img src={{othercolor}} class="icons"></button>
+            </ion-col>
           </ion-row>
         </ion-grid>
               <!-- </ion-select> -->
     <!-- </ion-item> -->
+    <ion-item *ngIf="buttonClicked">
+      <ion-label stacked>State Event</ion-label>
+      <ion-input type="text" name="other" #other></ion-input>
+    </ion-item>
     <ion-item>
       <ion-label stacked>Persons Injured</ion-label>
       <ion-input type="number" name="injured" #persons_injured></ion-input>
