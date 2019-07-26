@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title text-center>Call for Help</ion-title>
+    <ion-title>{{ 'Help' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -18,7 +18,7 @@
   <!-- <button ion-button type="submit" (click)="pushChangePin()" block><ion-icon name="pin"></ion-icon>&nbsp; Change Location</button> -->
   <form>
     <!-- <ion-item> -->
-      <ion-label stacked>Event</ion-label>
+      <ion-label stacked translate>Event</ion-label>
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -30,50 +30,56 @@
           <ion-col>
             <button color="trans" (click)="showflood($event, 'Flood')" ion-fab><img src={{floodcolor}} class="icons"></button>
           </ion-col>
+          <ion-col>
+              <button color="trans" (click)="showOthers($event, 'Others')" ion-fab><img src={{othercolor}} class="icons"></button>
+            </ion-col>
         </ion-row>
       </ion-grid>
     <!-- </ion-item> -->
+    <ion-item *ngIf="buttonClicked">
+        <ion-label stacked>State Event</ion-label>
+        <ion-input type="text" name="other" #other></ion-input>
+      </ion-item>
     <ion-item>
-      <ion-label stacked>Persons Injured</ion-label>
+      <ion-label stacked translate>Injured</ion-label>
       <ion-input type="number" name="injured" #persons_injured></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label stacked>Persons Trapped</ion-label>
+      <ion-label stacked translate>Trapped</ion-label>
       <ion-input type="number" name="trapped" #persons_trapped></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label stacked>Other info</ion-label>
+      <ion-label stacked translate>Other</ion-label>
       <ion-textarea name="other" #other_info></ion-textarea>
     </ion-item>
     <ion-list>
 
-      <ion-label stacked>Are there rescuees with special needs?</ion-label>
+      <ion-label stacked translate>Needs</ion-label>
       <ion-item>
-        <ion-label stacked>visually impaired</ion-label>
+        <ion-label stacked translate>Visually</ion-label>
         <ion-checkbox (ionChange)="visualchanged($event, 'visually impaired')"></ion-checkbox>
       </ion-item>
     
       <ion-item>
-        <ion-label stacked>cannot hear well</ion-label>
+        <ion-label stacked translate>Hear</ion-label>
         <ion-checkbox (ionChange)="hearchanged($event, 'cannot hear well')"></ion-checkbox>
       </ion-item>
     
       <ion-item>
-        <ion-label stacked>unable to walk</ion-label>
+        <ion-label stacked translate="">Walk</ion-label>
         <ion-checkbox (ionChange)="walkchanged($event, 'unable to walk')"></ion-checkbox>
       </ion-item>
 
       <ion-item>
-        <ion-label stacked>with mental health issues</ion-label>
+        <ion-label stacked translate>Mental</ion-label>
         <ion-checkbox (ionChange)="mentalchanged($event, 'with mental health issues')"></ion-checkbox>
-      </ion-item>
-    
+      </ion-item>    
     </ion-list>
     <!-- <button ion-button type="submit" (click)="report()" block>Submit Request</button> -->
   </form>
   <div text-center>
-    <button ion-button type="submit" (click)="checkreport()">Submit Request</button>
-    <button ion-button (click)="pushBackToMap()">Back to Map</button>
+    <button ion-button type="submit" (click)="checkreport()">{{ 'Submit' | translate }}</button>
+    <button ion-button (click)="pushBackToMap()">{{ 'Back' | translate }}</button>
   </div>
 </ion-content>
 <!-- <ion-footer text-center>

@@ -1,5 +1,23 @@
 {
     "Please" : "Please pin point the location",
     "REPORT" : "REPORT",
-    "before" : "before making a "
+    "before" : "before making a ",
+    "Report" : "Report Event",
+    "Help" : "Help request",
+    "Check" : "Check person",
+    "Event" : "Event",
+    "Injured" : "Persons injured",
+    "Trapped" : "Persons trapped",
+    "Other" : "Other Informations",
+    "Needs" : "Are there rescuees with special needs?",
+    "Visually" : "Visually impaired",
+    "Hear" : "Cannot hear well",
+    "Walk" : "Unable to walk",
+    "Mental" : "With mental health issues",
+    "Submit" : "Submit request",
+    "Back" : "Back to map",
+    "Report Sent" : "Report sent successfully!",
+    "Name" : "Person Name",
+    "PleaseCheck" : "Please check on this person:"
+
 }

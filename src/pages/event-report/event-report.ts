@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import {Http, Headers, RequestOptions}  from '@angular/http';
 import 'rxjs/add/operator/map';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
+import { TranslateService } from '@ngx-translate/core';
 /**
  * Generated class for the EventReportPage page.
  *
@@ -44,7 +45,13 @@ export class EventReportPage {
   datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
   buttonClicked: boolean = false;
   private currentNumber = 0;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController,private http: Http, public loginService: LoginServiceProvider) {
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public alertCtrl:AlertController,
+    private http: Http, 
+    public loginService: LoginServiceProvider,
+    public translate: TranslateService) {
+      
     this.lat = navParams.data.lat;
     this.long = navParams.data.long;
 
@@ -304,8 +311,14 @@ export class EventReportPage {
         {
            // If the request was successful notify the user
            console.log(data);
+            let message;
+            this.translate.get('Check').subscribe(
+            value => {
+              // value is our translated string
+              message = value;
+            });
            let alert = this.alertCtrl.create({
-            message: "Report sent successfully!",
+            message: message,
             buttons: ['OK']
             });
             // this.navParams.get("HcfMappingPage").someFnToRefreshParent();

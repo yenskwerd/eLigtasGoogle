@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import {Http, Headers, RequestOptions}  from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import 'rxjs/add/operator/map';
+import { TranslateService } from '@ngx-translate/core';
 /**
  * Generated class for the CheckPersonPage page.
  *
@@ -26,8 +27,14 @@ export class CheckPersonPage {
   others: any;
   max_id: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController,private http: Http, public loginService: LoginServiceProvider) {
-    this.lat = navParams.data.lat;
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public alertCtrl:AlertController,
+    private http: Http, 
+    public loginService: LoginServiceProvider,
+    public translate: TranslateService) {
+    
+      this.lat = navParams.data.lat;
     this.long = navParams.data.long;
     // console.log(new Date());
 
@@ -98,6 +105,7 @@ export class CheckPersonPage {
   @ViewChild('persons_injured') persons_injured;
   @ViewChild('persons_trapped') persons_trapped;
   @ViewChild('other_info') other_info;
+  @ViewChild('other') other;
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CheckPersonPage');
@@ -113,9 +121,11 @@ export class CheckPersonPage {
   eqshow: any = true;
   fireshow: any = true;
   floodshow: any = true;
+  buttonClicked: boolean = false;
   eqcolor: any = "assets/imgs/user/eq1.png";
   firecolor: any = "assets/imgs/user/fire1.png";
   floodcolor: any = "assets/imgs/user/flood1.png";
+  othercolor: any = "assets/imgs/user/other1.png";
 
   request: any;
   distanceArr: any;
@@ -127,7 +137,9 @@ export class CheckPersonPage {
             this.firecolor = "assets/imgs/user/fire1.png";
             this.eqcolor = "assets/imgs/user/eq.png";
             this.floodcolor = "assets/imgs/user/flood1.png";
+            this.othercolor = "assets/imgs/user/other1.png";
             this.eqshow = false;
+            this.buttonClicked = false;
             this.event=value;
             console.log(this.event)
   }
@@ -136,7 +148,9 @@ export class CheckPersonPage {
             this.firecolor = "assets/imgs/user/fire.png";
             this.eqcolor = "assets/imgs/user/eq1.png";
             this.floodcolor = "assets/imgs/user/flood1.png";
+            this.othercolor = "assets/imgs/user/other1.png";
             this.fireshow = false;
+            this.buttonClicked = false;
             this.event=value;
             console.log(this.event)
   }
@@ -145,18 +159,42 @@ export class CheckPersonPage {
             this.floodcolor = "assets/imgs/user/flood.png";
             this.eqcolor = "assets/imgs/user/eq1.png";
             this.firecolor = "assets/imgs/user/fire1.png";
+            this.othercolor = "assets/imgs/user/other1.png";
             this.floodshow = false;
+            this.buttonClicked = false;
             this.event=value;
             console.log(this.event)
   }
+
+  showOthers(e:any, value){
+    this.floodcolor = "assets/imgs/user/flood1.png";
+    this.eqcolor = "assets/imgs/user/eq1.png";
+    this.firecolor = "assets/imgs/user/fire1.png";
+    this.othercolor = "assets/imgs/user/others.png";
+    // this.floodshow = false;
+    this.event=value;
+    this.buttonClicked = true;
+    console.log(this.event)
+}
 
   limitinjured:any;
   limittrapped:any;
   checkreport(){
     if(this.persons_injured.value<10 && this.persons_trapped.value<10){
-      // this.limitinjured=this.persons_injured.value;   
-      // this.limittrapped=this.persons_trapped.value;  
-      this.report();       
+      if(this.event == "Others"){
+        if(this.other.value == ""){
+          let alert = this.alertCtrl.create({
+            message:"State the event",
+            buttons: ['OK']
+            });
+          alert.present();
+        }else{
+          this.event = this.other.value;
+          this.report();
+        }
+      }else{
+        this.report();
+      }
     }
     else{
       let alert = this.alertCtrl.create({
