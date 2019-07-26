@@ -30,6 +30,8 @@ import { LegendPage } from '../pages/legend/legend';
 import { ProfilePage } from '../pages/profile/profile';
 import { ChangePasswordPage } from '../pages/change-password/change-password';
 import { ChangeNamePage } from '../pages/change-name/change-name';
+import { StepsPage } from '../pages/steps/steps';
+
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -51,7 +53,8 @@ export function createTranslateLoader(http: HttpClient) {
     LegendPage,
     ProfilePage,
     ChangePasswordPage,
-    ChangeNamePage
+    ChangeNamePage,
+    StepsPage
   ],
   imports: [
     BrowserModule,
@@ -82,7 +85,8 @@ export function createTranslateLoader(http: HttpClient) {
     LegendPage,
     ProfilePage,
     ChangePasswordPage,
-    ChangeNamePage
+    ChangeNamePage,
+    StepsPage
   ],
   providers: [
     StatusBar,

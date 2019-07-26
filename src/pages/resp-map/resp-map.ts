@@ -247,7 +247,7 @@ export class RespMapPage {
             
             this.distancekm=this.getDistance(data[data.length-1].request_lat, data[data.length-1].request_long,this.latitude,this.longitude);
             console.log(this.distancekm);
-            if(this.distancekm>1.500){
+            if(this.distancekm<1.500){
             this.notification(data[data.length-1].request_type_id, data[data.length-1].event, this.reverseGeocodingResults);
             }
             for(let i=0; i<data.length; i++){
@@ -1162,7 +1162,7 @@ yellow:any = 0;
 
   pushArrive() {
     // this.map.removeControl(this.control);
-    this.stat_id=2;
+    // this.stat_id=2;
     this.responderongoing=0;
 
 
@@ -1193,9 +1193,26 @@ yellow:any = 0;
        // If the request was successful notify the user
        console.log(data);
        let alert = this.alertCtrl.create({
-        message: "You have arrived!",
-        buttons: ['OK']
-        });
+        // title: 'Patient',
+        message: 'Do you see the victim?',
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+              // this.change1();
+            }
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              console.log('Buy clicked');
+              // clearInterval(this.dataRefresher);
+            }
+          }
+        ]
+      });
         // this.navCtrl.setRoot('HcfMappingPage');
         alert.present();
         //this.navCtrl.setRoot('PilgrimProfilePage'); 

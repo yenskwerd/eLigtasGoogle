@@ -18,6 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguagePage } from '../pages/language/language';
 import { LegendPage } from '../pages/legend/legend';
 import { ProfilePage } from '../pages/profile/profile';
+import { StepsPage } from '../pages/steps/steps';
 
 @Component({
   templateUrl: 'app.html'
@@ -81,6 +82,7 @@ export class MyApp {
       { icon: 'medkit', title: 'Profile', component: ProfilePage},
       { icon: 'locate', title: 'Legends', component: LegendPage},
       { icon: 'globe', title: 'Language', component: LanguagePage},
+      { icon: 'globe', title: 'Steps', component: StepsPage},
     ];
 
     events.subscribe('user:login', () => {
