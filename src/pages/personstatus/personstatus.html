@@ -1,0 +1,41 @@
+<!--
+  Generated template for the PersonstatusPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Disposition</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item>
+    <!-- <ion-label stacked translate>Safe</ion-label> -->
+    <ion-icon name="remove-circle" (click)="decrementSafe()"></ion-icon>
+      {{currentSafe}}
+      <ion-icon name="add-circle" (click)="incrementSafe()"></ion-icon>
+  </ion-item>
+
+  <ion-item>
+    <ion-label stacked translate>Transferred to Hospital</ion-label>
+    <ion-icon name="remove-circle" (click)="decrementTransfer()"></ion-icon>
+      {{currentTransfer}}
+      <ion-icon name="add-circle" (click)="incrementTransfer()"></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked translate>Expectant Dead</ion-label>
+    <ion-icon name="remove-circle" (click)="decrementDead()"></ion-icon>
+      {{currentDead}}
+      <ion-icon name="add-circle" (click)="incrementDead()"></ion-icon>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked translate>Missing</ion-label>
+    <ion-icon name="remove-circle" (click)="decrementMissing()"></ion-icon>
+      {{currentMissing}}
+      <ion-icon name="add-circle" (click)="incrementMissing()"></ion-icon>
+  </ion-item>
+
+</ion-content>
