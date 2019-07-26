@@ -1243,7 +1243,7 @@ yellow:any = 0;
             handler: () => {
               console.log('Buy clicked');
               // clearInterval(this.dataRefresher);
-              this.navCtrl.push(CallForBackupPage);
+              // this.navCtrl.push(CallForBackupPage);
               // this.navCtrl.push('PersonstatusPage');
             }
           }
