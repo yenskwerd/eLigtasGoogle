@@ -19,6 +19,7 @@ import { LanguagePage } from '../pages/language/language';
 import { LegendPage } from '../pages/legend/legend';
 import { ProfilePage } from '../pages/profile/profile';
 import { StepsPage } from '../pages/steps/steps';
+import { PersonstatusPage } from '../pages/personstatus/personstatus';
 
 @Component({
   templateUrl: 'app.html'

@@ -54,7 +54,7 @@ export function createTranslateLoader(http: HttpClient) {
     ProfilePage,
     ChangePasswordPage,
     ChangeNamePage,
-    StepsPage
+    StepsPage,
   ],
   imports: [
     BrowserModule,
@@ -86,7 +86,7 @@ export function createTranslateLoader(http: HttpClient) {
     ProfilePage,
     ChangePasswordPage,
     ChangeNamePage,
-    StepsPage
+    StepsPage,
   ],
   providers: [
     StatusBar,

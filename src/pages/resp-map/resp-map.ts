@@ -612,15 +612,9 @@ yellow:any = 0;
 
   routforETA(data){
     
-    // clearInterval(this.dataRefresher);
-    // this.mapClass = "mapDirClass";
-    // this.marker.setMap(null);
     let watch = this.geolocation.watchPosition();
     // this.watch.subscribe((data2) => {
       watch.subscribe((data2) => {
-      // this.directionsDisplay.setMap(this.map);  
-      // this.directionsDisplay.setPanel(this.directionsPanel.nativeElement);
-      // this.responderongoing=1;
       this.directionsService.route({
           // origin: {lat: position.coords.latitude, lng: position.coords.longitude},
         destination: {lat: data.request_lat, lng: data.request_long},
@@ -634,7 +628,7 @@ yellow:any = 0;
             // this.eta=this.y1[6].textContent;
             this.eta=this.directionsDisplay.directions.routes[0].legs[0].duration.text;
             console.log(this.directionsDisplay.directions.routes[0].legs[0].duration.text);
-              console.log(this.eta);
+            console.log(this.eta);
         } else {
             console.warn(status);
         }
@@ -683,7 +677,7 @@ yellow:any = 0;
               ETA: this.eta,
               option: "respond"
             });
-          }, 500);
+          }, 900);
             // this.requestMarker(); 
             console.log("request id: ");
             console.log(data.request_id);
@@ -1209,6 +1203,7 @@ yellow:any = 0;
             handler: () => {
               console.log('Buy clicked');
               // clearInterval(this.dataRefresher);
+              this.navCtrl.push('PersonstatusPage');
             }
           }
         ]
