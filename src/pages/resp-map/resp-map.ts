@@ -1195,7 +1195,7 @@ yellow:any = 0;
 
   pushArrive() {
     // this.map.removeControl(this.control);
-    this.stat_id=2;
+    // this.stat_id=2;
     this.responderongoing=0;
 
 
@@ -1231,9 +1231,32 @@ yellow:any = 0;
               message = value;
             });
        let alert = this.alertCtrl.create({
+<<<<<<< HEAD
         message: message,
         buttons: ['OK']
         });
+=======
+        // title: 'Patient',
+        message: 'Do you see the victim?',
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+              // this.change1();
+            }
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              console.log('Buy clicked');
+              // clearInterval(this.dataRefresher);
+            }
+          }
+        ]
+      });
+>>>>>>> 8b28e13f411eb2e9f08b0d74b3cded140d2e55d1
         // this.navCtrl.setRoot('HcfMappingPage');
         alert.present();
         //this.navCtrl.setRoot('PilgrimProfilePage'); 
