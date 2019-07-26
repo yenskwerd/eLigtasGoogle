@@ -1231,11 +1231,7 @@ yellow:any = 0;
               message = value;
             });
        let alert = this.alertCtrl.create({
-<<<<<<< HEAD
-        message: message,
-        buttons: ['OK']
-        });
-=======
+
         // title: 'Patient',
         message: 'Do you see the victim?',
         buttons: [
@@ -1256,7 +1252,6 @@ yellow:any = 0;
           }
         ]
       });
->>>>>>> 8b28e13f411eb2e9f08b0d74b3cded140d2e55d1
         // this.navCtrl.setRoot('HcfMappingPage');
         alert.present();
         //this.navCtrl.setRoot('PilgrimProfilePage'); 
