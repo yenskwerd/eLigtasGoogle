@@ -322,7 +322,7 @@ export class HelpRequestPage {
   }
 
   pushBackToMap(){
-    this.navCtrl.setRoot('UserMapPage');
+    this.navCtrl.pop();
   }
   
 }

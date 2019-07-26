@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { TranslateService } from '@ngx-translate/core';
+import { CallForBackupPage } from '../call-for-backup/call-for-backup';
 
 /**
  * Generated class for the RespMapPage page.
@@ -1309,85 +1310,88 @@ yellow:any = 0;
   }
 
   requestCallForBackUp(){
+
+    this.navCtrl.push(CallForBackupPage);
+
     //this.dataRefresher = setInterval(() =>{
-      if(this.loginService.logged_in_user_request_id!= null){
-        this.status = true;
-      }
-      var headers = new Headers();
+    //   if(this.loginService.logged_in_user_request_id!= null){
+    //     this.status = true;
+    //   }
+    //   var headers = new Headers();
       
-      headers.append("Accept", 'application/json');
-      headers.append('Content-Type', 'application/x-www-form-urlencoded');
-      headers.append('Access-Control-Allow-Origin' , '*');
-      headers.append('Access-Control-Allow-Headers' , 'Content-Type');
-      headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+    //   headers.append("Accept", 'application/json');
+    //   headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    //   headers.append('Access-Control-Allow-Origin' , '*');
+    //   headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+    //   headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
       
-      let options = new RequestOptions({ headers: headers });
+    //   let options = new RequestOptions({ headers: headers });
 
-      let data = {
-        request_id: this.request_id
-      }
+    //   let data = {
+    //     request_id: this.request_id
+    //   }
 
-       this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-cfb-num.php',data,options)
-       .map(res=> res.json())
-         .subscribe(
-           res => {
-            this.callForBackUpMarker(res, data);
-            console.log(res);
-       }); 
+    //    this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-cfb-num.php',data,options)
+    //    .map(res=> res.json())
+    //      .subscribe(
+    //        res => {
+    //         this.callForBackUpMarker(res, data);
+    //         console.log(res);
+    //    }); 
        
-    /******** UPDATE REQUEST STATUS ID **********/
-    let data2 = {
-      request_id: this.request_id,
-      request_status_id: 0
-    }
+    // /******** UPDATE REQUEST STATUS ID **********/
+    // let data2 = {
+    //   request_id: this.request_id,
+    //   request_status_id: 0
+    // }
 
-    this.http2.post('http://usc-dcis.com/eligtas.app/update-request1.php', data2, options)
-    .map(res=> res.json())
-    .subscribe((data2: any) =>
-    {
-      console.log(data2);
-      // If the request was successful notify the user
-      //  console.log(data2);
-      //  let alert = this.alertCtrl.create({
-      //   message: "You have started navigating(???)",
-      //   buttons: ['OK']
-      //   });
-      //   alert.present();
-    },
-    (error : any) =>
-    {
-      console.log(error);
-      let alert2 = this.alertCtrl.create({
-        title:"FAILED",
-        subTitle: "Request not updated. huhu!",
-        buttons: ['OK']
-        });
+    // this.http2.post('http://usc-dcis.com/eligtas.app/update-request1.php', data2, options)
+    // .map(res=> res.json())
+    // .subscribe((data2: any) =>
+    // {
+    //   console.log(data2);
+    //   // If the request was successful notify the user
+    //   //  console.log(data2);
+    //   //  let alert = this.alertCtrl.create({
+    //   //   message: "You have started navigating(???)",
+    //   //   buttons: ['OK']
+    //   //   });
+    //   //   alert.present();
+    // },
+    // (error : any) =>
+    // {
+    //   console.log(error);
+    //   let alert2 = this.alertCtrl.create({
+    //     title:"FAILED",
+    //     subTitle: "Request not updated. huhu!",
+    //     buttons: ['OK']
+    //     });
 
-      alert2.present();
-    });
+    //   alert2.present();
+    // });
     
-    /********** LOG **********/
-    let data3 = {
-      user_id: this.loginService.logged_in_user_id,
-      action: "Callback",
-      action_datetime: this.datetoday,
-      request_id: this.request_id
-    }
+    // /********** LOG **********/
+    // let data3 = {
+    //   user_id: this.loginService.logged_in_user_id,
+    //   action: "Callback",
+    //   action_datetime: this.datetoday,
+    //   request_id: this.request_id
+    // }
     
-    this.http2.post('http://usc-dcis.com/eligtas.app/log.php', data3, options)
+    // this.http2.post('http://usc-dcis.com/eligtas.app/log.php', data3, options)
     
-    .map(res=> res.json())
-    .subscribe((data3: any) =>
-    {
-       console.log(data3);
-    },
-    (error : any) =>
-    {
-      console.log(error);
-    });
-    /********** END OF LOG **********/
+    // .map(res=> res.json())
+    // .subscribe((data3: any) =>
+    // {
+    //    console.log(data3);
+    // },
+    // (error : any) =>
+    // {
+    //   console.log(error);
+    // });
+    // /********** END OF LOG **********/
 
-    this.cfb = true;
+    // this.cfb = true;
   }
 
   pushDone() {

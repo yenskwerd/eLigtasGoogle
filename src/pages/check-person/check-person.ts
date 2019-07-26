@@ -326,7 +326,7 @@ export class CheckPersonPage {
   }
 
   pushBackToMap(){
-    this.navCtrl.setRoot('UserMapPage');
+    this.navCtrl.pop();
   }
 
 }

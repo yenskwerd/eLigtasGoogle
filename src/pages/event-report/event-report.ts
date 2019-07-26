@@ -352,7 +352,7 @@ export class EventReportPage {
   }
 
   pushBackToMap(){
-    this.navCtrl.setRoot('UserMapPage');
+    this.navCtrl.pop();
   }
 
 }
