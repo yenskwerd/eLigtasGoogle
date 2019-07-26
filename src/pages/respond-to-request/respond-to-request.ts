@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import {Http, Headers, RequestOptions}  from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import 'rxjs/add/operator/map';
+import { TranslateService } from '@ngx-translate/core';
 /**
  * Generated class for the RespondToRequestPage page.
  *
@@ -40,7 +41,14 @@ export class RespondToRequestPage {
   s=this.myDate.getSeconds();
   datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http   : Http, public loading:LoadingController, public loginService: LoginServiceProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,
+     public navParams: NavParams, 
+     public http   : Http, 
+     public loading:LoadingController, 
+     public loginService: LoginServiceProvider, 
+     public alertCtrl: AlertController,
+     public translate: TranslateService) {
+       
     this.event = navParams.data.event;
     this.injured = navParams.data.persons_injured;
     this.trapped = navParams.data.persons_trapped;

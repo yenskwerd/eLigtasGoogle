@@ -7,6 +7,7 @@ import { LoginServiceProvider } from '../../providers/login-service/login-servic
 import 'rxjs/add/operator/map';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Generated class for the RespMapPage page.
@@ -53,7 +54,8 @@ export class RespMapPage {
   evaccolor2: any = "assets/imgs/user/testmarker.png";
   constructor(public modalCtrl: ModalController, public navCtrl: NavController, public geolocation: Geolocation, public http2 : Http, public http : HttpClient, public navParams: NavParams,
     public loginService: LoginServiceProvider, public alertCtrl : AlertController, public localNotifications: LocalNotifications,
-    public platform: Platform, public geocoder: NativeGeocoder) {
+    public platform: Platform, public geocoder: NativeGeocoder,
+    public translate: TranslateService) {
     this.hcfMarkers = [];
     this.requestMarkers = [];
     this.distanceArr = [];
@@ -638,12 +640,38 @@ yellow:any = 0;
   }
   
   presentConfirm(data) {
+    let title, message, yes, no;
+
+    this.translate.get('Response').subscribe(
+      value => {
+        // value is our translated string
+        title = value;
+    });
+
+    this.translate.get('Respond').subscribe(
+      value => {
+        // value is our translated string
+        message = value;
+    });
+
+    this.translate.get('Cancel').subscribe(
+      value => {
+        // value is our translated string
+        no = value;
+    });
+
+    this.translate.get('See').subscribe(
+      value => {
+        // value is our translated string
+        yes = value;
+    });
+
     let alert = this.alertCtrl.create({
-      title: 'Response',
-      message: 'Do you want to respond?',
+      title: title,
+      message: message,
       buttons: [
         {
-          text: 'Cancel',
+          text: no,
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
@@ -652,7 +680,7 @@ yellow:any = 0;
           }
         },
         {
-          text: 'See',
+          text: yes,
           handler: () => {
             console.log('Buy clicked');
             // clearInterval(this.dataRefresher);
@@ -1101,9 +1129,14 @@ yellow:any = 0;
     .subscribe((data1: any) =>
     {
        // If the request was successful notify the user
-       console.log(data1);
+       let message;
+            this.translate.get('StartNav').subscribe(
+            value => {
+              // value is our translated string
+              message = value;
+            });
        let alert = this.alertCtrl.create({
-        message: "You have started navigating.",
+        message: message,
         buttons: ['OK']
         });
         // this.navCtrl.setRoot('HcfMappingPage');
@@ -1185,8 +1218,14 @@ yellow:any = 0;
     .subscribe((data: any) =>
     {
        // If the request was successful notify the user
-       console.log(data);
+       let message;
+            this.translate.get('Arrived').subscribe(
+            value => {
+              // value is our translated string
+              message = value;
+            });
        let alert = this.alertCtrl.create({
+
         // title: 'Patient',
         message: 'Do you see the victim?',
         buttons: [

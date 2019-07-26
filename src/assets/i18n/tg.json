@@ -16,7 +16,18 @@
     "Mental" : "May problema sa pag-iisip",
     "Submit" : "Ipasa ang request",
     "Back" : "Bumalik sa mapa",
-    "Report Sent" : "Naipasa na ang iyong request!",
+    "ReportSent" : "Naipasa na ang iyong request!",
     "Name": "Pangalan ng tao",
-    "PleaseCheck" : "Paki-check ng kalagayan ni:"
+    "PleaseCheck" : "Paki-check ng kalagayan ni:",
+    "Response" : "Tumugon",
+    "Respond" : "Gusto mo bang tumugon?",
+    "Cancel" : "Hindi",
+    "See" : "Tingnan",
+    "RespondRequest" : "Tumugon sa request",
+    "Rescuees" : "Mga espesyal na pangangailangan ng biktima",
+    "RespondNow" : "Tumugon ngayon",
+    "Start" : "Magsimulang mag-navigate",
+    "Arrive" : "Nakarating na",
+    "Arrived" : "Nakarating ka na!",
+    "StartNav" : "Nagsimula ka nang mag-navigate"
 }
