@@ -312,7 +312,7 @@ export class EventReportPage {
            // If the request was successful notify the user
            console.log(data);
             let message;
-            this.translate.get('Check').subscribe(
+            this.translate.get('ReportSent').subscribe(
             value => {
               // value is our translated string
               message = value;

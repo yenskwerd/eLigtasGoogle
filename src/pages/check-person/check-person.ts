@@ -292,9 +292,14 @@ export class CheckPersonPage {
         .subscribe((data: any) =>
         {
            // If the request was successful notify the user
-           console.log(data);
+           let message;
+            this.translate.get('ReportSent').subscribe(
+            value => {
+              // value is our translated string
+              message = value;
+            });
            let alert = this.alertCtrl.create({
-            message: "Request sent successfully!",
+            message: message,
             buttons: ['OK']
             }); 
             // this.navCtrl.pop();

@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title text-center>Respond to Request</ion-title>
+    <ion-title text-center>{{ 'RespondRequest' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,23 +16,23 @@
 <ion-content padding>
 
   <form >
-    <ion-label stacked>Event</ion-label>
+    <ion-label stacked translate>Event</ion-label>
     <ion-item>
       <ion-input [readonly]="isReadonly" value="{{event}}"></ion-input>
     </ion-item>
-    <ion-label stacked>Persons Injured</ion-label>
+    <ion-label stacked translate>Injured</ion-label>
     <ion-item>
       <ion-input type="number" name="injured" [readonly]="isReadonly" value="{{injured}}"></ion-input>
     </ion-item>
-    <ion-label stacked>Persons Trapped</ion-label>
+    <ion-label stacked translate>Trapped</ion-label>
     <ion-item>
       <ion-input type="number" name="trapped" [readonly]="isReadonly" value="{{trapped}}"></ion-input>
     </ion-item>
-    <ion-label stacked>Other info</ion-label>
+    <ion-label stacked translate>Other</ion-label>
     <ion-item>
       <ion-textarea name="other" [readonly]="isReadonly" value="{{other}}"></ion-textarea>
     </ion-item>
-    <ion-label stacked>Rescuees special needs</ion-label>
+    <ion-label stacked translate>Rescuees</ion-label>
     <ion-item>
       <ion-input name="special" [readonly]="isReadonly" value="{{special}}"></ion-input>
     </ion-item>
@@ -71,8 +71,8 @@
     <!-- <button ion-button type="submit" block>Submit Request</button> -->
   </form>
   <div text-center>
-    <button ion-button class="reportBtn" (click)="pushRespondNowPage()">Respond Now</button>
-    <button ion-button class="reportBtn" (click)="pushBackToMap()">Back to Map</button>
+    <button ion-button class="reportBtn" (click)="pushRespondNowPage()">{{ 'RespondNow' | translate}}</button>
+    <button ion-button class="reportBtn" (click)="pushBackToMap()">{{ 'Back' | translate }}</button>
     <!-- <button ion-button class="reportBtn" (click)="pushRequestVisualizationPage()">Back to Map</button> -->
   </div>
   

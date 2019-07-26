@@ -16,8 +16,18 @@
     "Mental" : "With mental health issues",
     "Submit" : "Submit request",
     "Back" : "Back to map",
-    "Report Sent" : "Report sent successfully!",
+    "ReportSent" : "Report sent successfully!",
     "Name" : "Person Name",
-    "PleaseCheck" : "Please check on this person:"
-
+    "PleaseCheck" : "Please check on this person:",
+    "Response" : "Response",
+    "Respond" : "Do you want to respond",
+    "Cancel" : "Cancel",
+    "See" : "See",
+    "RespondRequest" : "Respond to request",
+    "Rescuees" : "Rescuee’s special needs",
+    "RespondNow" : "Respond Now",
+    "Start" : "Start Navigation",
+    "Arrive" : "Arrive",
+    "Arrived" : "You have arrived!",
+    "StartNav" : "You have started navigating"
 }
