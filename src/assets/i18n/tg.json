@@ -1,5 +1,22 @@
 {
     "Please": "Paki pin point ang lokasyon",
     "REPORT": "ULAT",
-    "before": "bago gumawa ng isang "
+    "before": "bago gumawa ng isang ",
+    "Report": "Mag-report ng pangyayari",
+    "Help" : "Mag-request ng tulong",
+    "Check" : "Magpa-check ng kalagayan",
+    "Event": "Pangyayari",
+    "Injured" : "Bilang ng taong sugatan",
+    "Trapped" : "Bilang ng taong trapped",
+    "Other": "Iba pang impormasyon",
+    "Needs" : "May mga biktima bang may espesyal na pangangailangan?",
+    "Visually" : "May problema sa paningin",
+    "Hear" : "Hindi makarinig",
+    "Walk" : "Hindi makalakad",
+    "Mental" : "May problema sa pag-iisip",
+    "Submit" : "Ipasa ang request",
+    "Back" : "Bumalik sa mapa",
+    "Report Sent" : "Naipasa na ang iyong request!",
+    "Name": "Pangalan ng tao",
+    "PleaseCheck" : "Paki-check ng kalagayan ni:"
 }

@@ -7,7 +7,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { escapeRegExp } from '@angular/compiler/src/util';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 
 /**
