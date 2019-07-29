@@ -21,16 +21,16 @@
     <button color="trans" (click)="showHCF($event)" ion-fab><img src={{HCFcolor}} class="togglesht"></button>
     <button color="trans" (click)="showevac($event)" ion-fab><img src={{evaccolor}} class="togglesht"></button>
     <button color="trans" (click)="emergencyhospital()" ion-fab><img src={{hosimage}} class="togglesht"></button>
-    <button *ngIf="stat_id==2" color="trans" (click)="showlastlocation()" ion-fab><img src="assets/imgs/user/loc.png" class="togglesht"></button>
+    <!-- <button *ngIf="stat_id==2" color="trans" (click)="showlastlocation()" ion-fab><img src="assets/imgs/user/loc.png" class="togglesht"></button> -->
     <!-- <button color="trans" (click)="showlastlocation()" ion-fab><img src="assets/imgs/user/loc.png" class="togglesht"></button> -->
       <!-- <button color="trans" (click)="showreportedevents($event)" ion-fab><img src={{evaccolor}} class="togglesht"></button> -->
   </ion-fab>
 
-  <ion-fab *ngIf="stat_id==2" right top>
+  <!-- <ion-fab *ngIf="stat_id==2" right top>
     <button color="secondary" (click)="pushDone()" ion-fab><ion-icon name="checkmark"></ion-icon></button>
-  </ion-fab>
+  </ion-fab> -->
 
-  <ion-fab *ngIf="stat_id==0 && user_request_id!=NULL || stat_id==1" right top>
+  <ion-fab *ngIf="loginService.resp_stat_id==0 && user_request_id!=NULL || loginService.resp_stat_id==1" right top>
     <button color="danger" (click)="cancelConfirm()" ion-fab><ion-icon name="close"></ion-icon></button>
   </ion-fab>
 
@@ -38,7 +38,7 @@
     <button color="danger" (click)="cancelConfirm1()" ion-fab><ion-icon name="close"></ion-icon></button>
   </ion-fab> -->
   
-  <ion-fab *ngIf="stat_id==0 && user_request_id==NULL" right top>
+  <ion-fab *ngIf="loginService.resp_stat_id==0 && user_request_id==NULL" right top>
     <button color="light" class="fab-trans" (click)="recenter()" ion-fab><ion-icon name="locate"></ion-icon></button>
   </ion-fab>
 
@@ -58,7 +58,7 @@
   </ion-card-content>
 </ion-card>
 <ion-footer text-center>
-  <div *ngIf="stat_id==0 && user_request_id!=NULL">
+  <div *ngIf="loginService.resp_stat_id==0 && user_request_id!=NULL">
     <button ion-button (click)="start()" class="reportBtn" block>{{ 'Start' | translate }}</button> 
   </div>
   <!-- <div *ngIf="stat_id==1 && trytry>100">
@@ -67,13 +67,13 @@
   <div *ngIf="stat_id==1 && trytry<=100">
     <button ion-button (click)="pushArrive()" class="reportBtn" block>Arrive</button> 
   </div> -->
-  <div *ngIf="stat_id==1">
+  <div *ngIf="loginService.resp_stat_id==1">
     <button ion-button (click)="pushArrive()" class="reportBtn" block>{{ 'Arrive' | translate }}</button> 
   </div>
   <!-- <div *ngIf="stat_id==1 && trytry<=100">
     <button ion-button (click)="pushArrive()" class="reportBtn" block>Arrive</button> 
   </div> -->
-  <div *ngIf="stat_id==2">
+  <div *ngIf="loginService.resp_stat_id==2">
     <button *ngIf="cfb==true" disabled ion-button class="reportBtn" (click)="requestCallForBackUp()">Call for Backup</button>
     <button *ngIf="cfb==false" ion-button class="reportBtn" (click)="requestCallForBackUp()">Call for Backup</button>
     <button ion-button (click)="opendisposition()" class="reportBtn" >Disposition</button>
