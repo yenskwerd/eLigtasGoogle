@@ -19,6 +19,7 @@ export class LoginServiceProvider {
   public lastlat: any;
   public lastlong: any;
   public language: any;
+  public resp_stat_id: any;
 
   constructor(public http: HttpClient) {
     console.log('Hello LoginServiceProvider Provider');

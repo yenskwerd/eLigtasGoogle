@@ -29,6 +29,7 @@ export class RespMapPage {
   @ViewChild('map') mapRef: ElementRef;
   @ViewChild('directionsPanel') directionsPanel: ElementRef;
   dataRefresher: any;
+  statidRefresher: any; 
   requestMarkers: any;
   requestmarkers:any;
   redMarker: any;
@@ -104,7 +105,9 @@ export class RespMapPage {
       
     //   }, 5000);
       
-
+    this.statidRefresher = setInterval(() =>{
+      this.loginService.resp_stat_id=this.loginService.resp_stat_id;
+    },1000);
 }
 
 
@@ -154,7 +157,8 @@ export class RespMapPage {
             console.log(res)      
             this.user_request_id = res.request_id;
             console.log(res.stat_id);
-            this.stat_id = res.stat_id;
+            this.loginService.resp_stat_id = res.stat_id;
+            // this.stat_id= res.stat_id;
             // let watch = this.geolocation.watchPosition();
             this.geolocation.getCurrentPosition().then((position) => {
               // let watch = this.geolocation.watchPosition();
@@ -183,6 +187,7 @@ export class RespMapPage {
                   clickableIcons: false
                 };
                 this.checkcount();
+                this.checkcount();
                 this.requestMarker();
                 // google.maps.event.trigger(this.map,'resize');
                 this.addMarker(this.redMarker);
@@ -202,9 +207,9 @@ export class RespMapPage {
 
     });
   }
-  latlangbounds(){
-    this.map.lat
-  }
+  // latlangbounds(){
+  //   this.map.lat
+  // }
   addMarker(data){
     // this.directionsDisplay.setMap(null);
     // this.directionsDisplay.setPanel(null);
@@ -430,7 +435,18 @@ yellow:any = 0;
           });
   
       } else if(data.request_status_id==1 && data.request_id == this.user_request_id){
-        this.rout(data);
+        if(this.loginService.resp_stat_id==2){
+        // this.rout(data);
+        this.directionsDisplay.setMap(null);
+        this.directionsDisplay.setPanel(null);
+        // this.directionsDisplay.set('directionsPanel', null);
+        this.mapClass = "mapClass";
+        this.directionsDisplay.setOptions({suppressMarkers:true});
+        this.directionsDisplay.setOptions({suppressPolylines:true})
+        }else{
+          this.rout(data);
+        }
+        //condition para igback
         this.eventForReport = data.event;
         this.request_id = data.request_id;
         // this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long,i);
@@ -465,9 +481,9 @@ yellow:any = 0;
            .subscribe(
              res => {
               this.callForBackUpMarker(res, data);
-              if (this.stat_id == 0 && this.loginService.logged_in_user_request_id == data.request_id) {
+              if (this.loginService.resp_stat_id == 0 && this.loginService.logged_in_user_request_id == data.request_id) {
                 this.rout(data);
-              } else if(this.stat_id == 1) {
+              } else if(this.loginService.resp_stat_id == 1) {
                 this.rout(data);
                 // this.trytry = this.LatLng1.distanceTo(leaflet.latLng(data.request_lat,data.request_long));
               } 
@@ -1136,7 +1152,7 @@ yellow:any = 0;
   /******** BUTTON FUNCTIONS **********/
   start(){
 
-    this.stat_id = 1;
+    this.loginService.resp_stat_id = 1;
 
     var headers = new Headers();
       
@@ -1274,7 +1290,7 @@ yellow:any = 0;
             text: 'Yes',
             handler: () => {
               console.log('Buy clicked');
-              this.stat_id=2;
+              this.loginService.resp_stat_id=2;
             }
           }
         ]
@@ -1463,7 +1479,7 @@ yellow:any = 0;
 
   pushDone() {
     this.responderongoing=0;
-    this.stat_id=3;
+    this.loginService.resp_stat_id=3;
     // if(this.loginService.logged_in_user_request_id!= null){
     //   this.status = true;
     // }
@@ -1577,7 +1593,7 @@ yellow:any = 0;
     console.log("clicked cancel");
     this.responderongoing=0;
     this.user_request_id = null;
-    this.stat_id=0;
+    this.loginService.resp_stat_id=0;
     
     var headers = new Headers();
     
@@ -1852,9 +1868,18 @@ yellow:any = 0;
       }
     });
   }
-
+  
   opendisposition(){
-    this.navCtrl.push('PersonstatusPage');
+    this.directionsDisplay.setMap(null);
+      this.directionsDisplay.setPanel(null);
+      // this.directionsDisplay.set('directionsPanel', null);
+      this.mapClass = "mapClass";
+      this.directionsDisplay.setOptions({suppressMarkers:true});
+      this.directionsDisplay.setOptions({suppressPolylines:true})
+
+    this.navCtrl.push('PersonstatusPage',{
+      request_id: this.request_id,
+    });
   }
 
 }
