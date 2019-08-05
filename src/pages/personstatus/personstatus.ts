@@ -8,7 +8,6 @@ import 'rxjs/add/operator/map';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { TranslateService } from '@ngx-translate/core';
-import { CallForBackupPage } from '../call-for-backup/call-for-backup';
 
 import 'rxjs/add/operator/map';
 /**
