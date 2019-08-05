@@ -112,110 +112,121 @@ export class RespondToRequestPage {
     let data = {
       user_id: this.loginService.logged_in_user_id,
       request_status_id: this.request_status_id,
-      request_id: this.request_id,
-      option: this.option
+      request_id: this.request_id
     }
     let loader = this.loading.create({
     });
-  
-    loader.present().then(() => {
-      this.http.post('http://usc-dcis.com/eligtas.app/update-rescue.php',data,options)
-      .map(res=> res.json())
+
+    if(this.option == "CFB"){
+      this.loginService.loginState = 4;
+      //backup
+      loader.present().then(() => {
+
+        this.http.post('http://usc-dcis.com/eligtas.app/update-rescue1.php', data, options)
+        .map(res => res.json())
         .subscribe(
           res => {
-          loader.dismiss()
-          console.log(res)
+            
           });
-          //gets user data
-          let data2 = {
-            user_id: this.loginService.logged_in_user_id
-          }
-          console.log(data);
-          //update eta
-          var headers = new Headers();
-    
-              headers.append("Accept", 'application/json');
-              headers.append('Content-Type', 'application/x-www-form-urlencoded');
-              headers.append('Access-Control-Allow-Origin' , '*');
-              headers.append('Access-Control-Allow-Headers' , 'Content-Type');
-              headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
-              
-              let options1 = new RequestOptions({ headers: headers });
-              let data3 = {
-                request_id: this.request_id,
-                ETA: this.eta
-              }
 
-              this.http.post('http://usc-dcis.com/eligtas.app/update-request-ETA.php', data3, options1)
-              .map(res=> res.json())
-              .subscribe((data3: any) =>
-              {
-                console.log(data3);
-                console.log(this.eta);
-              },
-              (error : any) =>
-              {
-                console.log(error);
-                let alert2 = this.alertCtrl.create({
-                  title:"FAILED",
-                  subTitle: "Request not updated. huhu!",
-                  buttons: ['OK']
-                  });
-
-                alert2.present();
-              });
-
-    this.navCtrl.setRoot('RespMapPage');
-  // this.navCtrl.pop();
-    //  location.reload();
-        });
-
-    /********** LOG **********/
+        let data2 = {
+          user_id: this.loginService.logged_in_user_id,
+          action: "Backup",
+          action_datetime: this.datetoday,
+          request_id: this.request_id
+        }
         
-    // let data2 = {
-    //   user_id: this.loginService.logged_in_user_id,
-    //   action: "Respond",
-    //   action_datetime: new Date(),
-    //   request_id: this.request_id
-    // }
-    
-    // this.http.post('http://usc-dcis.com/eligtas.app/log.php', data2, options)
-    
-    // .map(res=> res.json())
-    // .subscribe((data2: any) =>
-    // {
-    //    console.log(data2);
-    // },
-    // (error : any) =>
-    // {
-    //   console.log(error);
-    // });
+        this.http.post('http://usc-dcis.com/eligtas.app/log.php', data2, options)
+        
+        .map(res=> res.json())
+        .subscribe((data2: any) =>
+        {
+           console.log(data2);
+        },
+        (error : any) =>
+        {
+          console.log(error);
+        });
+        this.navCtrl.setRoot('RespMapPage');
+        loader.dismiss();
+      });
+    }else{
+      loader.present().then(() => {
+        this.http.post('http://usc-dcis.com/eligtas.app/update-rescue.php',data,options)
+        .map(res=> res.json())
+          .subscribe(
+            res => {
+            loader.dismiss()
+            console.log(res)
+            });
+            //gets user data
+            let data2 = {
+              user_id: this.loginService.logged_in_user_id
+            }
+            console.log(data);
+            //update eta
+            var headers = new Headers();
+      
+                headers.append("Accept", 'application/json');
+                headers.append('Content-Type', 'application/x-www-form-urlencoded');
+                headers.append('Access-Control-Allow-Origin' , '*');
+                headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+                headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+                
+                let options1 = new RequestOptions({ headers: headers });
+                let data3 = {
+                  request_id: this.request_id,
+                  ETA: this.eta
+                }
+  
+                this.http.post('http://usc-dcis.com/eligtas.app/update-request-ETA.php', data3, options1)
+                .map(res=> res.json())
+                .subscribe((data3: any) =>
+                {
+                  console.log(data3);
+                  console.log(this.eta);
+                },
+                (error : any) =>
+                {
+                  console.log(error);
+                  let alert2 = this.alertCtrl.create({
+                    title:"FAILED",
+                    subTitle: "Request not updated. huhu!",
+                    buttons: ['OK']
+                    });
+  
+                  alert2.present();
+                });
+  
+      this.navCtrl.setRoot('RespMapPage');
+    // this.navCtrl.pop();
+      //  location.reload();
+          });
 
-    
-    let data2 = {
-      user_id: this.loginService.logged_in_user_id,
-      action: "Respond",
-      action_datetime: this.datetoday,
-      request_id: this.request_id
+          let data2 = {
+            user_id: this.loginService.logged_in_user_id,
+            action: "Respond",
+            action_datetime: this.datetoday,
+            request_id: this.request_id
+          }
+          
+          this.http.post('http://usc-dcis.com/eligtas.app/log.php', data2, options)
+          
+          .map(res=> res.json())
+          .subscribe((data2: any) =>
+          {
+             console.log(data2);
+          },
+          (error : any) =>
+          {
+            console.log(error);
+          });
+      
     }
-    
-    this.http.post('http://usc-dcis.com/eligtas.app/log.php', data2, options)
-    
-    .map(res=> res.json())
-    .subscribe((data2: any) =>
-    {
-       console.log(data2);
-    },
-    (error : any) =>
-    {
-      console.log(error);
-    });
-
-    /********** END OF LOG **********/
   }
 
   pushBackToMap(){
-    this.navCtrl.setRoot('RespMapPage');
+    this.navCtrl.pop();
     // this.navCtrl.popToRoot();
     // this.navCtrl.push('RespMapPage');
   }

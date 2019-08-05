@@ -20,6 +20,7 @@ export class LoginServiceProvider {
   public lastlong: any;
   public language: any;
   public resp_stat_id: any;
+  public backup: any;
 
   constructor(public http: HttpClient) {
     console.log('Hello LoginServiceProvider Provider');

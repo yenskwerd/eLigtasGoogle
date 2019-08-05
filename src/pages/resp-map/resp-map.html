@@ -73,7 +73,7 @@
   <!-- <div *ngIf="stat_id==1 && trytry<=100">
     <button ion-button (click)="pushArrive()" class="reportBtn" block>Arrive</button> 
   </div> -->
-  <div *ngIf="loginService.resp_stat_id==2">
+  <div *ngIf="loginService.resp_stat_id==2 && loginService.backup==0">
     <button *ngIf="cfb==true" disabled ion-button class="reportBtn" (click)="requestCallForBackUp()">Call for Backup</button>
     <button *ngIf="cfb==false" ion-button class="reportBtn" (click)="requestCallForBackUp()">Call for Backup</button>
     <button ion-button (click)="opendisposition()" class="reportBtn" >Disposition</button>
