@@ -297,7 +297,7 @@ loadbackup(){
   distancekm:any;
   requestMarker(){
     
-    this.dataRefresher = setInterval(() =>{
+    this.dataRefresher = setInterval(() =>{ 
       if(this.loginService.logged_in_user_request_id!= null){
         this.status = true;
       }
@@ -579,7 +579,7 @@ yellow:any = 0;
               
               option: "CFB"
             });
-          }, 500);
+          }, 900);
           }
         }
       ]

@@ -211,7 +211,8 @@ export class PersonstatusPage {
   
         alert2.present();
       });
-    }if(this.currentTransfer!=0){
+    }
+    if(this.currentTransfer!=0){
       let data5 = {
         request_id: this.request_id,
         current:this.currentTransfer,
@@ -241,7 +242,8 @@ export class PersonstatusPage {
   
         alert2.present();
       });
-    }if(this.currentDead!=0){
+    }
+    if(this.currentDead!=0){
       let data5 = {
         request_id: this.request_id,
         current:this.currentDead,
@@ -271,7 +273,8 @@ export class PersonstatusPage {
   
         alert2.present();
       });
-    }if(this.currentMissing!=0){
+    }
+    if(this.currentMissing!=0){
       let data5 = {
         request_id: this.request_id,
         current:this.currentMissing,
