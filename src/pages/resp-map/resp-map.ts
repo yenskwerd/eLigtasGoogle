@@ -430,6 +430,10 @@ yellow:any = 0;
         // this.eventForReport = data.event;
         // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
         this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
+      }else if( data.request_status_id==3 ){
+        // this.eventForReport = data.event;
+        // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
+        this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
       } else if (data.request_status_id == 0) {
         // this.eventForReport = data.event;
         var headers = new Headers();

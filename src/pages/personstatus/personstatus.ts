@@ -40,6 +40,7 @@ export class PersonstatusPage {
   datetoday = this.y+"-"+this.m+"-"+this.da+" "+this.h+":"+this.mi+":"+this.s;
 
   request_id: any;
+  count:any;
 
   constructor(public http2 : Http,
     private http: Http, 
@@ -181,6 +182,127 @@ export class PersonstatusPage {
       alert2.present();
     });
 
+    if(this.currentSafe!=0){
+      let data5 = {
+        request_id: this.request_id,
+        current:this.currentSafe,
+        dis_id:1,
+      }
+  
+      this.http2.post('http://usc-dcis.com/eligtas.app/update-dispostatus.php', data5, options)
+      .map(res=> res.json())
+      .subscribe(() =>
+      {
+         // If the request was successful notify the user
+        //  console.log(data2);
+        //  let alert = this.alertCtrl.create({
+        //   message: "You have started navigating(???)",
+        //   buttons: ['OK']
+        //   });
+        //   alert.present();
+      },
+      (error : any) =>
+      {
+        console.log(error);
+        let alert2 = this.alertCtrl.create({
+          title:"FAILED",
+          subTitle: "Something went wrong!",
+          buttons: ['OK']
+          });
+  
+        alert2.present();
+      });
+    }if(this.currentTransfer!=0){
+      let data5 = {
+        request_id: this.request_id,
+        current:this.currentTransfer,
+        dis_id:2,
+      }
+  
+      this.http2.post('http://usc-dcis.com/eligtas.app/update-dispostatus.php', data5, options)
+      .map(res=> res.json())
+      .subscribe(() =>
+      {
+         // If the request was successful notify the user
+        //  console.log(data2);
+        //  let alert = this.alertCtrl.create({
+        //   message: "You have started navigating(???)",
+        //   buttons: ['OK']
+        //   });
+        //   alert.present();
+      },
+      (error : any) =>
+      {
+        console.log(error);
+        let alert2 = this.alertCtrl.create({
+          title:"FAILED",
+          subTitle: "Something went wrong!",
+          buttons: ['OK']
+          });
+  
+        alert2.present();
+      });
+    }if(this.currentDead!=0){
+      let data5 = {
+        request_id: this.request_id,
+        current:this.currentDead,
+        dis_id:3,
+      }
+  
+      this.http2.post('http://usc-dcis.com/eligtas.app/update-dispostatus.php', data5, options)
+      .map(res=> res.json())
+      .subscribe(() =>
+      {
+         // If the request was successful notify the user
+        //  console.log(data2);
+        //  let alert = this.alertCtrl.create({
+        //   message: "You have started navigating(???)",
+        //   buttons: ['OK']
+        //   });
+        //   alert.present();
+      },
+      (error : any) =>
+      {
+        console.log(error);
+        let alert2 = this.alertCtrl.create({
+          title:"FAILED",
+          subTitle: "Something went wrong!",
+          buttons: ['OK']
+          });
+  
+        alert2.present();
+      });
+    }if(this.currentMissing!=0){
+      let data5 = {
+        request_id: this.request_id,
+        current:this.currentMissing,
+        dis_id:4,
+      }
+  
+      this.http2.post('http://usc-dcis.com/eligtas.app/update-dispostatus.php', data5, options)
+      .map(res=> res.json())
+      .subscribe(() =>
+      {
+         // If the request was successful notify the user
+        //  console.log(data2);
+        //  let alert = this.alertCtrl.create({
+        //   message: "You have started navigating(???)",
+        //   buttons: ['OK']
+        //   });
+        //   alert.present();
+      },
+      (error : any) =>
+      {
+        console.log(error);
+        let alert2 = this.alertCtrl.create({
+          title:"FAILED",
+          subTitle: "Something went wrong!",
+          buttons: ['OK']
+          });
+  
+        alert2.present();
+      });
+    }
 
 
 
