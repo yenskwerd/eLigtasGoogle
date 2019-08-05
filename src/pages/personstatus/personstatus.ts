@@ -103,7 +103,7 @@ export class PersonstatusPage {
     /******** UPDATE REQUEST STATUS ID **********/
     let data2 = {
       request_id: this.request_id,
-      request_status_id: 2
+      request_status_id: 3
     }
 
     this.http2.post('http://usc-dcis.com/eligtas.app/update-request.php', data2, options)
