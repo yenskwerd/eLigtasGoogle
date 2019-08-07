@@ -29,5 +29,17 @@
     "Start" : "Start Navigation",
     "Arrive" : "Arrive",
     "Arrived" : "You have arrived!",
-    "StartNav" : "You have started navigating"
+    "StartNav" : "You have started navigating",
+    "Yes" : "Yes",
+    "No" : "No",
+    "Call" : "Call for backup",
+    "Reason" : "Reason for calling for backup",
+    "Resources" : "Resources Needed",
+    "submit" : "Submit",
+    "cancel" : "Cancel",
+    "Disposition" : "Disposition",
+    "Safe" : "Safe",
+    "Transfer" : "Transferred to hospital",
+    "Dead" : "Expectant dead",
+    "Missing" : "Missing"
 }

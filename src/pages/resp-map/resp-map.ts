@@ -1449,13 +1449,26 @@ yellow:any = 0;
     .map(res=> res.json())
     .subscribe((data: any) =>
     {
+      let yes, no;
+      this.translate.get('Yes').subscribe(
+        value => {
+          // value is our translated string
+          yes = value;
+      });
+      this.translate.get('No').subscribe(
+        value => {
+          // value is our translated string
+          no = value;
+      });
+
+
       let alert = this.alertCtrl.create({
 
         // title: 'Patient',
-        message: 'Call for back up?',
+        message: 'Call for backup?',
         buttons: [
           {
-            text: 'No',
+            text: no,
             role: 'cancel',
             handler: () => {
               console.log('Cancel clicked');
@@ -1464,7 +1477,7 @@ yellow:any = 0;
             }
           },
           {
-            text: 'Yes',
+            text: yes,
             handler: () => {
               console.log('Buy clicked');
               this.loginService.resp_stat_id=2;
@@ -1695,30 +1708,58 @@ yellow:any = 0;
 
   requestCallForBackUp(){
 
+    let title, message, reason, resources, submit, cancel
+    this.translate.get('Call').subscribe(
+      value => {
+        // value is our translated string
+        title = value;
+    });
+    this.translate.get('Reason').subscribe(
+      value => {
+        // value is our translated string
+        reason = value;
+    });
+    this.translate.get('Resources').subscribe(
+      value => {
+        // value is our translated string
+        resources = value;
+    });
+    this.translate.get('submit').subscribe(
+      value => {
+        // value is our translated string
+        submit = value;
+    });
+    this.translate.get('cancel').subscribe(
+      value => {
+        // value is our translated string
+        cancel = value;
+    });
+
+
 
     let alert = this.alertCtrl.create({
-      title: 'Call For Backup',
+      title: title,
       message: 'Fill up the following',
       inputs: [
         {
           name: 'reason',
-          placeholder: 'Reason'
+          placeholder: reason
         },
         {
           name: 'resources',
-          placeholder: 'Resources needed: (e.g. stretchers, body bag, additional manpower, supplies, etc.)'
+          placeholder: resources
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: cancel,
           role: 'cancel',
           handler: data => {
             console.log('Cancel clicked');
           }
         },
         {
-          text: 'Submit',
+          text: submit,
           handler: data => {
             this.sendBackup(data);
           }

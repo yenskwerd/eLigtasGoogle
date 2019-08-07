@@ -6,39 +6,39 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title>Disposition</ion-title>
+    <ion-title>{{ 'Disposition' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-label stacked translate>Safe</ion-label>
+    <ion-label stacked translate>{{ 'Safe' | translate }}</ion-label>
   <ion-item>
     <ion-icon name="remove-circle" (click)="decrementSafe()"></ion-icon>
       {{currentSafe}}
       <ion-icon name="add-circle" (click)="incrementSafe()"></ion-icon>
   </ion-item>
 
-  <ion-label stacked translate>Transferred to Hospital</ion-label>
+  <ion-label stacked translate>{{ 'Transfer' | translate }}</ion-label>
   <ion-item>
     <ion-icon name="remove-circle" (click)="decrementTransfer()"></ion-icon>
       {{currentTransfer}}
       <ion-icon name="add-circle" (click)="incrementTransfer()"></ion-icon>
   </ion-item>
 
-  <ion-label stacked translate>Expectant Dead</ion-label>
+  <ion-label stacked translate>{{ 'Dead' | translate }}</ion-label>
   <ion-item>
     <ion-icon name="remove-circle" (click)="decrementDead()"></ion-icon>
       {{currentDead}}
       <ion-icon name="add-circle" (click)="incrementDead()"></ion-icon>
   </ion-item>
 
-  <ion-label stacked translate>Missing</ion-label>
+  <ion-label stacked translate>{{ 'Missing' | translate }}</ion-label>
   <ion-item>
     <ion-icon name="remove-circle" (click)="decrementMissing()"></ion-icon>
       {{currentMissing}}
       <ion-icon name="add-circle" (click)="incrementMissing()"></ion-icon>
   </ion-item>
 
-  <button ion-button (click)="SubmitDis()" class="reportBtn" >Submit</button>
+  <button ion-button (click)="SubmitDis()" class="reportBtn" >{{ 'submit' | translate }}</button>
 
 </ion-content>
