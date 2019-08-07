@@ -316,10 +316,12 @@ loadbackup(){
             if(this.distancekm<1.500){
             this.notification(data[data.length-1].request_type_id, data[data.length-1].event, this.reverseGeocodingResults);
             }
+            if(data[data.length-1].request_status_id = 0){
             for(let i=0; i<data.length; i++){
               // this.createMarker2(data[i]);
               this.createMarker2(data[i],i);
           }
+        }
           this.ctr=data.length;
         }
       },
