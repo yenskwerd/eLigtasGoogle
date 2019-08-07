@@ -1316,7 +1316,7 @@ yellow:any = 0;
     }, (error : any) => {
       console.log(error);
       let alert2 = this.alertCtrl.create({
-        title:"FAILED",
+        title:"FAILED 1",
         subTitle: "Something went wrong!",
         buttons: ['OK']
         });
@@ -1337,13 +1337,15 @@ yellow:any = 0;
     {
       console.log(error);
       let alert2 = this.alertCtrl.create({
-        title:"FAILED",
+        title:"FAILED 2",
         subTitle: "Something went wrong!",
         buttons: ['OK']
         });
 
       alert2.present();
     });
+
+    console.log("DARA: "+this.loginService.logged_in_user_request_id);
 
     let data3 = {
       user_id: this.loginService.logged_in_user_id,
@@ -1358,7 +1360,7 @@ yellow:any = 0;
     {
       console.log(error);
       let alert2 = this.alertCtrl.create({
-        title:"FAILED",
+        title:"FAILED 3",
         subTitle: "Something went wrong!",
         buttons: ['OK']
         });
@@ -1379,13 +1381,15 @@ yellow:any = 0;
     {
       console.log(error);
       let alert2 = this.alertCtrl.create({
-        title:"FAILED",
+        title:"FAILED 4",
         subTitle: "Something went wrong!",
         buttons: ['OK']
         });
 
       alert2.present();
     });
+
+    // this.requestChecker();
 
     }else{
 
@@ -1535,6 +1539,27 @@ yellow:any = 0;
 
       alert2.present();
     });
+
+    let data4 = {
+      request_id: this.request_id,
+      request_status_id: 2
+    }
+    this.http2.post('http://usc-dcis.com/eligtas.app/update-request.php', data4, options)
+    .map(res=> res.json())
+    .subscribe(() =>
+    {
+    },
+    (error : any) =>
+    {
+      console.log(error);
+      let alert2 = this.alertCtrl.create({
+        title:"FAILED",
+        subTitle: "Something went wrong!",
+        buttons: ['OK']
+        });
+
+      alert2.present();
+    });
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
     // this.directionsDisplay.set('directionsPanel', null);
@@ -1545,6 +1570,48 @@ yellow:any = 0;
 
     }
     
+  }
+
+
+  requestChecker(){
+
+    var headers = new Headers();
+      
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Access-Control-Allow-Origin' , '*');
+    headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+    headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+    
+    let options = new RequestOptions({ headers: headers });
+
+    let data = {
+      request_id: this.loginService.logged_in_user_request_id
+    }
+
+    let datarefresher = setInterval(() =>{
+      this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-status.php', data, options)
+      .map(res=> res.json())
+      .subscribe( res =>
+      {
+        if(res.request_status_id == 3){
+          console.log("3");
+        }else{
+          console.log("not 3");
+        }
+      },
+      (error : any) =>
+      {
+        console.log(error);
+        let alert2 = this.alertCtrl.create({
+          title:"FAILED",
+          subTitle: "Something went wrong!",
+          buttons: ['OK']
+          });
+
+        alert2.present();
+      });
+    }, 5000);
   }
 
   
@@ -1585,9 +1652,11 @@ yellow:any = 0;
   }
 
   sendBackup(datas: any){
-          if(this.loginService.logged_in_user_request_id!= null){
-            this.status = true;
-          }
+
+      if(this.loginService.logged_in_user_request_id == null){
+        this.loginService.logged_in_user_request_id = this.request_id;
+      }
+
           var headers = new Headers();
           
           headers.append("Accept", 'application/json');
@@ -1599,6 +1668,8 @@ yellow:any = 0;
           let options = new RequestOptions({ headers: headers });
            
         /******** UPDATE REQUEST STATUS ID **********/
+
+
         let data2 = {
           request_id: this.loginService.logged_in_user_request_id,
           request_status_id: 0
