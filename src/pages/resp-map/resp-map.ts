@@ -1415,10 +1415,10 @@ yellow:any = 0;
     .map(res=> res.json())
     .subscribe((data: any) =>
     {
-       let alert = this.alertCtrl.create({
+      let alert = this.alertCtrl.create({
 
         // title: 'Patient',
-        message: 'Do you see the victim?',
+        message: 'Call for back up?',
         buttons: [
           {
             text: 'No',
@@ -1426,6 +1426,7 @@ yellow:any = 0;
             handler: () => {
               console.log('Cancel clicked');
               // this.change1();
+              this.opendisposition();
             }
           },
           {
@@ -1433,14 +1434,64 @@ yellow:any = 0;
             handler: () => {
               console.log('Buy clicked');
               this.loginService.resp_stat_id=2;
+              this.requestCallForBackUp();
             }
           }
         ]
       });
         // this.navCtrl.setRoot('HcfMappingPage');
         alert.present();
-        //this.navCtrl.setRoot('PilgrimProfilePage'); 
-        //this.log();
+
+
+      //  let alert = this.alertCtrl.create({
+
+      //   // title: 'Patient',
+      //   message: 'Do you see the victim?',
+      //   buttons: [
+      //     {
+      //       text: 'No',
+      //       role: 'cancel',
+      //       handler: () => {
+      //         console.log('Cancel clicked');
+      //         // this.change1();
+      //       }
+      //     },
+      //     {
+      //       text: 'Yes',
+      //       handler: () => {
+      //         console.log('Buy clicked');
+      //         this.loginService.resp_stat_id=2;
+      //         let alert1 = this.alertCtrl.create({
+
+      //           // title: 'Patient',
+      //           message: 'Call for backup?',
+      //           buttons: [
+      //             {
+      //               text: 'No',
+      //               role: 'cancel',
+      //               handler: () => {
+      //                 console.log('Cancel clicked');
+      //                 this.opendisposition();
+      //               }
+      //             },
+      //             {
+      //               text: 'Yes',
+      //               handler: () => {
+      //                 console.log('Buy clicked');
+      //                 this.requestCallForBackUp();
+                      
+      //               }
+      //             }
+      //           ]
+      //         });
+      //           // this.navCtrl.setRoot('HcfMappingPage');
+      //           alert1.present();
+      //       }
+      //     }
+      //   ]
+      // });
+      //   // this.navCtrl.setRoot('HcfMappingPage');
+      //   alert.present();
 
 
     },
@@ -1495,6 +1546,8 @@ yellow:any = 0;
     }
     
   }
+
+  
 
   requestCallForBackUp(){
 
