@@ -150,6 +150,8 @@ export class RespondToRequestPage {
         this.navCtrl.setRoot('RespMapPage');
         loader.dismiss();
       });
+
+      this.loginService.logged_in_user_request_id = this.request_id;
     }else{
       loader.present().then(() => {
         this.http.post('http://usc-dcis.com/eligtas.app/update-rescue.php',data,options)
