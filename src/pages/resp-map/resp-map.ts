@@ -298,7 +298,7 @@ loadbackup(){
   public status : any=false;
   ctr:any;
   ctrforcfb:any;
-  ctrforcfb2:any;
+  ctrforcfb2=0;
   checkcount(){
     this.ctrforcfb=0;
     // this.ctrforcfb2=0;
@@ -359,12 +359,17 @@ loadbackup(){
         }
         // else{
           for(let i=0; i<data.length; i++){
-            // if(data[i].request_status_id == 0 || data[i].request_status_id == 1 || data[i].request_status_id == 2 || data[i].request_status_id == 3){
-              if(data[i].request_status_id == 0){
+            if(data[i].request_status_id == 1 || data[i].request_status_id == 2){
+              this.createMarker2(data[i],i);
+            }
+            if(data[i].request_status_id == 0){
                   this.ctrforcfb2=this.ctrforcfb2++;
-                    if(this.ctrforcfb!=this.ctrforcfb2){
+                    // if(this.ctrforcfb!=this.ctrforcfb2){
                       this.createMarker2(data[i],i);
-                  }
+                  // }
+              } 
+              if(data[i].request_status_id == 3){
+                    this.createMarker2(data[i],i);
               } 
             }
         // }
@@ -464,7 +469,7 @@ loadbackup(){
     //  this.marker22[i] = new google.maps.Marker({
       this.marker4 = new google.maps.Marker({
       map: this.map,
-      animation: google.maps.Animation.DROP,
+      // animation: google.maps.Animation.DROP,
       position: {lat: parseFloat(lat), lng: parseFloat(long)},
       icon: data
     });
@@ -510,6 +515,7 @@ yellow:any = 0;
           });
   
       } else if(data.request_status_id==1 && data.request_id == this.user_request_id){
+        this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
         if(this.loginService.resp_stat_id==2){
         // this.rout(data);
         this.directionsDisplay.setMap(null);
@@ -544,7 +550,7 @@ yellow:any = 0;
 
     const cfbmarker = new google.maps.Marker({
       map: this.map,
-      animation: google.maps.Animation.DROP,
+      // animation: google.maps.Animation.DROP,
       position: {lat: parseFloat(data.request_lat), lng: parseFloat(data.request_long)},
       icon: iconnum
     });
