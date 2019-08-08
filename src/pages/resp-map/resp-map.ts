@@ -29,6 +29,7 @@ export class RespMapPage {
   @ViewChild('map') mapRef: ElementRef;
   @ViewChild('directionsPanel') directionsPanel: ElementRef;
   dataRefresher: any;
+  dataRefresher2: any;
   statidRefresher: any; 
   requestMarkers: any;
   requestmarkers:any;
@@ -62,6 +63,7 @@ export class RespMapPage {
     this.requestMarkers = [];
     this.distanceArr = [];
     this.pmarker = [];
+    this.cfbmarker = [];
     
     this.redMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
     this.purpleMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png";
@@ -316,14 +318,19 @@ loadbackup(){
             if(this.distancekm<1.500){
             this.notification(data[data.length-1].request_type_id, data[data.length-1].event, this.reverseGeocodingResults);
             }
-            if(data[data.length-1].request_status_id = 0){
             for(let i=0; i<data.length; i++){
               // this.createMarker2(data[i]);
               this.createMarker2(data[i],i);
+        }
+        }else{
+          for(let i=0; i<data.length; i++){
+            if(data[i].request_status_id == 0 || data[i].request_status_id == 1 || data[i].request_status_id == 2 || data[i].request_status_id == 3){
+              console.log(data[i].request_status_id);
+              this.createMarker2(data[i],i);
+            } 
           }
         }
-          this.ctr=data.length;
-        }
+      this.ctr=data.length;
       },
       (error : any) =>
       {
@@ -427,6 +434,7 @@ loadbackup(){
   }
 
 pmarker: any[];
+cfbmarker: any[];
 yellow:any = 0;
   createMarker2(data:any,i:any){
     // createMarker2(data:any){
@@ -487,12 +495,21 @@ yellow:any = 0;
       } else if( data.request_status_id==2 ){
         // this.eventForReport = data.event;
         // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
-        this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
+        this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
       }else if( data.request_status_id==3 ){
         // this.eventForReport = data.event;
         // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
         this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
       } else if (data.request_status_id == 0) {
+        var iconnum = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue.png"
+
+    const cfbmarker = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: {lat: parseFloat(data.request_lat), lng: parseFloat(data.request_long)},
+      icon: iconnum
+    });
+
         // this.eventForReport = data.event;
         var headers = new Headers();
         
@@ -512,13 +529,20 @@ yellow:any = 0;
          .map(res=> res.json())
            .subscribe(
              res => {
-              this.callForBackUpMarker(res);
+              // this.callForBackUpMarker(res);
               if (this.loginService.resp_stat_id == 0 && this.loginService.logged_in_user_request_id == data.request_id) {
                 this.rout(data);
               } else if(this.loginService.resp_stat_id == 1) {
                 this.rout(data);
                 // this.trytry = this.LatLng1.distanceTo(leaflet.latLng(data.request_lat,data.request_long));
               } 
+              if(this.loginService.resp_stat_id!=2){
+                let self = this
+                  // this.cfbmarker[i].addListener('click', function() {
+                    cfbmarker.addListener('click', function() {
+                    self.cfbRespond(data)
+                  });  
+              }   
          }); 
       }
 
@@ -529,7 +553,7 @@ yellow:any = 0;
     console.log(data);
     var iconnum = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue.png"
 
-    const marker = new google.maps.Marker({
+    const cfbmarker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
       position: {lat: parseFloat(data.request_lat), lng: parseFloat(data.request_long)},
@@ -538,7 +562,8 @@ yellow:any = 0;
 
     if(this.loginService.resp_stat_id!=2){
       let self = this
-        marker.addListener('click', function() {
+        // this.cfbmarker[i].addListener('click', function() {
+          cfbmarker.addListener('click', function() {
           self.cfbRespond(data)
         });  
     }   
@@ -1745,7 +1770,7 @@ yellow:any = 0;
     
         this.cfb = true;
 
-        this.dataRefresher = setInterval(() =>{
+        this.dataRefresher2 = setInterval(() =>{
 
           var headers = new Headers();
     
@@ -1768,7 +1793,7 @@ yellow:any = 0;
           .subscribe((data: any) =>
           {
             if(data.request_status_id != 0){
-              clearInterval(this.dataRefresher);
+              clearInterval(this.dataRefresher2);
               this.cfb = false;
 
               this.localNotifications.schedule({
@@ -1793,7 +1818,8 @@ yellow:any = 0;
           });
 
         },1000);
-
+        this.checkcount();
+        this.requestMarker();
   }
 
   pushDone() {
