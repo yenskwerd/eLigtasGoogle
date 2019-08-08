@@ -46,7 +46,8 @@ export class PersonstatusPage {
     public loginService: LoginServiceProvider, 
     public alertCtrl:AlertController, 
     public navCtrl: NavController, 
-    public navParams: NavParams) {
+    public navParams: NavParams,
+    public translate: TranslateService) {
       
       this.request_id=navParams.data.request_id;
 

@@ -8,7 +8,6 @@ import 'rxjs/add/operator/map';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { TranslateService } from '@ngx-translate/core';
-import { PersonstatusPage } from '../personstatus/personstatus';
 
 /**
  * Generated class for the RespMapPage page.
@@ -105,6 +104,35 @@ export class RespMapPage {
         this.loginService.backup = 1;
       }
     });
+
+    if(this.loginService.loginState == 4 && this.loginService.logged_in_stat_id == 2){
+      this.requestChecker();
+    }
+
+    if(this.loginService.logged_in_user_request_id != null){
+      let data = {
+        request_id: this.loginService.logged_in_user_request_id
+      }
+    
+      this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-user-request1.php',data, options)
+        .map(res=> res.json())
+        .subscribe(
+        res => {
+          if(res.request_status_id == 0){
+            this.refresher1();
+
+
+            this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-backup-status.php', data, options)
+              .map(res=> res.json())
+              .subscribe(
+              res => {
+                if(res.status == 0){
+                  this.refresher2();
+                }
+              });
+          }
+        });
+    }
 
 }
 
@@ -1316,7 +1344,7 @@ yellow:any = 0;
         user_id: this.loginService.logged_in_user_id,
         action: "Backup",
         action_datetime: this.datetoday,
-        request_id: this.request_id
+        request_id: this.loginService.logged_in_user_request_id
       }
       
       console.log(data);
@@ -1372,7 +1400,9 @@ yellow:any = 0;
       alert2.present();
     });
 
-    console.log("DARA: "+this.loginService.logged_in_user_request_id);
+    if(this.loginService.logged_in_user_request_id == null){
+      console.log("DARA: "+this.request_id)
+    }
 
     let data3 = {
       user_id: this.loginService.logged_in_user_id,
@@ -1416,7 +1446,7 @@ yellow:any = 0;
       alert2.present();
     });
 
-    // this.requestChecker();
+    this.requestChecker();
 
     }else{
 
@@ -1446,13 +1476,26 @@ yellow:any = 0;
     .map(res=> res.json())
     .subscribe((data: any) =>
     {
+      let yes, no;
+      this.translate.get('Yes').subscribe(
+        value => {
+          // value is our translated string
+          yes = value;
+      });
+      this.translate.get('No').subscribe(
+        value => {
+          // value is our translated string
+          no = value;
+      });
+
+
       let alert = this.alertCtrl.create({
 
         // title: 'Patient',
-        message: 'Call for back up?',
+        message: 'Call for backup?',
         buttons: [
           {
-            text: 'No',
+            text: no,
             role: 'cancel',
             handler: () => {
               console.log('Cancel clicked');
@@ -1461,7 +1504,7 @@ yellow:any = 0;
             }
           },
           {
-            text: 'Yes',
+            text: yes,
             handler: () => {
               console.log('Buy clicked');
               this.loginService.resp_stat_id=2;
@@ -1599,6 +1642,8 @@ yellow:any = 0;
     
   }
 
+  datarefresher : any;
+
 
   requestChecker(){
 
@@ -1616,15 +1661,14 @@ yellow:any = 0;
       request_id: this.loginService.logged_in_user_request_id
     }
 
-    let datarefresher = setInterval(() =>{
+    this.datarefresher = setInterval(() =>{
       this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-status.php', data, options)
       .map(res=> res.json())
       .subscribe( res =>
       {
         if(res.request_status_id == 3){
-          console.log("3");
-        }else{
-          console.log("not 3");
+          clearInterval(this.datarefresher);
+          this.endBackup();
         }
       },
       (error : any) =>
@@ -1638,37 +1682,111 @@ yellow:any = 0;
 
         alert2.present();
       });
-    }, 5000);
+    }, 1000);
+  }
+
+  endBackup(){
+    var headers = new Headers();
+      
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Access-Control-Allow-Origin' , '*');
+    headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+    headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+    
+    let options = new RequestOptions({ headers: headers });
+
+    let data = {
+      user_id: this.loginService.logged_in_user_id
+    }
+
+    this.http2.post('http://usc-dcis.com/eligtas.app/update-backup.php', data, options)
+      .map(res=> res.json())
+      .subscribe( res =>
+      {
+        let alert2 = this.alertCtrl.create({
+          title:"FINISHED",
+          subTitle: "Responder has finished the report for this request",
+          buttons: ['OK']
+          });
+
+        alert2.present();
+
+        this.loginService.loginState = 2;
+        this.loginService.logged_in_stat_id = 0;
+        this.loginService.logged_in_user_request_id = null;
+
+        this.navCtrl.push(RespMapPage);
+      },
+      (error : any) =>
+      {
+        console.log(error);
+        let alert2 = this.alertCtrl.create({
+          title:"FAILED",
+          subTitle: "Something went wrong!",
+          buttons: ['OK']
+          });
+
+        alert2.present();
+      });
   }
 
   
 
   requestCallForBackUp(){
 
+    let title, message, reason, resources, submit, cancel
+    this.translate.get('Call').subscribe(
+      value => {
+        // value is our translated string
+        title = value;
+    });
+    this.translate.get('Reason').subscribe(
+      value => {
+        // value is our translated string
+        reason = value;
+    });
+    this.translate.get('Resources').subscribe(
+      value => {
+        // value is our translated string
+        resources = value;
+    });
+    this.translate.get('submit').subscribe(
+      value => {
+        // value is our translated string
+        submit = value;
+    });
+    this.translate.get('cancel').subscribe(
+      value => {
+        // value is our translated string
+        cancel = value;
+    });
+
+
 
     let alert = this.alertCtrl.create({
-      title: 'Call For Backup',
+      title: title,
       message: 'Fill up the following',
       inputs: [
         {
           name: 'reason',
-          placeholder: 'Reason'
+          placeholder: reason
         },
         {
           name: 'resources',
-          placeholder: 'Resources needed: (e.g. stretchers, body bag, additional manpower, supplies, etc.)'
+          placeholder: resources
         }
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: cancel,
           role: 'cancel',
           handler: data => {
             console.log('Cancel clicked');
           }
         },
         {
-          text: 'Submit',
+          text: submit,
           handler: data => {
             this.sendBackup(data);
           }
@@ -1677,6 +1795,8 @@ yellow:any = 0;
     });
     alert.present();
   }
+
+  dataRefresher1: any;
 
   sendBackup(datas: any){
 
@@ -1770,56 +1890,108 @@ yellow:any = 0;
     
         this.cfb = true;
 
-        this.dataRefresher2 = setInterval(() =>{
 
-          var headers = new Headers();
-    
-          headers.append("Accept", 'application/json');
-          headers.append('Content-Type', 'application/x-www-form-urlencoded');
-          headers.append('Access-Control-Allow-Origin' , '*');
-          headers.append('Access-Control-Allow-Headers' , 'Content-Type');
-          headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
-          
-          let options = new RequestOptions({ headers: headers });
+        this.refresher1()
+        this.refresher2()
+  }
 
-          
-          /******** UPDATE REQUEST STATUS ID **********/
-          let data2 = {
-            request_id: this.loginService.logged_in_user_request_id
-          }
+  refresher1(){
+    this.dataRefresher = setInterval(() =>{
 
-          this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-status.php', data2, options)
-          .map(res=> res.json())
-          .subscribe((data: any) =>
-          {
-            if(data.request_status_id != 0){
-              clearInterval(this.dataRefresher2);
-              this.cfb = false;
+      var headers = new Headers();
 
-              this.localNotifications.schedule({
-                id: 1,
-                title: "Backup has arrived",
-                text: "Your backup is already on the site",
-                data: { mydata: 'My hidden message this is' },
-                trigger:{at: new Date()},
-              });
-            }
-          },
-          (error : any) =>
-          {
-            console.log(error);
-            let alert2 = this.alertCtrl.create({
-              title:"FAILED",
-              subTitle: "Request not updated. huhu!",
-              buttons: ['OK']
-              });
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      headers.append('Access-Control-Allow-Origin' , '*');
+      headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+      headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+      
+      let options = new RequestOptions({ headers: headers });
 
-            alert2.present();
+      
+      /******** UPDATE REQUEST STATUS ID **********/
+      let data2 = {
+        request_id: this.loginService.logged_in_user_request_id
+      }
+
+      this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-status.php', data2, options)
+      .map(res=> res.json())
+      .subscribe((data: any) =>
+      {
+        if(data.request_status_id != 0){
+          clearInterval(this.dataRefresher);
+          this.cfb = false;
+
+          this.localNotifications.schedule({
+            id: 1,
+            title: "Backup has arrived",
+            text: "Your backup is already on the site",
+            data: { mydata: 'My hidden message this is' },
+            trigger:{at: new Date()},
+          });
+        }
+      },
+      (error : any) =>
+      {
+        console.log(error);
+        let alert2 = this.alertCtrl.create({
+          title:"FAILED",
+          subTitle: "Request not updated. huhu!",
+          buttons: ['OK']
           });
 
-        },1000);
-        this.checkcount();
-        this.requestMarker();
+        alert2.present();
+      });
+
+    },1000);
+
+  }
+
+  refresher2(){
+    this.dataRefresher1 = setInterval(() =>{
+      var headers = new Headers();
+
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      headers.append('Access-Control-Allow-Origin' , '*');
+      headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+      headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+      
+      let options = new RequestOptions({ headers: headers });
+
+      let data = {
+        request_id: this.loginService.logged_in_user_request_id
+      }
+
+      this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-backup-status.php', data, options)
+      .map(res=> res.json())
+      .subscribe((data: any) =>
+      {
+        if(data.status != 0){
+          clearInterval(this.dataRefresher1);
+
+          this.localNotifications.schedule({
+            id: 1,
+            title: "Backup is Coming",
+            text: "Your backup is on the way",
+            data: { mydata: 'My hidden message this is' },
+            trigger:{at: new Date()},
+          });
+        }
+      },
+      (error : any) =>
+      {
+        console.log(error);
+        let alert2 = this.alertCtrl.create({
+          title:"FAILED",
+          subTitle: "Request not updated. huhu!",
+          buttons: ['OK']
+          });
+
+        alert2.present();
+      });
+
+    }, 1000);
   }
 
   pushDone() {

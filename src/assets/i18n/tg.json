@@ -29,5 +29,17 @@
     "Start" : "Magsimulang mag-navigate",
     "Arrive" : "Nakarating na",
     "Arrived" : "Nakarating ka na!",
-    "StartNav" : "Nagsimula ka nang mag-navigate"
+    "StartNav" : "Nagsimula ka nang mag-navigate",
+    "Yes" : "Oo",
+    "No" : "Hindi",
+    "Call" : "Tumawag ng back-up",
+    "Reason" : "Dahilan ng pagtawag ng backup",
+    "Resources" : "Mga resources na kailangan",
+    "submit" : "Ipasa",
+    "cancel" : "kanselahin",
+    "Disposition" : "Disposisyon",
+    "Safe" : "Ligtas",
+    "Transfer" : "Nailipat na sa ospital",
+    "Dead" : "Posibleng yumao",
+    "Missing" : "Nawawala"
 }
