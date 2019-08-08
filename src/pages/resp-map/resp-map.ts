@@ -243,7 +243,6 @@ loadbackup(){
                   clickableIcons: false
                 };
                 this.checkcount();
-                this.checkcount();
                 this.requestMarker();
                 // google.maps.event.trigger(this.map,'resize');
                 this.addMarker(this.redMarker);
@@ -298,8 +297,11 @@ loadbackup(){
   /********* REQUESTS MARKERS *********/
   public status : any=false;
   ctr:any;
-
+  ctrforcfb:any;
+  ctrforcfb2:any;
   checkcount(){
+    this.ctrforcfb=0;
+    // this.ctrforcfb2=0;
       if(this.loginService.logged_in_user_request_id!= null){
         this.status = true;
       }
@@ -312,6 +314,10 @@ loadbackup(){
           console.log(this.ctr);
           for(let i=0; i<data.length; i++){
             // this.createMarker2(data[i]);
+            if(data[i].request_status_id == 0){
+              this.ctrforcfb=this.ctrforcfb++;
+              console.log(this.ctrforcfb)
+            }
             this.createMarker2(data[i],i);
           }
           this.ctr = data.length;
@@ -326,7 +332,7 @@ loadbackup(){
   geolong:any;
   distancekm:any;
   requestMarker(){
-    
+    // this.ctrforcfb2=0;
     this.dataRefresher = setInterval(() =>{ 
       if(this.loginService.logged_in_user_request_id!= null){
         this.status = true;
@@ -350,14 +356,19 @@ loadbackup(){
               // this.createMarker2(data[i]);
               this.createMarker2(data[i],i);
         }
-        }else{
-          for(let i=0; i<data.length; i++){
-            if(data[i].request_status_id == 0 || data[i].request_status_id == 1 || data[i].request_status_id == 2 || data[i].request_status_id == 3){
-              console.log(data[i].request_status_id);
-              this.createMarker2(data[i],i);
-            } 
-          }
         }
+        // else{
+          for(let i=0; i<data.length; i++){
+            // if(data[i].request_status_id == 0 || data[i].request_status_id == 1 || data[i].request_status_id == 2 || data[i].request_status_id == 3){
+              if(data[i].request_status_id == 0){
+                  this.ctrforcfb2=this.ctrforcfb2++;
+                    if(this.ctrforcfb!=this.ctrforcfb2){
+                      this.createMarker2(data[i],i);
+                  }
+              } 
+            }
+        // }
+        this.ctrforcfb=this.ctrforcfb2;
       this.ctr=data.length;
       },
       (error : any) =>
@@ -1891,8 +1902,10 @@ yellow:any = 0;
         this.cfb = true;
 
 
-        this.refresher1()
-        this.refresher2()
+        this.refresher1();
+        this.refresher2();
+        this.checkcount();
+        this.requestMarker();
   }
 
   refresher1(){
