@@ -150,6 +150,13 @@ export class PersonstatusPage {
     (error : any) =>
     {
       console.log(error);
+      let alert2 = this.alertCtrl.create({
+        title:"FAILED 1",
+        subTitle: "Something went wrong!",
+        buttons: ['OK']
+        });
+
+      alert2.present();
     });
     /********** END OF LOG **********/
 
@@ -174,7 +181,7 @@ export class PersonstatusPage {
     {
       console.log(error);
       let alert2 = this.alertCtrl.create({
-        title:"FAILED",
+        title:"FAILED 2",
         subTitle: "Something went wrong!",
         buttons: ['OK']
         });
@@ -205,7 +212,7 @@ export class PersonstatusPage {
       {
         console.log(error);
         let alert2 = this.alertCtrl.create({
-          title:"FAILED",
+          title:"FAILED 3",
           subTitle: "Something went wrong!",
           buttons: ['OK']
           });
@@ -236,7 +243,7 @@ export class PersonstatusPage {
       {
         console.log(error);
         let alert2 = this.alertCtrl.create({
-          title:"FAILED",
+          title:"FAILED 4",
           subTitle: "Something went wrong!",
           buttons: ['OK']
           });
@@ -267,7 +274,7 @@ export class PersonstatusPage {
       {
         console.log(error);
         let alert2 = this.alertCtrl.create({
-          title:"FAILED",
+          title:"FAILED 5",
           subTitle: "Something went wrong!",
           buttons: ['OK']
           });
@@ -298,7 +305,7 @@ export class PersonstatusPage {
       {
         console.log(error);
         let alert2 = this.alertCtrl.create({
-          title:"FAILED",
+          title:"FAILED 6",
           subTitle: "Something went wrong!",
           buttons: ['OK']
           });
