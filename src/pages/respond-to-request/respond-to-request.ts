@@ -32,6 +32,9 @@ export class RespondToRequestPage {
   request_type: any;
   person: any;
   title: any;
+  backup: any;
+  reason: any;
+  resources: any;
 
   option: any;
   z=0;
@@ -52,6 +55,7 @@ export class RespondToRequestPage {
      public alertCtrl: AlertController,
      public translate: TranslateService) {
        
+    this.backup = navParams.data.backup;
     this.request_type = navParams.data.request_type_id;
     this.person = navParams.data.person_to_check;
     this.event = navParams.data.event;
@@ -73,6 +77,35 @@ export class RespondToRequestPage {
     }else{
       this.title = "Check On Person"
     }
+    if(this.backup == "YES"){
+      this.backup = true;
+      this.retrieveBackup();
+    }
+  }
+
+  retrieveBackup(){
+    var headers = new Headers();
+        
+    headers.append("Accept", 'application/json');
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.append('Access-Control-Allow-Origin' , '*');
+    headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+    headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+    
+    let options = new RequestOptions({ headers: headers });
+
+    let data1 = {
+      request_id: this.request_id
+    }
+
+     this.http.post('http://usc-dcis.com/eligtas.app/retrieve-cfb-num.php',data1,options)
+     .map(res=> res.json())
+       .subscribe(
+         res => {
+          // this.callForBackUpMarker(res);
+          this.reason = res.reason;
+          this.resources = res.resources_needed;           
+     }); 
   }
 
   ionViewDidLoad() {

@@ -664,6 +664,7 @@ yellow:any = 0;
             console.log("ETA "+this.eta);
             setTimeout(() => {
             this.navCtrl.push('RespondToRequestPage', {
+              backup: "YES",
               request_type_id: data.request_type_id,
               person_to_check: data.person_to_check,
               request_id : data.request_id,
@@ -873,6 +874,7 @@ yellow:any = 0;
             setTimeout(() => {
               console.log("ETA "+this.eta);
             this.navCtrl.setRoot('RespondToRequestPage', {
+              backup: "NO",
               request_type_id: data.request_type_id,
               person_to_check: data.person_to_check,
               request_id : data.request_id,
