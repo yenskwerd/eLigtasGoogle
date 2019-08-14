@@ -444,20 +444,47 @@ loadbackup(){
   }
 
   type: any;
+  notifid: any = 0;
 
-  notification(id: any, event: any,realaddressusinggeocode:any) {
-    switch(id){
-      case 1: this.type = 'Report Event'
-      case 2: this.type = 'Call For Help'
-      case 3: this.type = 'Check On Person'
+  notification(id: any, event: any, realaddressusinggeocode:any) {
+    let time;
+    if(id == 1 ){
+      this.type = 'Report Event'
+    }else if(id == 2){
+      this.type = 'Call For Help'
+    }else{
+      this.type = 'Check On Person'
     }
-    this.localNotifications.schedule({
-      id: 1,
-      title: this.type,
-      text: event+" near "+ realaddressusinggeocode,
-      data: { mydata: 'My hidden message this is' },
-      trigger:{at: new Date()},
-    });
+    this.notifid++;
+
+    if(realaddressusinggeocode != undefined){
+      event = event+" near "+ realaddressusinggeocode;
+    }
+
+    this.http.get('http://usc-dcis.com/eligtas.app/retrieve-time.php')
+       .subscribe((data : any) =>
+       {  
+         console.log("DARA: "+data.CURRENT_TIME);
+          time = data.CURRENT_TIME.substring(0, 2)%12;
+          time = time + data.CURRENT_TIME.substring(2, 5);
+          if(data.CURRENT_TIME.substring(0, 2) <= 12){
+            time = time+" PM"
+          }else{
+            time = time+" AM"
+          }
+          console.log("DARA: "+time)
+          this.localNotifications.schedule({
+            id: this.notifid,
+            title: this.type,
+            text: event+"\nTime of Request: "+time,
+            data: { mydata: 'My hidden message this is' },
+            trigger:{at: new Date()},
+          });
+       },
+       (error : any) =>
+       {
+          console.dir(error);
+       });  
   }
   
   // marker22: any[];
@@ -1914,8 +1941,10 @@ yellow:any = 0;
         this.requestMarker();
   }
 
+  data: any;
+
   refresher1(){
-    this.dataRefresher = setInterval(() =>{
+    this.data = setInterval(() =>{
 
       var headers = new Headers();
 
@@ -1938,14 +1967,13 @@ yellow:any = 0;
       .subscribe((data: any) =>
       {
         if(data.request_status_id != 0){
-          clearInterval(this.dataRefresher);
+          clearInterval(this.data);
           this.cfb = false;
 
           this.localNotifications.schedule({
             id: 1,
             title: "Backup has arrived",
             text: "Your backup is already on the site",
-            data: { mydata: 'My hidden message this is' },
             trigger:{at: new Date()},
           });
         }
