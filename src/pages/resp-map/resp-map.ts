@@ -63,6 +63,7 @@ export class RespMapPage {
     this.distanceArr = [];
     this.pmarker = [];
     this.cfbmarker = [];
+    this.respondedmarker = [];
     
     this.redMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png";
     this.purpleMarker = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_purple.png";
@@ -360,7 +361,8 @@ loadbackup(){
         // else{
           for(let i=0; i<data.length; i++){
             if(data[i].request_status_id == 1 || data[i].request_status_id == 2){
-              this.createMarker2(data[i],i);
+              this.respondedmarker[i]=this.createMarker2(data[i],i);
+              this.respondedmarker[i].setVisible(false);
             }
             if(data[i].request_status_id == 0){
                   this.ctrforcfb2=this.ctrforcfb2++;
@@ -503,7 +505,7 @@ loadbackup(){
     // this.marker4.push(this.marker4);
     // return this.marker;
   }
-
+respondedmarker: any[];
 pmarker: any[];
 cfbmarker: any[];
 yellow:any = 0;
