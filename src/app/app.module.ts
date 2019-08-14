@@ -31,6 +31,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { ChangePasswordPage } from '../pages/change-password/change-password';
 import { ChangeNamePage } from '../pages/change-name/change-name';
 import { StepsPage } from '../pages/steps/steps';
+import { OverlaystepsPage } from '../pages/overlaysteps/overlaysteps';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -54,7 +55,8 @@ export function createTranslateLoader(http: HttpClient) {
     ProfilePage,
     ChangePasswordPage,
     ChangeNamePage,
-    StepsPage
+    StepsPage,
+    OverlaystepsPage
   ],
   imports: [
     BrowserModule,
@@ -86,7 +88,8 @@ export function createTranslateLoader(http: HttpClient) {
     ProfilePage,
     ChangePasswordPage,
     ChangeNamePage,
-    StepsPage
+    StepsPage,
+    OverlaystepsPage
   ],
   providers: [
     StatusBar,

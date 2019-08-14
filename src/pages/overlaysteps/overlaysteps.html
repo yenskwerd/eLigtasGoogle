@@ -1,0 +1,29 @@
+<!--
+  Generated template for the OverlaystepsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Steps to follow</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="main-view" text-center no-bounce>
+  <div class="overlay" (click)="dismiss()"></div>
+  <div class="modal_content">
+    <ion-slides pager="true">
+
+      <ion-slide>
+        <h1>Keep calm and wait for responders</h1>
+        <img src="assets/imgs/wait.png" />
+      </ion-slide>  
+    
+      <ion-slide>
+        <h1>Stay away from danger!!</h1>
+        <img src="assets/imgs/stop.png" />
+      </ion-slide>
+    
+    </ion-slides>
+  </div>
+</ion-content>
