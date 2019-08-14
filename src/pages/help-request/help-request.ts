@@ -1,9 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import {Http, Headers, RequestOptions}  from '@angular/http';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import 'rxjs/add/operator/map';
 import { TranslateService } from '@ngx-translate/core';
+import { OverlaystepsPage } from '../overlaysteps/overlaysteps';
 /**
  * Generated class for the HelpRequestPage page.
  *
@@ -32,7 +33,8 @@ export class HelpRequestPage {
     public alertCtrl:AlertController,
     private http: Http, 
     public loginService: LoginServiceProvider,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    public modalCtrl: ModalController) {
 
     this.lat = navParams.data.lat;
     this.long = navParams.data.long;
@@ -296,12 +298,32 @@ export class HelpRequestPage {
             });
            let alert = this.alertCtrl.create({
             message: message,
-            buttons: ['OK']
+            buttons: [
+              {
+                text: 'Okay',
+                handler: () => {
+                  this.navCtrl.setRoot('UserMapPage', {
+                    lat: this.lat,
+                    long: this.long             
+                  });
+                  var modal = this.modalCtrl.create(OverlaystepsPage, {
+                  });
+                  modal.present();
+                  modal.onDidDismiss((result) =>{
+                    // if(result){
+                    //   console.log(result);
+                    //   this.passPage = result;
+                    // }
+                    console.log("steps");
+                  });
+                }
+              }
+            ]
             }); 
-            this.navCtrl.setRoot('UserMapPage', {
-              lat: this.lat,
-              long: this.long             
-            });
+            // this.navCtrl.setRoot('UserMapPage', {
+            //   lat: this.lat,
+            //   long: this.long             
+            // });
             // this.navCtrl.pop();
             alert.present();
             //this.navCtrl.setRoot('PilgrimProfilePage'); 
