@@ -321,26 +321,46 @@ export class EventReportPage {
             });
            let alert = this.alertCtrl.create({
             message: message,
-            buttons: ['OK']
+            buttons: [
+              {
+                text: 'Okay',
+                handler: () => {
+                  this.navCtrl.setRoot('UserMapPage', {
+                    lat: this.lat,
+                    long: this.long             
+                  });
+                  var modal = this.modalCtrl.create(OverlaystepsPage, {
+                  });
+                  modal.present();
+                  modal.onDidDismiss((result) =>{
+                    // if(result){
+                    //   console.log(result);
+                    //   this.passPage = result;
+                    // }
+                    console.log("steps");
+                  });
+                }
+              }
+            ]
             });
             // this.navParams.get("HcfMappingPage").someFnToRefreshParent();
             // this.navCtrl.pop();
             // this.navCtrl.setRoot('HcfMappingPage');
             
-            this.navCtrl.setRoot('UserMapPage', {
-              lat: this.lat,
-              long: this.long             
-            });
-            var modal = this.modalCtrl.create(OverlaystepsPage, {
-            });
-            modal.present();
-            modal.onDidDismiss((result) =>{
-              // if(result){
-              //   console.log(result);
-              //   this.passPage = result;
-              // }
-              console.log("steps");
-            });
+            // this.navCtrl.setRoot('UserMapPage', {
+            //   lat: this.lat,
+            //   long: this.long             
+            // });
+            // var modal = this.modalCtrl.create(OverlaystepsPage, {
+            // });
+            // modal.present();
+            // modal.onDidDismiss((result) =>{
+            //   // if(result){
+            //   //   console.log(result);
+            //   //   this.passPage = result;
+            //   // }
+            //   console.log("steps");
+            // });
             //this.navCtrl.setRoot('PilgrimProfilePage'); 
             //this.log();
             alert.present();
