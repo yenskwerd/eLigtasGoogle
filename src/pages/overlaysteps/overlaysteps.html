@@ -11,8 +11,8 @@
 </ion-header>
 <ion-content class="main-view" text-center no-bounce>
   <div class="overlay" (click)="dismiss()"></div>
-  <div class="modal_content">
-    <ion-slides pager="true">
+  <div class="modal_content" (click)="dismiss()">
+    <ion-slides pager="true" (ionSlideReachEnd)="dismiss()">
 
       <ion-slide>
         <h1>Keep calm and wait for responders</h1>
@@ -22,6 +22,9 @@
       <ion-slide>
         <h1>Stay away from danger!!</h1>
         <img src="assets/imgs/stop.png" />
+      </ion-slide>
+
+      <ion-slide>
       </ion-slide>
     
     </ion-slides>

@@ -24,6 +24,11 @@ export class OverlaystepsPage {
 
   dismiss() {
     this.viewCtrl.dismiss();
+    console.log("slide")
+  }
+  slideChanged() {
+    // let currentIndex = this.slides.getActiveIndex();
+    console.log('njnjslide');
   }
 
 }

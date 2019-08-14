@@ -326,7 +326,7 @@ export class EventReportPage {
             // this.navParams.get("HcfMappingPage").someFnToRefreshParent();
             // this.navCtrl.pop();
             // this.navCtrl.setRoot('HcfMappingPage');
-            alert.present();
+            
             this.navCtrl.setRoot('UserMapPage', {
               lat: this.lat,
               long: this.long             
@@ -334,7 +334,6 @@ export class EventReportPage {
             var modal = this.modalCtrl.create(OverlaystepsPage, {
             });
             modal.present();
-            
             modal.onDidDismiss((result) =>{
               // if(result){
               //   console.log(result);
@@ -344,7 +343,7 @@ export class EventReportPage {
             });
             //this.navCtrl.setRoot('PilgrimProfilePage'); 
             //this.log();
-
+            alert.present();
 
         },
         (error : any) =>
