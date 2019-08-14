@@ -29,6 +29,9 @@ export class RespondToRequestPage {
   lat: any;
   long: any;
   eta:any;
+  request_type: any;
+  person: any;
+  title: any;
 
   option: any;
   z=0;
@@ -49,6 +52,8 @@ export class RespondToRequestPage {
      public alertCtrl: AlertController,
      public translate: TranslateService) {
        
+    this.request_type = navParams.data.request_type_id;
+    this.person = navParams.data.person_to_check;
     this.event = navParams.data.event;
     this.injured = navParams.data.persons_injured;
     this.trapped = navParams.data.persons_trapped;
@@ -60,6 +65,14 @@ export class RespondToRequestPage {
     this.lat = navParams.data.request_lat;
     this.long = navParams.data.request_long;
     this.eta = navParams.data.ETA;
+
+    if(this.request_type == 1){
+      this.title = "Report Event"
+    }else if(this.request_type == 2){
+      this.title = "Call For Help"
+    }else{
+      this.title = "Check On Person"
+    }
   }
 
   ionViewDidLoad() {
@@ -228,9 +241,9 @@ export class RespondToRequestPage {
   }
 
   pushBackToMap(){
-    this.navCtrl.pop();
+    // this.navCtrl.pop();
     // this.navCtrl.popToRoot();
-    // this.navCtrl.push('RespMapPage');
+    this.navCtrl.push('RespMapPage');
   }
  
 
@@ -253,8 +266,8 @@ export class RespondToRequestPage {
      .get('http://usc-dcis.com/eligtas.app/retrieve-request.php')
      .subscribe((data : any) =>
      {
-        console.dir(data);
         this.items = data;
+        console.log("DARA: "+this.items)
         // this.getResult(data);
      },
      (error : any) =>

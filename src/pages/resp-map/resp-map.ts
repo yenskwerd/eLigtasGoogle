@@ -664,9 +664,10 @@ yellow:any = 0;
             console.log("ETA "+this.eta);
             setTimeout(() => {
             this.navCtrl.push('RespondToRequestPage', {
+              request_type_id: data.request_type_id,
+              person_to_check: data.person_to_check,
               request_id : data.request_id,
               request_status_id : data.request_status_id, 
-              person_to_check: data.person_to_check,
               event: data.event,
               persons_injured: data.persons_injured,
               persons_trapped: data.persons_trapped,
@@ -872,9 +873,10 @@ yellow:any = 0;
             setTimeout(() => {
               console.log("ETA "+this.eta);
             this.navCtrl.setRoot('RespondToRequestPage', {
+              request_type_id: data.request_type_id,
+              person_to_check: data.person_to_check,
               request_id : data.request_id,
               request_status_id : data.request_status_id, 
-              person_to_check: data.person_to_check,
               event: data.event,
               persons_injured: data.persons_injured,
               persons_trapped: data.persons_trapped,
