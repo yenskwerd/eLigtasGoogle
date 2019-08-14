@@ -48,6 +48,14 @@
     <ion-item>
       <ion-input name="long" [readonly]="isReadonly" value="{{long}}"></ion-input>
     </ion-item>
+    <ion-label *ngIf="backup==true" stacked>Reason</ion-label>
+    <ion-item *ngIf="backup==true">
+      <ion-input name="long" [readonly]="isReadonly" value="{{reason}}"></ion-input>
+    </ion-item>
+    <ion-label *ngIf="backup==true" stacked>Resources Needed</ion-label>
+    <ion-item *ngIf="backup==true">
+      <ion-input name="long" [readonly]="isReadonly" value="{{resources}}"></ion-input>
+    </ion-item>
     <!-- <ion-list>
 
       <ion-label stacked>Are there rescuees with special needs?</ion-label>
