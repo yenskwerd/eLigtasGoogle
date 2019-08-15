@@ -40,6 +40,7 @@ export class RespMapPage {
   initialMapLoad: boolean = true;
   eventForReport: any;
   request_id: any;
+  markerforongoing: any;
 
   cfb: any = false;
 
@@ -358,11 +359,32 @@ loadbackup(){
               this.createMarker2(data[i],i);
         }
         }
-        // else{
+        else{
           for(let i=0; i<data.length; i++){
-            if(data[i].request_status_id == 1 || data[i].request_status_id == 2){
-              this.respondedmarker[i]=this.createMarker2(data[i],i);
-              this.respondedmarker[i].setVisible(false);
+            if(data[i].request_status_id == 1 && data.request_id == this.user_request_id){
+              this.createMarker2(data[i],i);
+              // try {
+              //   if(data.request_id != this.user_request_id){
+              //   this.createMarker2(data[i],i);
+              //   this.respondedmarker[i].setVisible(false);
+              //   }
+              // } catch (error) {
+              //   console.log(error)
+              // }
+            }
+            if(data[i].request_status_id == 1 && data.request_id != this.user_request_id){
+              this.createMarker2(data[i],i);
+              try {
+              this.markerforongoing.setVisible(false);
+              this.pmarker[i].setVisible(false);
+              } catch (error) {
+                console.log(error)
+              }
+              // try {
+              //   this.markerforongoing.setVisible(false);
+              // } catch (error) {
+              //   console.log(error)
+              // }
             }
             if(data[i].request_status_id == 0){
                   this.ctrforcfb2=this.ctrforcfb2++;
@@ -374,7 +396,7 @@ loadbackup(){
                     this.createMarker2(data[i],i);
               } 
             }
-        // }
+        }
         this.ctrforcfb=this.ctrforcfb2;
       this.ctr=data.length;
       },
@@ -399,14 +421,6 @@ loadbackup(){
         }
       }
   }
-
-  // DRMarker(i:any){
-  //   try {
-  //     this.pmarker[i].setVisible(false);
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
 
   showrequestMarker(){
     this.requestMarker();
@@ -526,7 +540,7 @@ yellow:any = 0;
 
         this.pmarker[i] = new google.maps.Marker({
           position: { lat: parseFloat(lat), lng: parseFloat(long) },
-          animation: google.maps.Animation.DROP,
+          // animation: google.maps.Animation.DROP,
           map: this.map,
           icon: this.purpleMarker   
         })
@@ -543,8 +557,33 @@ yellow:any = 0;
             }
           });
   
-      } else if(data.request_status_id==1 && data.request_id == this.user_request_id){
+      } 
+      else if(data.request_status_id==1 && data.request_id != this.user_request_id){
+        var lat = data.request_lat;
+        var long = data.request_long;
+        // this.markerforongoing = this.addMarker2(this.blackMarker, data.request_lat, data.request_long);
+        // try {
+        //   this.markerforongoing.setVisible(false);
+        // } catch (error) {
+        //   console.log(error)
+        // }
+        // this.respondedmarker[i]=this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
+        this.markerforongoing = new google.maps.Marker({
+          position: { lat: parseFloat(lat), lng: parseFloat(long) },
+          // animation: google.maps.Animation.DROP,
+          map: this.map,
+          icon: this.blackMarker   
+        })
+        try {
+          this.markerforongoing.setVisible(false);
+        this.pmarker[i].setVisible(false);
+        } catch (error) {
+          console.log(error)
+        }
+       }
+      else if(data.request_status_id==1 && data.request_id == this.user_request_id){
         this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
+        // this.respondedmarker[i]=this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
         if(this.loginService.resp_stat_id==2){
         // this.rout(data);
         this.directionsDisplay.setMap(null);
@@ -569,7 +608,8 @@ yellow:any = 0;
       } else if( data.request_status_id==2 ){
         // this.eventForReport = data.event;
         // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
-        this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
+        // this.marker2 = this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
+        this.respondedmarker[i]=this.addMarker2(this.yellowMarker, data.request_lat, data.request_long);
       }else if( data.request_status_id==3 ){
         // this.eventForReport = data.event;
         // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
