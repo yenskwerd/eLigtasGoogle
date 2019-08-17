@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { TranslateService } from '@ngx-translate/core';
+import { stringify } from '@angular/core/src/render3/util';
 
 /**
  * Generated class for the RespMapPage page.
@@ -41,6 +42,7 @@ export class RespMapPage {
   eventForReport: any;
   request_id: any;
   markerforongoing: any;
+  checkforcallforbackuprefresher:any;
 
   cfb: any = false;
 
@@ -1419,7 +1421,6 @@ yellow:any = 0;
 
     if(this.loginService.loginState == 4){
       this.loginService.resp_stat_id=4;
-      this.checkforcallforbackup();
 
     this.directionsDisplay.setMap(null);
     this.directionsDisplay.setPanel(null);
@@ -1897,7 +1898,7 @@ yellow:any = 0;
   dataRefresher1: any;
 
   sendBackup(datas: any){
-      clearInterval(this.checkforcallforbackuprefresher);
+    clearInterval(this.checkforcallforbackuprefresher);
       if(this.loginService.logged_in_user_request_id == null){
         this.loginService.logged_in_user_request_id = this.request_id;
       }
@@ -1994,56 +1995,10 @@ yellow:any = 0;
         this.checkcount();
         this.requestMarker();
   }
-  checkforcallforbackuprefresher:any;
-  checkforcallforbackup(){
-    this.checkforcallforbackuprefresher = setInterval(() =>{
-      var headers = new Headers();
-
-      headers.append("Accept", 'application/json');
-      headers.append('Content-Type', 'application/x-www-form-urlencoded');
-      headers.append('Access-Control-Allow-Origin' , '*');
-      headers.append('Access-Control-Allow-Headers' , 'Content-Type');
-      headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
-      
-      let options = new RequestOptions({ headers: headers });
-
-      let data = {
-        request_id: this.loginService.logged_in_user_request_id
-      }
-
-      this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-backup-status.php', data, options)
-      .map(res=> res.json())
-      .subscribe((data: any) =>
-      {
-        if(data.length != 0){
-          clearInterval(this.checkforcallforbackuprefresher);
-          this.cfb=true;
-          this.localNotifications.schedule({
-            id: 1,
-            title: "BACKUP",
-            text: "Another call for backup has been made",
-            trigger:{at: new Date()},
-          });
-          this.refresher1();
-          this.refresher2();
-        }
-      },
-      (error : any) =>
-      {
-        console.log(error);
-        let alert2 = this.alertCtrl.create({
-          title:"FAILED",
-          subTitle: "Request not updated. huhu!",
-          buttons: ['OK']
-          });
-
-        alert2.present();
-      });
-
-    }, 1000);
-  }
+  
 
   data: any;
+  temp: any = 0;
 
   refresher1(){
     this.data = setInterval(() =>{
@@ -2069,16 +2024,21 @@ yellow:any = 0;
       .subscribe((data: any) =>
       {
         if(data.request_status_id != 0){
+          this.temp = this.temp + 1;
+        }
+        if(this.temp != 0){
           clearInterval(this.data);
           this.cfb = false;
+          console.log("DARA: ANOTHER WAN");
+          this.checkforcallforbackup();
 
+          this.temp = 0;
           this.localNotifications.schedule({
             id: 1,
             title: "Backup has arrived",
             text: "Your backup is already on the site",
             trigger:{at: new Date()},
           });
-          this.checkforcallforbackup();
         }
       },
       (error : any) =>
@@ -2127,6 +2087,56 @@ yellow:any = 0;
             data: { mydata: 'My hidden message this is' },
             trigger:{at: new Date()},
           });
+        }
+      },
+      (error : any) =>
+      {
+        console.log(error);
+        let alert2 = this.alertCtrl.create({
+          title:"FAILED",
+          subTitle: "Request not updated. huhu!",
+          buttons: ['OK']
+          });
+
+        alert2.present();
+      });
+
+    }, 5000);
+  }
+
+  checkforcallforbackup(){
+    this.checkforcallforbackuprefresher = setInterval(() =>{
+      var headers = new Headers();
+
+      headers.append("Accept", 'application/json');
+      headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      headers.append('Access-Control-Allow-Origin' , '*');
+      headers.append('Access-Control-Allow-Headers' , 'Content-Type');
+      headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+      
+      let options = new RequestOptions({ headers: headers });
+
+      let data = {
+        request_id: this.loginService.logged_in_user_request_id
+      }
+
+      this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-backup-status.php', data, options)
+      .map(res=> res.json())
+      .subscribe((data: any) =>
+      {
+        console.log("DARA: "+data.length)
+        if(data.length == undefined){
+          console.log("DARA: SULOD");
+          clearInterval(this.checkforcallforbackuprefresher);
+          this.cfb=true;
+          this.localNotifications.schedule({
+            id: 1,
+            title: "BACKUP",
+            text: "Another call for backup has been made",
+            trigger:{at: new Date()},
+          });
+          // this.refresher1();
+          // this.refresher2();
         }
       },
       (error : any) =>
