@@ -73,12 +73,14 @@
   <!-- <div *ngIf="stat_id==1 && trytry<=100">
     <button ion-button (click)="pushArrive()" class="reportBtn" block>Arrive</button> 
   </div> -->
-  <div *ngIf="loginService.resp_stat_id==2 && loginService.backup==0">
+  <div *ngIf="loginService.resp_stat_id==2 || loginService.resp_stat_id==4" > 
     <button *ngIf="cfb==true" disabled ion-button class="reportBtn" (click)="requestCallForBackUp()">{{ 'Call' | translate }}</button>
     <button *ngIf="cfb==false" ion-button class="reportBtn" (click)="requestCallForBackUp()">{{ 'Call' | translate }}</button>
-    <button ion-button (click)="opendisposition()" class="reportBtn" >{{ 'Disposition' | translate }}</button>
+    <button *ngIf="loginService.resp_stat_id==2" ion-button (click)="opendisposition()" class="reportBtn" >{{ 'Disposition' | translate }}</button>
+    <button *ngIf="loginService.resp_stat_id!=2" disabled ion-button (click)="opendisposition()" class="reportBtn" >{{ 'Disposition' | translate }}</button>
     <!-- <button ion-button (click)="pushDone()" class="reportBtn" >Done</button> -->
   </div>
+
   <!-- <ion-card>
     <ion-card-content>
         <div #directionsPanel></div>
