@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title>Steps to follow</ion-title>
+    <ion-title>{{ 'Steps' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content class="main-view" text-center no-bounce>
@@ -15,12 +15,12 @@
     <ion-slides pager="true" (ionSlideReachEnd)="dismiss()">
 
       <ion-slide>
-        <h1>Keep calm and wait for responders</h1>
+        <h1>{{ 'Calm' | translate }}</h1>
         <img src="assets/imgs/wait.png" />
       </ion-slide>  
     
       <ion-slide>
-        <h1>Stay away from danger!!</h1>
+        <h1>{{ 'Stay' | translate }}</h1>
         <img src="assets/imgs/stop.png" />
       </ion-slide>
 

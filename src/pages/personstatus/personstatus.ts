@@ -317,10 +317,15 @@ export class PersonstatusPage {
 
 
 
-    
+    let message;
+    this.translate.get('report').subscribe(
+      value => {
+        // value is our translated string
+        message = value;
+    });
     let alert = this.alertCtrl.create({
-      message: 'Diposition submitted.',
-      buttons: ['OK']
+      message: message,
+      buttons: ['Okay']
     });
     alert.present();
     this.navCtrl.push('RespMapPage');

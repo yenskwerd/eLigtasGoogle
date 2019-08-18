@@ -9,6 +9,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderReverseResult } from '@ionic-native/native-geocoder';
 import { TranslateService } from '@ngx-translate/core';
 import { stringify } from '@angular/core/src/render3/util';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 /**
  * Generated class for the RespMapPage page.
@@ -280,9 +281,16 @@ loadbackup(){
       position: {lat: parseFloat(this.latitude), lng: parseFloat(this.longitude)},
       icon: data
     });
+
+    let title;
    
+    this.translate.get('You').subscribe(
+      value => {
+        // value is our translated string
+        title = value;
+    });
    
-    let content = "<h6>You are here!</h6>";
+    let content = "<h6>"+title+"</h6>";
     this.addInfoWindow(this.marker, content);
   }
 
@@ -303,6 +311,7 @@ loadbackup(){
   ctr:any;
   ctrforcfb:any;
   ctrforcfb2=0;
+  backuprefresher:any;
   checkcount(){
     this.ctrforcfb=0;
     // this.ctrforcfb2=0;
@@ -316,6 +325,7 @@ loadbackup(){
           // this.ctr = data.length;
           this.request = data;
           console.log(this.ctr);
+          console.log("DARA: 1");
           for(let i=0; i<data.length; i++){
             // this.createMarker2(data[i]);
             if(data[i].request_status_id == 0){
@@ -344,7 +354,7 @@ loadbackup(){
       this.http.get('http://usc-dcis.com/eligtas.app/retrieve-request.php')
       .subscribe((data : any) =>
       {
-        console.log(data);
+        console.log(data.length);
           this.request = data;
           if(this.ctr!=data.length){
             this.geolat =data[data.length-1].request_lat;
@@ -354,25 +364,18 @@ loadbackup(){
             this.distancekm=this.getDistance(data[data.length-1].request_lat, data[data.length-1].request_long,this.latitude,this.longitude);
             console.log(this.distancekm);
             if(this.distancekm<1.500){
-            this.notification(data[data.length-1].request_type_id, data[data.length-1].event, this.reverseGeocodingResults);
+              this.notification(data[data.length-1].request_type_id, data[data.length-1].event, this.reverseGeocodingResults);
             }
+            console.log("DARA: 2");
             for(let i=0; i<data.length; i++){
               // this.createMarker2(data[i]);
               this.createMarker2(data[i],i);
-        }
-        }
-        else{
+            }
+          }else{
+            let temp = 0;
           for(let i=0; i<data.length; i++){
             if(data[i].request_status_id == 1 && data.request_id == this.user_request_id){
               this.createMarker2(data[i],i);
-              // try {
-              //   if(data.request_id != this.user_request_id){
-              //   this.createMarker2(data[i],i);
-              //   this.respondedmarker[i].setVisible(false);
-              //   }
-              // } catch (error) {
-              //   console.log(error)
-              // }
             }
             if(data[i].request_status_id == 1 && data.request_id != this.user_request_id){
               this.createMarker2(data[i],i);
@@ -382,24 +385,46 @@ loadbackup(){
               } catch (error) {
                 console.log(error)
               }
-              // try {
-              //   this.markerforongoing.setVisible(false);
-              // } catch (error) {
-              //   console.log(error)
-              // }
             }
             if(data[i].request_status_id == 0){
-                  this.ctrforcfb2=this.ctrforcfb2++;
-                    // if(this.ctrforcfb!=this.ctrforcfb2){
-                      this.createMarker2(data[i],i);
-                  // }
+              temp = temp+1;
+                  // this.ctrforcfb2=this.ctrforcfb2++;
+                  //   // if(this.ctrforcfb!=this.ctrforcfb2){
+                  //     this.createMarker2(data[i],i);
+                  // // }
               } 
-              if(data[i].request_status_id == 3){
-                    this.createMarker2(data[i],i);
-              } 
+            if(data[i].request_status_id == 3){
+              this.createMarker2(data[i],i);
+            } 
+          }
+
+          if(temp > this.ctrforcfb){
+            this.ctrforcfb = temp;
+            for(let i=0; i<data.length; i++){
+              if(data[i].request_status_id == 0){
+                this.createMarker2(data[i],i);
+              }
             }
+
+            if(this.loginService.logged_in_stat_id != 2){
+              let message;
+
+              this.translate.get('backup4').subscribe(
+                value => {
+                  // value is our translated string
+                  message = value;
+              });
+                  this.localNotifications.schedule({
+                    title: "BACKUP",
+                    text: message,
+                    data: { mydata: 'My hidden message this is' },
+                    trigger:{at: new Date()},
+                  });
+              }
+            }
+            this.ctrforcfb = temp;
+
         }
-        this.ctrforcfb=this.ctrforcfb2;
       this.ctr=data.length;
       },
       (error : any) =>
@@ -467,16 +492,50 @@ loadbackup(){
   notification(id: any, event: any, realaddressusinggeocode:any) {
     let time;
     if(id == 1 ){
-      this.type = 'Report Event'
+      this.translate.get('Report').subscribe(
+        value => {
+          // value is our translated string
+          this.type = value;
+      });
     }else if(id == 2){
-      this.type = 'Call For Help'
+      this.translate.get('Help').subscribe(
+        value => {
+          // value is our translated string
+          this.type = value;
+      });
     }else{
-      this.type = 'Check On Person'
+      this.translate.get('Check').subscribe(
+        value => {
+          // value is our translated string
+          this.type = value;
+      });
     }
     this.notifid++;
 
+    this.translate.get(event).subscribe(
+      value => {
+        // value is our translated string
+        event = value;
+    });
+
+    let near;
+
+    this.translate.get('near').subscribe(
+      value => {
+        // value is our translated string
+        near = value;
+    });
+
+    let temp;
+
+    this.translate.get('Time').subscribe(
+      value => {
+        // value is our translated string
+        temp = value;
+    });
+
     if(realaddressusinggeocode != undefined){
-      event = event+" near "+ realaddressusinggeocode;
+      event = event+" "+near+" "+ realaddressusinggeocode;
     }
 
     this.http.get('http://usc-dcis.com/eligtas.app/retrieve-time.php')
@@ -490,11 +549,10 @@ loadbackup(){
           }else{
             time = time+" AM"
           }
-          console.log("DARA: "+time)
           this.localNotifications.schedule({
             id: this.notifid,
             title: this.type,
-            text: event+"\nTime of Request: "+time,
+            text: event+"\n"+temp+" "+time,
             data: { mydata: 'My hidden message this is' },
             trigger:{at: new Date()},
           });
@@ -525,9 +583,12 @@ respondedmarker: any[];
 pmarker: any[];
 cfbmarker: any[];
 yellow:any = 0;
+count:any = 0;
   createMarker2(data:any,i:any){
     // createMarker2(data:any){
       // console.log("createmarker2");
+
+      console.log("IM HERE");
   
       if(data.request_status_id==null){
         var lat = data.request_lat;
@@ -617,6 +678,7 @@ yellow:any = 0;
         // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
         this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
       } else if (data.request_status_id == 0) {
+        this.count = this.count + 1;
         var iconnum = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue.png"
 
     const cfbmarker = new google.maps.Marker({
@@ -686,12 +748,33 @@ yellow:any = 0;
   }
 
   cfbRespond(data) {
+    let title, message, cancel, see;
+    this.translate.get('Response').subscribe(
+      value => {
+        // value is our translated string
+        title = value;
+    });
+    this.translate.get('Do').subscribe(
+      value => {
+        // value is our translated string
+        message = value;
+    });
+    this.translate.get('cancel').subscribe(
+      value => {
+        // value is our translated string
+        cancel = value;
+    });
+    this.translate.get('See').subscribe(
+      value => {
+        // value is our translated string
+        see = value;
+    });
     let alert = this.alertCtrl.create({
-      title: 'Response',
-      message: 'Do you want to backup?',
+      title: title,
+      message: message,
       buttons: [
         {
-          text: 'Cancel',
+          text: cancel,
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
@@ -699,7 +782,7 @@ yellow:any = 0;
           }
         },
         {
-          text: 'See',
+          text: see,
           handler: () => {
             console.log('Buy clicked');
             // clearInterval(this.dataRefresher);
@@ -946,9 +1029,15 @@ yellow:any = 0;
   }
 
   cantAlert() {
+    let message;
+    this.translate.get('cannot').subscribe(
+      value => {
+        // value is our translated string
+        message = value;
+      });
     let alert = this.alertCtrl.create({
-      message: "You cannot respond to this report.",
-      buttons: ['OK']
+      message: message,
+      buttons: ['Okay']
       });
       // this.navCtrl.setRoot('HcfMappingPage');
       alert.present();
@@ -1150,45 +1239,57 @@ yellow:any = 0;
 
   /********** SHOW MARKERS ************/
   hcfMarkers: any[];
-  hospital: any = {
-    url: "assets/imgs/user/hospital.png", // url
-    scaledSize: new google.maps.Size(30, 30), // size
-    origin: new google.maps.Point(0,0), // origin
-    anchor: new google.maps.Point(0, 0) // anchor 
-  };
   hospital1: any = {
     url: "assets/imgs/user/hospital1.png", // url
-    scaledSize: new google.maps.Size(30, 30), // size
+    scaledSize: new google.maps.Size(50, 50), // size
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor 
   };
   hospital2: any = {
     url: "assets/imgs/user/hospital2.png", // url
-    scaledSize: new google.maps.Size(30, 30), // size
+    scaledSize: new google.maps.Size(50, 50), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+  hospital: any = {
+    url: "assets/imgs/user/hospital.png", // url
+    scaledSize: new google.maps.Size(50, 50), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+  chu: any = {
+    url: "assets/imgs/user/chu.png", // url
+    scaledSize: new google.maps.Size(50, 50), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+  bhs: any = {
+    url: "assets/imgs/user/bhs.png", // url
+    scaledSize: new google.maps.Size(50, 50), // size
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor 
   };
   rhu: any = {
     url: "assets/imgs/user/health.png", // url
-    scaledSize: new google.maps.Size(30, 30), // size
+    scaledSize: new google.maps.Size(50, 50), // size
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor 
   };
   evacuation: any = {
     url: "assets/imgs/user/pav1.png", // url
-    scaledSize: new google.maps.Size(30, 30), // size
+    scaledSize: new google.maps.Size(50, 50), // size
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor 
   };
   firestation: any = {
     url: "assets/imgs/user/fstn.png", // url
-    scaledSize: new google.maps.Size(30, 30), // size
+    scaledSize: new google.maps.Size(50, 50), // size
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor 
   };
   sports: any = {
     url: "assets/imgs/user/gym.png", // url
-    scaledSize: new google.maps.Size(30, 30), // size
+    scaledSize: new google.maps.Size(50, 50), // size
     origin: new google.maps.Point(0,0), // origin
     anchor: new google.maps.Point(0, 0) // anchor 
   };
@@ -1205,14 +1306,6 @@ yellow:any = 0;
         // icon: 'assets/imgs/user/emergencymarker.png',
         icon: this.hospital1
       });
-    }else if(data.hcf_type == 3){
-      this.hcfMarkers[i] = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
-        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png'
-        icon: this.hospital
-      });
     }else if(data.hcf_type == 2){
       this.hcfMarkers[i] = new google.maps.Marker({
         map: this.map,
@@ -1221,6 +1314,32 @@ yellow:any = 0;
         // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
         // icon: 'assets/imgs/user/evacmarker.png'
         icon: this.hospital2
+      });
+    }else if(data.hcf_type == 3){
+      this.hcfMarkers[i] = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_yellow.png'
+        icon: this.hospital
+      });
+    }else if(data.hcf_type == 4){
+      this.hcfMarkers[i] = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+        // icon: 'assets/imgs/user/evacmarker.png'
+        icon: this.chu
+      });
+    }else if(data.hcf_type == 5){
+      this.hcfMarkers[i] = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+        // icon: 'assets/imgs/user/evacmarker.png'
+        icon: this.bhs
       });
     }else if(data.hcf_type == 6){
       this.hcfMarkers[i] = new google.maps.Marker({
@@ -1257,13 +1376,6 @@ yellow:any = 0;
         // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
         // icon: 'assets/imgs/user/evacmarker.png'
         icon: this.sports
-      });
-    }else{
-      this.hcfMarkers[i] = new google.maps.Marker({
-        map: this.map,
-        animation: google.maps.Animation.DROP,
-        position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
-        icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png'
       });
     }
 
@@ -1419,6 +1531,8 @@ yellow:any = 0;
     // this.map.removeControl(this.control);
     // this.stat_id=2;
 
+    this.loginService.logged_in_stat_id = 2;
+
     if(this.loginService.loginState == 4){
       this.loginService.resp_stat_id=4;
 
@@ -1453,8 +1567,14 @@ yellow:any = 0;
     .map(res=> res.json())
     .subscribe((data: any) =>
     {
+      let message;
+      this.translate.get('Arrived').subscribe(
+        value => {
+          // value is our translated string
+          message = value;
+      });
        let alert = this.alertCtrl.create({
-        message: 'Arrived',
+        message: message,
         buttons: [
           {
             text: 'Okay',
@@ -1586,12 +1706,18 @@ yellow:any = 0;
           // value is our translated string
           no = value;
       });
+      let message;
+          this.translate.get('Call').subscribe(
+            value => {
+              // value is our translated string
+              message = value;
+          });
 
 
       let alert = this.alertCtrl.create({
 
-        // title: 'Patient',
-        message: 'Call for backup?',
+        // title: 'Patient'
+        message: message+"?",
         buttons: [
           {
             text: no,
@@ -1803,9 +1929,14 @@ yellow:any = 0;
       .map(res=> res.json())
       .subscribe( res =>
       {
+        let message;
+        this.translate.get('done').subscribe(
+          value => {
+            // value is our translated string
+            message = value;
+        });
         let alert2 = this.alertCtrl.create({
-          title:"FINISHED",
-          subTitle: "Responder has finished the report for this request",
+          subTitle: message,
           buttons: ['OK']
           });
 
@@ -1860,12 +1991,17 @@ yellow:any = 0;
         // value is our translated string
         cancel = value;
     });
+    this.translate.get('Fill').subscribe(
+      value => {
+        // value is our translated string
+        message = value;
+    });
 
 
 
     let alert = this.alertCtrl.create({
       title: title,
-      message: 'Fill up the following',
+      message: message,
       inputs: [
         {
           name: 'reason',
@@ -1896,9 +2032,9 @@ yellow:any = 0;
   }
 
   dataRefresher1: any;
+  CTR: any;
 
   sendBackup(datas: any){
-    clearInterval(this.checkforcallforbackuprefresher);
       if(this.loginService.logged_in_user_request_id == null){
         this.loginService.logged_in_user_request_id = this.request_id;
       }
@@ -1941,7 +2077,7 @@ yellow:any = 0;
           console.log(error);
           let alert2 = this.alertCtrl.create({
             title:"FAILED",
-            subTitle: "Request not updated. huhu!",
+            subTitle: "Request not updated. huhu! 1",
             buttons: ['OK']
             });
     
@@ -1994,6 +2130,7 @@ yellow:any = 0;
         this.refresher2();
         this.checkcount();
         this.requestMarker();
+        this.CTR = 1;
   }
   
 
@@ -2001,6 +2138,7 @@ yellow:any = 0;
   temp: any = 0;
 
   refresher1(){
+    console.log("DARA: BOOOOOOOMMMMMMMM");
     this.data = setInterval(() =>{
 
       var headers = new Headers();
@@ -2032,13 +2170,28 @@ yellow:any = 0;
           console.log("DARA: ANOTHER WAN");
           this.checkforcallforbackup();
 
+          let title, message;
+
+          this.translate.get('Backup').subscribe(
+            value => {
+              // value is our translated string
+              title = value;
+          });
+
+          this.translate.get('backup').subscribe(
+            value => {
+              // value is our translated string
+              message = value;
+          });
+
           this.temp = 0;
           this.localNotifications.schedule({
             id: 1,
-            title: "Backup has arrived",
-            text: "Your backup is already on the site",
+            title: title,
+            text: message,
             trigger:{at: new Date()},
           });
+          this.CTR = 0;
         }
       },
       (error : any) =>
@@ -2046,14 +2199,14 @@ yellow:any = 0;
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED",
-          subTitle: "Request not updated. huhu!",
+          subTitle: "Request not updated. huhu! 2",
           buttons: ['OK']
           });
 
         alert2.present();
       });
 
-    },1000);
+    },5000);
 
   }
 
@@ -2080,10 +2233,25 @@ yellow:any = 0;
         if(data.status != 0){
           clearInterval(this.dataRefresher1);
 
+          let title, message;
+
+          this.translate.get('Backup2').subscribe(
+            value => {
+              // value is our translated string
+              title = value;
+          });
+
+          this.translate.get('backup2').subscribe(
+            value => {
+              // value is our translated string
+              message = value;
+          });
+
+
           this.localNotifications.schedule({
             id: 1,
-            title: "Backup is Coming",
-            text: "Your backup is on the way",
+            title: title,
+            text: message,
             data: { mydata: 'My hidden message this is' },
             trigger:{at: new Date()},
           });
@@ -2094,7 +2262,7 @@ yellow:any = 0;
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED",
-          subTitle: "Request not updated. huhu!",
+          subTitle: "Request not updated. huhu! 3",
           buttons: ['OK']
           });
 
@@ -2126,29 +2294,32 @@ yellow:any = 0;
       {
         console.log("DARA: "+data.length)
         if(data.length == undefined){
-          console.log("DARA: SULOD");
           clearInterval(this.checkforcallforbackuprefresher);
           this.cfb=true;
+
+          let title;
+   
+          this.translate.get('backup3').subscribe(
+            value => {
+              // value is our translated string
+              title = value;
+          });
           this.localNotifications.schedule({
             id: 1,
             title: "BACKUP",
-            text: "Another call for backup has been made",
+            text: title,
             trigger:{at: new Date()},
           });
-          // this.refresher1();
-          // this.refresher2();
+          if(this.CTR != 1){
+            this.refresher1();
+            this.refresher2();
+          }
         }
       },
       (error : any) =>
       {
         console.log(error);
-        let alert2 = this.alertCtrl.create({
-          title:"FAILED",
-          subTitle: "Request not updated. huhu!",
-          buttons: ['OK']
-          });
-
-        alert2.present();
+        clearInterval(this.checkforcallforbackuprefresher);
       });
 
     }, 1000);
@@ -2195,7 +2366,7 @@ yellow:any = 0;
       console.log(error);
       let alert2 = this.alertCtrl.create({
         title:"FAILED",
-        subTitle: "Request not updated. huhu!",
+        subTitle: "Request not updated. huhu! 5",
         buttons: ['OK']
         });
 
@@ -2313,7 +2484,7 @@ yellow:any = 0;
       console.log(error);
       let alert2 = this.alertCtrl.create({
         title:"FAILED",
-        subTitle: "Request not updated. huhu!",
+        subTitle: "Request not updated. huhu! 6",
         buttons: ['OK']
         });
 
@@ -2553,9 +2724,12 @@ yellow:any = 0;
       this.mapClass = "mapClass";
       this.directionsDisplay.setOptions({suppressMarkers:true});
       this.directionsDisplay.setOptions({suppressPolylines:true})
+      if(this.request_id != null){
+        this.loginService.logged_in_user_request_id = this.request_id
+      }
 
     this.navCtrl.push('PersonstatusPage',{
-      request_id: this.request_id,
+      request_id: this.loginService.logged_in_user_request_id,
     });
   }
 

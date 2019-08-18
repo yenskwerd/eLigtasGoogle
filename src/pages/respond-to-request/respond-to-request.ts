@@ -58,7 +58,12 @@ export class RespondToRequestPage {
     this.backup = navParams.data.backup;
     this.request_type = navParams.data.request_type_id;
     this.person = navParams.data.person_to_check;
-    this.event = navParams.data.event;
+
+    this.translate.get(navParams.data.event).subscribe(
+      value => {
+        // value is our translated string
+        this.event = value;
+    });
     this.injured = navParams.data.persons_injured;
     this.trapped = navParams.data.persons_trapped;
     this.other = navParams.data.other_info;
@@ -69,13 +74,25 @@ export class RespondToRequestPage {
     this.lat = navParams.data.request_lat;
     this.long = navParams.data.request_long;
     this.eta = navParams.data.ETA;
-
+    
     if(this.request_type == 1){
-      this.title = "Report Event"
+      this.translate.get('Report').subscribe(
+        value => {
+          // value is our translated string
+          this.title = value;
+      });
     }else if(this.request_type == 2){
-      this.title = "Call For Help"
+      this.translate.get('Help').subscribe(
+        value => {
+          // value is our translated string
+          this.title = value;
+      });
     }else{
-      this.title = "Check On Person"
+      this.translate.get('Check').subscribe(
+        value => {
+          // value is our translated string
+          this.title = value;
+      });
     }
     if(this.backup == "YES"){
       this.backup = true;

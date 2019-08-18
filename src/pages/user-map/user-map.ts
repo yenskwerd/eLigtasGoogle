@@ -200,10 +200,13 @@ export class UserMapPage {
 
   dataRefresher1: any;
   temp: any;
+  ctr: any;
 
   getUserRequest1(){
     //gets user data
+    console.log("DARA");
     var headers = new Headers();
+    this.ctr = 0;
   
     headers.append("Accept", 'application/json');
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -223,8 +226,8 @@ export class UserMapPage {
     }
 
     this.dataRefresher1 = setInterval(() => {
-
-      this.http2.post('http://usc-dcis.com/eligtas.app/login.php',dataUser,options)
+      if(this.ctr == 0){
+        this.http2.post('http://usc-dcis.com/eligtas.app/login.php',dataUser,options)
         .map(res=> res.json()) 
         .subscribe(
         res => {
@@ -253,24 +256,43 @@ export class UserMapPage {
                 }
                 
               } else if (res.request_status_id == 1){
+                this.ctr = 1;
                 console.log("1");
                 console.log(this.ETA);
+                clearInterval(this.dataRefresher1);
                 this.temp = 1;
+
+                let title, res1, res2;
+                this.translate.get('Responder').subscribe(
+                  value => {
+                    // value is our translated string
+                    title = value;
+                });
+                this.translate.get('responder1').subscribe(
+                  value => {
+                    // value is our translated string
+                    res1 = value;
+                });
+                this.translate.get('responder2').subscribe(
+                  value => {
+                    // value is our translated string
+                    res2 = value;
+                });
                 this.localNotifications.schedule({
                   id: 1,
-                  title: 'RESPONDER',
-                  text: 'A responder is on his way! Responder is '+this.ETA+' away.',
+                  title: title,
+                  text: res1+this.ETA+res2,
                   data: { mydata: 'My hidden message this is' },
                   trigger:{at: new Date()},
                 });
-                clearInterval(this.dataRefresher1)
-              } else {
-                this.looking = false;
               }
             });
           }    
         }); 
-    }, 1000);
+      }
+
+      
+    }, 5000);
 
    let data2 = {
       user_id: this.loginService.logged_in_user_id

@@ -76,8 +76,8 @@
   <div *ngIf="loginService.resp_stat_id==2 || loginService.resp_stat_id==4" > 
     <button *ngIf="cfb==true" disabled ion-button class="reportBtn" (click)="requestCallForBackUp()">{{ 'Call' | translate }}</button>
     <button *ngIf="cfb==false" ion-button class="reportBtn" (click)="requestCallForBackUp()">{{ 'Call' | translate }}</button>
-    <button *ngIf="loginService.resp_stat_id==2" ion-button (click)="opendisposition()" class="reportBtn" >{{ 'Disposition' | translate }}</button>
-    <button *ngIf="loginService.resp_stat_id!=2" disabled ion-button (click)="opendisposition()" class="reportBtn" >{{ 'Disposition' | translate }}</button>
+    <button *ngIf="loginService.backup==0" ion-button (click)="opendisposition()" class="reportBtn" >{{ 'Disposition' | translate }}</button>
+    <button *ngIf="loginService.backup==1" disabled ion-button (click)="opendisposition()" class="reportBtn" >{{ 'Disposition' | translate }}</button>
     <!-- <button ion-button (click)="pushDone()" class="reportBtn" >Done</button> -->
   </div>
 

@@ -16,7 +16,7 @@
 <ion-content padding>
 
   <form >
-    <ion-label *ngIf="request_type==3" stacked translate>Person To Check</ion-label>
+    <ion-label *ngIf="request_type==3" stacked translate>Name</ion-label>
     <ion-item *ngIf="request_type==3">
       <ion-input [readonly]="isReadonly" value="{{person}}"></ion-input>
     </ion-item>
@@ -48,11 +48,11 @@
     <ion-item>
       <ion-input name="long" [readonly]="isReadonly" value="{{long}}"></ion-input>
     </ion-item>
-    <ion-label *ngIf="backup==true" stacked>Reason</ion-label>
+    <ion-label *ngIf="backup==true" stacked translate>Reason</ion-label>
     <ion-item *ngIf="backup==true">
       <ion-input name="long" [readonly]="isReadonly" value="{{reason}}"></ion-input>
     </ion-item>
-    <ion-label *ngIf="backup==true" stacked>Resources Needed</ion-label>
+    <ion-label *ngIf="backup==true" stacked translate>Resources</ion-label>
     <ion-item *ngIf="backup==true">
       <ion-input name="long" [readonly]="isReadonly" value="{{resources}}"></ion-input>
     </ion-item>
