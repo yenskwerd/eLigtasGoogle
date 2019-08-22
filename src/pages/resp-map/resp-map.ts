@@ -329,10 +329,10 @@ loadbackup(){
           for(let i=0; i<data.length; i++){
             // this.createMarker2(data[i]);
             if(data[i].request_status_id == 0){
-              this.ctrforcfb=this.ctrforcfb++;
+              this.ctrforcfb=this.ctrforcfb+1;
               console.log(this.ctrforcfb)
             }
-            this.createMarker2(data[i],i);
+            this.createMarker2(data[i],i, 1);
           }
           this.ctr = data.length;
       },
@@ -369,16 +369,16 @@ loadbackup(){
             console.log("DARA: 2");
             for(let i=0; i<data.length; i++){
               // this.createMarker2(data[i]);
-              this.createMarker2(data[i],i);
+              this.createMarker2(data[i],i, 2);
             }
           }else{
             let temp = 0;
           for(let i=0; i<data.length; i++){
             if(data[i].request_status_id == 1 && data.request_id == this.user_request_id){
-              this.createMarker2(data[i],i);
+              this.createMarker2(data[i],i, 3);
             }
             if(data[i].request_status_id == 1 && data.request_id != this.user_request_id){
-              this.createMarker2(data[i],i);
+              this.createMarker2(data[i],i, 4);
               try {
               this.markerforongoing.setVisible(false);
               this.pmarker[i].setVisible(false);
@@ -388,21 +388,16 @@ loadbackup(){
             }
             if(data[i].request_status_id == 0){
               temp = temp+1;
-                  // this.ctrforcfb2=this.ctrforcfb2++;
-                  //   // if(this.ctrforcfb!=this.ctrforcfb2){
-                  //     this.createMarker2(data[i],i);
-                  // // }
               } 
             if(data[i].request_status_id == 3){
-              this.createMarker2(data[i],i);
+              this.createMarker2(data[i],i, 5);
             } 
           }
 
           if(temp > this.ctrforcfb){
-            this.ctrforcfb = temp;
             for(let i=0; i<data.length; i++){
               if(data[i].request_status_id == 0){
-                this.createMarker2(data[i],i);
+                this.createMarker2(data[i],i, 6);
               }
             }
 
@@ -584,7 +579,8 @@ pmarker: any[];
 cfbmarker: any[];
 yellow:any = 0;
 count:any = 0;
-  createMarker2(data:any,i:any){
+checkRefresher:any;
+  createMarker2(data:any,i:any, EYY:any){
     // createMarker2(data:any){
       // console.log("createmarker2");
 
@@ -678,12 +674,12 @@ count:any = 0;
         // this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long,i);
         this.marker2 = this.addMarker2(this.grayMarker, data.request_lat, data.request_long);
       } else if (data.request_status_id == 0) {
+        console.log("DARA:"+ EYY);
         this.count = this.count + 1;
         var iconnum = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue.png"
 
-    const cfbmarker = new google.maps.Marker({
+    this.cfbmarker[i] = new google.maps.Marker({
       map: this.map,
-      // animation: google.maps.Animation.DROP,
       position: {lat: parseFloat(data.request_lat), lng: parseFloat(data.request_long)},
       icon: iconnum
     });
@@ -717,35 +713,57 @@ count:any = 0;
               if(this.loginService.resp_stat_id!=2){
                 let self = this
                   // this.cfbmarker[i].addListener('click', function() {
-                    cfbmarker.addListener('click', function() {
+                    this.cfbmarker[i].addListener('click', function() {
                     self.cfbRespond(data)
                   });  
               }   
          }); 
+
+         this.checkRefresher = setInterval(() =>{
+          let data2 = {
+            request_id: data.request_id
+          }
+
+          this.http2.post('http://usc-dcis.com/eligtas.app/retrieve-backup-status.php',data2,options)
+         .map(res=> res.json())
+           .subscribe(
+             res => {
+
+              if(res.length == 0){
+                try {
+                  this.cfbmarker[i].setVisible(false);
+                  } catch (error) {
+                    console.log(error)
+                  }
+              }
+
+             });
+         }, 5000);
+
       }
 
   }
 
-  callForBackUpMarker(data:any){
+  // callForBackUpMarker(data:any){
 
-    console.log(data);
-    var iconnum = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue.png"
+  //   console.log(data);
+  //   var iconnum = "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_blue.png"
 
-    const cfbmarker = new google.maps.Marker({
-      map: this.map,
-      animation: google.maps.Animation.DROP,
-      position: {lat: parseFloat(data.request_lat), lng: parseFloat(data.request_long)},
-      icon: iconnum
-    });
+  //   const cfbmarker = new google.maps.Marker({
+  //     map: this.map,
+  //     animation: google.maps.Animation.DROP,
+  //     position: {lat: parseFloat(data.request_lat), lng: parseFloat(data.request_long)},
+  //     icon: iconnum
+  //   });
 
-    if(this.loginService.resp_stat_id!=2){
-      let self = this
-        // this.cfbmarker[i].addListener('click', function() {
-          cfbmarker.addListener('click', function() {
-          self.cfbRespond(data)
-        });  
-    }   
-  }
+  //   if(this.loginService.resp_stat_id!=2){
+  //     let self = this
+  //       // this.cfbmarker[i].addListener('click', function() {
+  //         cfbmarker.addListener('click', function() {
+  //         self.cfbRespond(data)
+  //       });  
+  //   }   
+  // }
 
   cfbRespond(data) {
     let title, message, cancel, see;
