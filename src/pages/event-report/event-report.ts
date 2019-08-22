@@ -371,7 +371,7 @@ export class EventReportPage {
           console.log(error);
           let alert2 = this.alertCtrl.create({
             title:"FAILED",
-            subTitle: "Wrong input/s, try again!",
+            subTitle: "Please check your connection and try again!",
             buttons: ['OK']
             });
 

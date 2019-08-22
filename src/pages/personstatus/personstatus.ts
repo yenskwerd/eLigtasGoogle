@@ -125,7 +125,7 @@ export class PersonstatusPage {
       console.log(error);
       let alert2 = this.alertCtrl.create({
         title:"FAILED",
-        subTitle: "Request not updated. huhu!",
+        subTitle: "Please check your connection and try again!",
         buttons: ['OK']
         });
 
@@ -182,7 +182,7 @@ export class PersonstatusPage {
       console.log(error);
       let alert2 = this.alertCtrl.create({
         title:"FAILED 2",
-        subTitle: "Something went wrong!",
+        subTitle: "Please check your connection and try again!",
         buttons: ['OK']
         });
 
@@ -213,7 +213,7 @@ export class PersonstatusPage {
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED 3",
-          subTitle: "Something went wrong!",
+          subTitle: "Please check your connection and try again!",
           buttons: ['OK']
           });
   
@@ -244,7 +244,7 @@ export class PersonstatusPage {
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED 4",
-          subTitle: "Something went wrong!",
+          subTitle: "Please check your connection and try again!",
           buttons: ['OK']
           });
   
@@ -275,7 +275,7 @@ export class PersonstatusPage {
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED 5",
-          subTitle: "Something went wrong!",
+          subTitle: "Please check your connection and try again!",
           buttons: ['OK']
           });
   
@@ -306,7 +306,7 @@ export class PersonstatusPage {
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED 6",
-          subTitle: "Something went wrong!",
+          subTitle: "Please check your connection and try again!",
           buttons: ['OK']
           });
   

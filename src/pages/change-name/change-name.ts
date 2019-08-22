@@ -82,7 +82,7 @@ export class ChangeNamePage {
       console.log(error);
       let alert2 = this.alertCtrl.create({
         title:"FAILED",
-        subTitle: "Something went wrong!",
+        subTitle: "Please check your connection and try again!",
         buttons: ['OK']
         });
 

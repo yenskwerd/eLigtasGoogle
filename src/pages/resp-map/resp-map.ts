@@ -1846,7 +1846,7 @@ checkRefresher:any;
       console.log(error);
       let alert2 = this.alertCtrl.create({
         title:"FAILED",
-        subTitle: "Something went wrong!",
+        subTitle: "Please check your connection and try again!",
         buttons: ['OK']
         });
 
@@ -1867,7 +1867,7 @@ checkRefresher:any;
       console.log(error);
       let alert2 = this.alertCtrl.create({
         title:"FAILED",
-        subTitle: "Something went wrong!",
+        subTitle: "Please check your connection and try again!",
         buttons: ['OK']
         });
 
@@ -1919,7 +1919,7 @@ checkRefresher:any;
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED",
-          subTitle: "Something went wrong!",
+          subTitle: "Please check your connection and try again!",
           buttons: ['OK']
           });
 
@@ -1971,7 +1971,7 @@ checkRefresher:any;
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED",
-          subTitle: "Something went wrong!",
+          subTitle: "Please check your connection and try again!",
           buttons: ['OK']
           });
 
@@ -2095,7 +2095,7 @@ checkRefresher:any;
           console.log(error);
           let alert2 = this.alertCtrl.create({
             title:"FAILED",
-            subTitle: "Request not updated. huhu! 1",
+            subTitle: "Please check your connection and try again!",
             buttons: ['OK']
             });
     
@@ -2217,7 +2217,7 @@ checkRefresher:any;
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED",
-          subTitle: "Request not updated. huhu! 2",
+          subTitle: "Request not updated!",
           buttons: ['OK']
           });
 
@@ -2280,7 +2280,7 @@ checkRefresher:any;
         console.log(error);
         let alert2 = this.alertCtrl.create({
           title:"FAILED",
-          subTitle: "Request not updated. huhu! 3",
+          subTitle: "Request not updated!",
           buttons: ['OK']
           });
 
@@ -2384,7 +2384,7 @@ checkRefresher:any;
       console.log(error);
       let alert2 = this.alertCtrl.create({
         title:"FAILED",
-        subTitle: "Request not updated. huhu! 5",
+        subTitle: "Please check your connection and try again!",
         buttons: ['OK']
         });
 
@@ -2502,7 +2502,7 @@ checkRefresher:any;
       console.log(error);
       let alert2 = this.alertCtrl.create({
         title:"FAILED",
-        subTitle: "Request not updated. huhu! 6",
+        subTitle: "Please check your connection and try again!",
         buttons: ['OK']
         });
 
