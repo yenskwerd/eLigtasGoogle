@@ -11,34 +11,37 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-label stacked translate>{{ 'Safe' | translate }}</ion-label>
+  <div text-center>
+    <h1 stacked translate>{{ 'Safe' | translate }}</h1>
   <ion-item>
-    <ion-icon name="remove-circle" (click)="decrementSafe()"></ion-icon>
-      {{currentSafe}}
-      <ion-icon name="add-circle" (click)="incrementSafe()"></ion-icon>
+    <ion-icon class="icon2" name="remove-circle" (click)="decrementSafe()"></ion-icon>
+      <!-- {{currentSafe}} -->
+      <div text-center>{{currentSafe}}</div>
+      <ion-icon class="icon1" name="add-circle" (click)="incrementSafe()"></ion-icon>
   </ion-item>
 
-  <ion-label stacked translate>{{ 'Transfer' | translate }}</ion-label>
+  <h1 stacked translate>{{ 'Transfer' | translate }}</h1>
   <ion-item>
-    <ion-icon name="remove-circle" (click)="decrementTransfer()"></ion-icon>
-      {{currentTransfer}}
-      <ion-icon name="add-circle" (click)="incrementTransfer()"></ion-icon>
+    <ion-icon class="icon2" name="remove-circle" (click)="decrementTransfer()"></ion-icon>
+    <div text-center>{{currentTransfer}}</div>
+      <ion-icon class="icon1" name="add-circle" (click)="incrementTransfer()"></ion-icon>
   </ion-item>
 
-  <ion-label stacked translate>{{ 'Dead' | translate }}</ion-label>
+  <h1 stacked translate>{{ 'Dead' | translate }}</h1>
   <ion-item>
-    <ion-icon name="remove-circle" (click)="decrementDead()"></ion-icon>
-      {{currentDead}}
-      <ion-icon name="add-circle" (click)="incrementDead()"></ion-icon>
+    <ion-icon class="icon2" name="remove-circle" (click)="decrementDead()"></ion-icon>
+    <div text-center>{{currentDead}}</div>
+      <ion-icon class="icon1" name="add-circle" (click)="incrementDead()"></ion-icon>
   </ion-item>
 
-  <ion-label stacked translate>{{ 'Missing' | translate }}</ion-label>
+  <h1 stacked translate>{{ 'Missing' | translate }}</h1>
   <ion-item>
-    <ion-icon name="remove-circle" (click)="decrementMissing()"></ion-icon>
-      {{currentMissing}}
-      <ion-icon name="add-circle" (click)="incrementMissing()"></ion-icon>
+    <ion-icon class="icon2" name="remove-circle" (click)="decrementMissing()"></ion-icon>
+    <div text-center>{{currentMissing}}</div>
+      <ion-icon class="icon1" name="add-circle" (click)="incrementMissing()"></ion-icon>
   </ion-item>
 
   <button ion-button (click)="SubmitDis()" class="reportBtn" >{{ 'submit' | translate }}</button>
-
+</div>
 </ion-content>
+  

@@ -1,3 +1,22 @@
 page-personstatus {
-
+    .icon1 {
+        position: absolute;
+        top: 50%;
+        left: 60%;
+        height: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        display: block;
+    }
+    .icon2 {
+        position: absolute;
+        top: 50%;
+        left: 40%;
+        height: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        display: block;
+    }
 }
