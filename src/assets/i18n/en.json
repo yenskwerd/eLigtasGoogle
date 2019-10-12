@@ -8,7 +8,7 @@
     "Event" : "Event",
     "Injured" : "Persons injured",
     "Trapped" : "Persons trapped",
-    "Other" : "Other Informations",
+    "Other" : "Other Information",
     "Needs" : "Are there rescuees with special needs?",
     "Visually" : "Visually impaired",
     "Hear" : "Cannot hear well",
@@ -61,7 +61,7 @@
     "Responder" : "Responder",
     "responder1" : "A responder is on his way! Responder is ",
     "responder2" : " away.",
-    "Steps" : "Steps to follow",
+    "Steps" : "Reminders",
     "Calm" : "Keep calm and wait for responders",
     "Away" : "Stay away from danger",
     "backup4" : "Request for backup has been made"

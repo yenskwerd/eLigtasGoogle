@@ -42,7 +42,8 @@ export class MyApp {
  
   constructor(public platform: Platform, 
     public geolocation: Geolocation, 
-    private http: Http, public app: App, 
+    private http: Http, 
+    public app: App, 
     public alertCtrl: AlertController, 
     private push: Push, 
     public menuCtrl: MenuController, 
@@ -73,17 +74,17 @@ export class MyApp {
 
     
     this.submenus = [
-      { icon: 'globe', title: 'Batingaw App', component: OpenBatingawPage},
+      { icon: 'appstore', title: 'Batingaw App', component: OpenBatingawPage},
       { icon: 'medkit', title: 'Red Cross App', component: OpenRedCrossPage},
       { icon: 'locate', title: 'Google Maps', component: OpenGoogleMapsPage},
-      { icon: 'globe', title: 'Fault Finder', component: OpenFaultFinderPage},
+      { icon: 'appstore', title: 'Fault Finder', component: OpenFaultFinderPage},
     ];
     
     this.submenus2 = [
-      { icon: 'medkit', title: 'Profile', component: ProfilePage},
+      { icon: 'contact', title: 'Profile', component: ProfilePage},
       { icon: 'locate', title: 'Legends', component: LegendPage},
       { icon: 'globe', title: 'Language', component: LanguagePage},
-      { icon: 'globe', title: 'Steps', component: StepsPage},
+      { icon: 'alert', title: 'Reminders', component: StepsPage},
     ];
 
     events.subscribe('user:login', () => {

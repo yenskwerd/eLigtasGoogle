@@ -147,34 +147,34 @@ export class UserMapPage {
   dataRefresher:any;
   check:any =0;
  
-  responseAlert(){
-    this.dataRefresher = setInterval(() =>{
-      let alert = this.alertCtrl.create({
-        title: 'Alert',
-        message: 'Did anyone respond to your request?',
-        buttons: [
-          {
-            text: 'Yes',
-            role: 'cancel',
-            handler: () => {
-            this.looking = false;
-            clearInterval(this.dataRefresher);
-            }
-          },
-          {
-            text: 'No',
-            handler: () => {
-            this.temp = null;
-            }
-          }
-        ]
-      });
-      clearInterval(this.dataRefresher);
-      alert.present();
+  // responseAlert(){
+  //   this.dataRefresher = setInterval(() =>{
+  //     let alert = this.alertCtrl.create({
+  //       title: 'Alert',
+  //       message: 'Did anyone respond to your request?',
+  //       buttons: [
+  //         {
+  //           text: 'Yes',
+  //           role: 'cancel',
+  //           handler: () => {
+  //           this.looking = false;
+  //           clearInterval(this.dataRefresher);
+  //           }
+  //         },
+  //         {
+  //           text: 'No',
+  //           handler: () => {
+  //           this.temp = null;
+  //           }
+  //         }
+  //       ]
+  //     });
+  //     clearInterval(this.dataRefresher);
+  //     alert.present();
       
       
-    },600000);
-  }
+  //   },600000);
+  // }
 
   ionViewWillLeave() {
     console.log("leave");
@@ -252,7 +252,7 @@ export class UserMapPage {
                 if(this.temp == null){
                   this.temp = 1;
                   this.looking = true;
-                  this.responseAlert();
+                  // ∂this.responseAlert();
                 }
                 
               } else if (res.request_status_id == 1){
