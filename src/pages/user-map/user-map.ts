@@ -775,47 +775,48 @@ export class UserMapPage {
 
   hospitalshow: any = true;
   hosimage: any = "assets/imgs/user/ambu1.png";
-
+  
   emergencyhospital() {
-      this.http
-       .get('http://usc-dcis.com/eligtas.app/retrieve-hcf.php')
-       .subscribe((data : any) =>
-       {
-          console.log(data);
-          for(let i=0; i<data.length; i++){
-            // console.log(this.getDistance(this.latitude, this.longitude, data[i].xloc, data[i].yloc));
-            this.distanceArr.push({
-                distance: this.getDistance(this.latitude, this.longitude, data[i].xloc, data[i].yloc),
-                xloc: data[i].xloc,
-                yloc: data[i].yloc
-            });
-          }
-        if(this.hospitalshow==true) {
-          this.minimum = this.distanceArr[0].distance;
-          this.index = 0;
-          
-          for(let i=1; i<this.distanceArr.length; i++){
-            if(this.distanceArr[i].distance<this.minimum){
-              this.minimum = this.distanceArr[i].distance;
-              this.index = i;
-            }
-          }
-
-          this.route(this.distanceArr[this.index]);
-          this.hospitalshow=false;
-          this.hosimage = "assets/imgs/user/ambu.png";
-        } else {
-          this.hosimage ="assets/imgs/user/ambu1.png";
-          this.directionsDisplay.setMap(null);
-          this.directionsDisplay.setPanel(null);
-          this.hospitalshow = true;
+    this.http
+     .get('http://usc-dcis.com/eligtas.app/retrieve-hcf.php')
+     .subscribe((data : any) =>
+     {
+        console.log(data);
+        for(let i=0; i<data.length; i++){
+          // console.log(this.getDistance(this.latitude, this.longitude, data[i].xloc, data[i].yloc));
+          this.distanceArr.push({
+              distance: this.getDistance(this.latitude, this.longitude, data[i].xloc, data[i].yloc),
+              xloc: data[i].xloc,
+              yloc: data[i].yloc
+          });
         }
-       },
-       (error : any) =>
-       {
-          console.dir(error);
-       });  
-  }
+      if(this.hospitalshow==true) {
+        this.minimum = this.distanceArr[0].distance;
+        this.index = 0;
+        
+        for(let i=1; i<this.distanceArr.length; i++){
+          if(this.distanceArr[i].distance<this.minimum){
+            this.minimum = this.distanceArr[i].distance;
+            this.index = i;
+          }
+        }
+
+        this.route(this.distanceArr[this.index]);
+        this.hospitalshow=false;
+        this.hosimage = "assets/imgs/user/ambu.png";
+      } else {
+        this.hosimage ="assets/imgs/user/ambu1.png";
+        this.mapClass = "mapClass";
+        this.directionsDisplay.setMap(null);
+        this.directionsDisplay.setPanel(null);
+        this.hospitalshow = true;
+      }
+     },
+     (error : any) =>
+     {
+        console.dir(error);
+     });  
+}
 
   getDistance(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
