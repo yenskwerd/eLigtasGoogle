@@ -22,6 +22,10 @@ export class ChangePasswordPage {
   @ViewChild('new') new;
   @ViewChild('verify') verify;
 
+  patt:any;
+  res:any;
+  lengthofpassword:any;
+
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     public login: LoginServiceProvider,
@@ -35,6 +39,11 @@ export class ChangePasswordPage {
   }
 
   changePassword(){
+    this.lengthofpassword=this.old.value;
+    this.patt = new RegExp("^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$");
+    this.res=this.patt.test(this.old.value);
+    console.log(this.res);
+
     if(this.old.value != this.login.logged_in_user_password){
       let alert = this.alertCtrl.create({
         message:"Wrong Password",
@@ -52,6 +61,13 @@ export class ChangePasswordPage {
     }else if(this.new.value == this.old.value){
       let alert = this.alertCtrl.create({
         message:"Cant use old password",
+        buttons: ['OK']
+
+      });
+      alert.present();
+    }else if(this.lengthofpassword.length<8 || this.res!=true){
+      let alert = this.alertCtrl.create({
+        message:"Password must have atleast 8 characters and must have uppercase, lowercase characters and number.",
         buttons: ['OK']
 
       });

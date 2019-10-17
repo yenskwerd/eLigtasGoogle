@@ -21,7 +21,8 @@ export class SignupPage {
   options2: any;
   lengthofusername:any;
   lengthofpassword:any;
-
+  patt:any;
+  res:any;
   constructor(public menuCtrl: MenuController, public navCtrl: NavController, public navParams: NavParams, public alertCtrl:AlertController,private http: Http) {
   }
 
@@ -51,6 +52,9 @@ export class SignupPage {
   signUp(){
     this.lengthofusername=this.user_name.value;
     this.lengthofpassword=this.user_password.value;
+    this.patt = new RegExp("^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$");
+    this.res=this.patt.test(this.user_password.value);
+    console.log(this.res);
 
     if(this.user_email.value==""){
         console.log(this.lengthofusername.length);
@@ -62,7 +66,7 @@ export class SignupPage {
           
           alert.present();
         
-        } else if(this.user_name.value==""){
+        }else if(this.user_name.value==""){
           
           let alert = this.alertCtrl.create({
             message:"Username field is empty!",
@@ -72,18 +76,28 @@ export class SignupPage {
           
           alert.present();
          
-      }else if(this.lengthofusername.length<5){
+      }else if(this.user_password.value==""){
+          
+      let alert = this.alertCtrl.create({
+        message:"Password field is empty!",
+        buttons: ['OK']
+
+      });
+      
+      alert.present();
+     
+  }else if(this.lengthofusername.length<5){
         let alert = this.alertCtrl.create({
-          message:"Username must have atleast 5 characters!",
+          message:"Username must have atleast 5 characters.",
           buttons: ['OK']
 
         });
         
         alert.present();
 
-      }else if(this.lengthofpassword.length<8){
+      }else if(this.lengthofpassword.length<8 || this.res!=true){
         let alert = this.alertCtrl.create({
-          message:"Password must have atleast 8 characters and is compose of uppercase,lowercase characters and numbers.!",
+          message:"Password must have atleast 8 characters and must have uppercase, lowercase characters and number.",
           buttons: ['OK']
 
         });

@@ -26,8 +26,16 @@
           </ion-item>
         <ion-item>
           <ion-label stacked>Password</ion-label>
-          <ion-input type="password" name="password" #user_password></ion-input>
+          <ion-input type="text" name="password" #user_password></ion-input>
         </ion-item>
+        <!-- <ion-item>
+            <ion-label stacked>Password</ion-label>
+            <ion-input type="password" name="password" #user_password ng-model="user.password" ng-minlength="5" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required></ion-input>
+        </ion-item> -->
+
+
+
+
         <!-- <ion-item>
           <ion-label stacked>I am a</ion-label>
           <ion-select #C interface="popover" (ionChange)="optionfilter(options);" [(ngModel)]="options" name="options">

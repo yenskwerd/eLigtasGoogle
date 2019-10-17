@@ -24,6 +24,7 @@ export class ChangeNamePage {
 
   @ViewChild('name') name;
   username:any;
+  lengthofusername:any;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -43,9 +44,17 @@ export class ChangeNamePage {
   }
 
   changeName(){
+    this.lengthofusername=this.username.value;
     if(this.name.value == this.username){
       let alert = this.alertCtrl.create({
         message:"Cant use old name",
+        buttons: ['OK']
+
+      });
+      alert.present();
+    }else if(this.lengthofusername<5){
+      let alert = this.alertCtrl.create({
+        message:"Username must have atleast 5 characters.",
         buttons: ['OK']
 
       });

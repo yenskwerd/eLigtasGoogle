@@ -210,6 +210,7 @@ export class MyApp {
     })
     
     this.nav.setRoot(page.component);
+    this.nav.setRoot(page.component);
    }
 
   
