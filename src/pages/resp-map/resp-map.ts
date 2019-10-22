@@ -1312,6 +1312,13 @@ checkRefresher:any;
     anchor: new google.maps.Point(0, 0) // anchor 
   };
 
+  police: any = {
+    url: "assets/imgs/user/police.png", // url
+    scaledSize: new google.maps.Size(30, 30), // size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor 
+  };
+
   createMarker(data:any, i:any){
 
     
@@ -1395,7 +1402,23 @@ checkRefresher:any;
         // icon: 'assets/imgs/user/evacmarker.png'
         icon: this.sports
       });
-    }
+    }else if(data.hcf_type == 10){
+      this.hcfMarkers[i] = new google.maps.Marker({
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+        // icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_grey.png'
+        // icon: 'assets/imgs/user/evacmarker.png'
+        icon: this.police
+      });
+    }else{
+        this.hcfMarkers[i] = new google.maps.Marker({
+          map: this.map,
+          animation: google.maps.Animation.DROP,
+          position: {lat: parseFloat(data.xloc), lng: parseFloat(data.yloc)},
+          icon: 'https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_black.png'
+        });
+      }
 
     let self = this
         // marker3[i].addListener('click', function() {

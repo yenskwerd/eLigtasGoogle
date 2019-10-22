@@ -26,6 +26,7 @@ export class LegendPage {
       { icon: "assets/imgs/user/bhs.png", label: "Barangay Health Station"},
       { icon: "assets/imgs/user/health.png", label: "Rural Health Unit"},
       { icon: "assets/imgs/user/pav1.png", label: "Evacuation Center"},
+      { icon: "assets/imgs/user/police.png", label: "Police Station"},
       { icon: "assets/imgs/user/fstn.png", label: "Fire Station"},
       { icon: "assets/imgs/user/gym.png", label: "Sports Center"},
       { icon: "https://raw.githubusercontent.com/Concept211/Google-Maps-Markers/master/images/marker_red.png", label: "Current Location"},

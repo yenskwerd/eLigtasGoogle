@@ -52,7 +52,8 @@ export class SignupPage {
   signUp(){
     this.lengthofusername=this.user_name.value;
     this.lengthofpassword=this.user_password.value;
-    this.patt = new RegExp("^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$");
+    // this.patt = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    this.patt = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
     this.res=this.patt.test(this.user_password.value);
     console.log(this.res);
 
@@ -95,16 +96,17 @@ export class SignupPage {
         
         alert.present();
 
-      }else if(this.lengthofpassword.length<8 || this.res!=true){
+      }
+      else if(this.res!=true){
         let alert = this.alertCtrl.create({
-          message:"Password must have atleast 8 characters and must have uppercase, lowercase characters and number.",
+          message:"Password must have atleast 8 characters and must have alteast uppercase, lowercase characters and number.",
           buttons: ['OK']
 
         });
         
         alert.present();
-
-      }else {
+      }
+      else {
         var headers = new Headers();
       
         headers.append("Accept", 'application/json');
@@ -142,7 +144,7 @@ export class SignupPage {
           console.log(error);
           let alert2 = this.alertCtrl.create({
             title:"FAILED",
-            subTitle: "Please check your connection and try again!",
+            subTitle: "Fill up all the required fields or Please check your connection and try again!",
             buttons: ['OK']
             });
 

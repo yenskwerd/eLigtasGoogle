@@ -63,7 +63,7 @@ export class LoginPage {
     if(this.username.value==""){
     
       let alert = this.alertCtrl.create({
-      subTitle:"Pilgrim ID field is empty",
+      subTitle:"Username field is empty",
       buttons: ['OK']
       
 

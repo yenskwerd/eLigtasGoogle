@@ -20,6 +20,7 @@ import { LegendPage } from '../pages/legend/legend';
 import { ProfilePage } from '../pages/profile/profile';
 import { StepsPage } from '../pages/steps/steps';
 import { PersonstatusPage } from '../pages/personstatus/personstatus';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 @Component({
   templateUrl: 'app.html'
@@ -52,7 +53,8 @@ export class MyApp {
     public splashScreen: SplashScreen, 
     public loginService: LoginServiceProvider,
     public storage: Storage,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    public localNotifications: LocalNotifications) {
 
     translate.setDefaultLang('en');
     
@@ -208,9 +210,9 @@ export class MyApp {
       });
       alert2.present();
     })
-    
+
     this.nav.setRoot(page.component);
-    this.nav.setRoot(page.component);
+    this.localNotifications.cancelAll();
    }
 
   
