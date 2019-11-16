@@ -278,6 +278,7 @@ export class UserMapPage {
                     // value is our translated string
                     res2 = value;
                 });
+                console.log("A responder is on his way :"+this.ETA);
                 this.localNotifications.schedule({
                   id: 1,
                   title: title,

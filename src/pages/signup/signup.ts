@@ -89,7 +89,7 @@ export class SignupPage {
      
   }else if(this.lengthofusername.length<5){
         let alert = this.alertCtrl.create({
-          message:"Username must have atleast 5 characters.",
+          message:"Username must have at least 5 characters.",
           buttons: ['OK']
 
         });
@@ -99,7 +99,7 @@ export class SignupPage {
       }
       else if(this.res!=true){
         let alert = this.alertCtrl.create({
-          message:"Password must have atleast 8 characters and must have alteast uppercase, lowercase characters and number.",
+          message:"Password must have at least 8 characters and must have alteast uppercase, lowercase characters and number.",
           buttons: ['OK']
 
         });

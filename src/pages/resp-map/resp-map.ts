@@ -825,7 +825,7 @@ checkRefresher:any;
               
               option: "CFB"
             });
-          }, 900);
+          }, 1700);
           }
         }
       ]
@@ -888,9 +888,9 @@ checkRefresher:any;
         if(status == google.maps.DirectionsStatus.OK){
             this.directionsDisplay.setDirections(res);  
             // this.eta=this.y1[6].textContent;
-            this.eta=this.directionsDisplay.directions.routes[0].legs[0].duration.text;
-            console.log(this.directionsDisplay.directions.routes[0].legs[0].duration.text);
-              console.log(this.eta);
+            // this.eta=this.directionsDisplay.directions.routes[0].legs[0].duration.text;
+            // console.log(this.directionsDisplay.directions.routes[0].legs[0].duration.text);
+            //   console.log(this.eta);
             // try {
             //   // this.eta=this.y1[6].textContent;
             //   console.log(this.directionsDisplay.directions.routes[0].legs[0].duration.text);
@@ -1034,7 +1034,7 @@ checkRefresher:any;
               ETA: this.eta,
               option: "respond"
             });
-          }, 900);
+          }, 1700);
             // this.requestMarker(); 
             console.log("request id: ");
             console.log(data.request_id);

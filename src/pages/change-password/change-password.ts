@@ -67,7 +67,7 @@ export class ChangePasswordPage {
       alert.present();
     }else if(this.lengthofpassword.length<8 || this.res!=true){
       let alert = this.alertCtrl.create({
-        message:"Password must have atleast 8 characters and must have uppercase, lowercase characters and number.",
+        message:"Password must have at least 8 characters and must have uppercase, lowercase characters and number.",
         buttons: ['OK']
 
       });

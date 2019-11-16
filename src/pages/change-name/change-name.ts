@@ -54,7 +54,7 @@ export class ChangeNamePage {
       alert.present();
     }else if(this.lengthofusername<5){
       let alert = this.alertCtrl.create({
-        message:"Username must have atleast 5 characters.",
+        message:"Username must have at least 5 characters.",
         buttons: ['OK']
 
       });
