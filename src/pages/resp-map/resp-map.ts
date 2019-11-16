@@ -1016,8 +1016,9 @@ checkRefresher:any;
             this.routforETA(data);
             console.log("ETA "+this.eta);
             // console.log("duration"+this.directionsDisplay.directions.routes[0].legs[0].duration.text);
-            setTimeout(() => {
+            // setTimeout(() => {
               console.log("ETA "+this.eta);
+              if(this.eta!=null){
             this.navCtrl.setRoot('RespondToRequestPage', {
               backup: "NO",
               request_type_id: data.request_type_id,
@@ -1034,7 +1035,24 @@ checkRefresher:any;
               ETA: this.eta,
               option: "respond"
             });
-          }, 1700);
+          }else{
+            let alert = this.alertCtrl.create({
+              title: 'Respond error',
+              message: 'Internet speed is slow',
+              buttons: [
+                {
+                  text: 'Ok',
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Cancel clicked');
+                    // this.change1();
+                  }
+                },
+              ]
+            });
+            alert.present();
+          }
+          // }, 1700);
             // this.requestMarker(); 
             console.log("request id: ");
             console.log(data.request_id);
